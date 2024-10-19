@@ -19,6 +19,6 @@
 
         public ICollection<Wiki>? Wiki { get; set; }
 
-
+        public Guid GroupId { get; set; }
     }
 }

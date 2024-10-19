@@ -15,6 +15,9 @@
 
         public Guid DeletedBy { get; set; }
 
+        public Guid ChildTaskId { get; set; }
+
+        public ICollection<Task>? SubTasks { get; set; }
         //foreign key for the task for single projects
         //public Guid ProjectId { get; set; }
 
