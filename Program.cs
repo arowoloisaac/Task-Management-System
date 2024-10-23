@@ -1,6 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Project_Manager.Data;
+using Project_Manager.Service.Configuration;
 
 namespace Project_Manager
 {
@@ -12,10 +15,24 @@ namespace Project_Manager
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(opt =>
+                {
+                    //as  the converter
+                    opt.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+                });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen( opt =>
+            {
+                //this serves as the input type
+                opt.MapType<DateOnly>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "date",
+                    Example = new OpenApiString(DateTime.Today.ToString("yyyy-MM-dd"))
+                });
+            });
             builder.Services.AddDbContext<ApplicationDbContext>(
                 options => {
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultCOnnection"));

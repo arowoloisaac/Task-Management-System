@@ -9,6 +9,10 @@ namespace Project_Manager.Model
 
         public string LastName { get; set; } = string.Empty;
 
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
+
         public ICollection<Organization>? Organizations { get; set; }
 
         public ICollection<Project>? Projects { get; set; }
@@ -18,5 +22,7 @@ namespace Project_Manager.Model
         public ICollection<Group>? Groups { get; set; }
 
         public ICollection<Comment>? Comment { get; set; }
+
+        public ICollection<Note>? Notes { get; set; }
     }
 }

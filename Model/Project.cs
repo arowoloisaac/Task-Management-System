@@ -15,7 +15,7 @@
         //foreign key for personal projects
         public Guid UserId { get; set; }
 
-        public ICollection<Task>? Tasks { get; set; }
+        public ICollection<Issue>? Issues { get; set; }
 
         public ICollection<Wiki>? Wiki { get; set; }
 

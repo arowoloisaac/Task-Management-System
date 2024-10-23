@@ -25,5 +25,9 @@ namespace Project_Manager.Data
         public DbSet<ProjectRole> ProjectRoles { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Note> Notes { get; set; }
+
+        public DbSet<Issue> Issues { get; set; }
     }
 }

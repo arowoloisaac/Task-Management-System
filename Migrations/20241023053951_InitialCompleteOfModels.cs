@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Project_Manager.Migrations
 {
     /// <inheritdoc />
-    public partial class ReupdateDatabaseTableAgain2 : Migration
+    public partial class InitialCompleteOfModels : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,8 @@ namespace Project_Manager.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -198,32 +200,6 @@ namespace Project_Manager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EstimatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Projects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Projects_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -272,7 +248,64 @@ namespace Project_Manager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Task",
+                name: "GroupUser",
+                columns: table => new
+                {
+                    GroupsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupUser", x => new { x.GroupsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_GroupUser_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupUser_Groups_GroupsId",
+                        column: x => x.GroupsId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    EstimatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Projects_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Projects_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Issues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -281,16 +314,23 @@ namespace Project_Manager.Migrations
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChildIssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: true),
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EstimatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Task", x => x.Id);
+                    table.PrimaryKey("PK_Issues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Task_Projects_ProjectId",
+                        name: "FK_Issues_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Issues_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id");
@@ -333,15 +373,48 @@ namespace Project_Manager.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Descriptiom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Task_TaskId",
-                        column: x => x.TaskId,
-                        principalTable: "Task",
+                        name: "FK_Comments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Comments_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notes_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notes_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -386,9 +459,14 @@ namespace Project_Manager.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_TaskId",
+                name: "IX_Comments_IssueId",
                 table: "Comments",
-                column: "TaskId");
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_OrganizationId",
@@ -396,19 +474,44 @@ namespace Project_Manager.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GroupUser_UsersId",
+                table: "GroupUser",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_IssueId",
+                table: "Issues",
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_ProjectId",
+                table: "Issues",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notes_IssueId",
+                table: "Notes",
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notes_UsersId",
+                table: "Notes",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrganizationUser_UsersId",
                 table: "OrganizationUser",
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Projects_GroupId",
+                table: "Projects",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projects_UserId",
                 table: "Projects",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Task_ProjectId",
-                table: "Task",
-                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Wikis_ProjectId",
@@ -443,7 +546,10 @@ namespace Project_Manager.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Groups");
+                name: "GroupUser");
+
+            migrationBuilder.DropTable(
+                name: "Notes");
 
             migrationBuilder.DropTable(
                 name: "OrganizationsRoles");
@@ -461,16 +567,19 @@ namespace Project_Manager.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Task");
-
-            migrationBuilder.DropTable(
-                name: "Organizations");
+                name: "Issues");
 
             migrationBuilder.DropTable(
                 name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Organizations");
         }
     }
 }

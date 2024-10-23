@@ -6,7 +6,7 @@
 
         public string Descriptiom { get; set; } = string.Empty;
 
-        public Guid TaskId { get; set; }
+        public Issue? Issue { get; set; }
 
         public User? User { get; set; }
     }
