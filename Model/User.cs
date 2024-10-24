@@ -9,6 +9,8 @@ namespace Project_Manager.Model
 
         public string LastName { get; set; } = string.Empty;
 
+        public DateOnly Birthdate { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }

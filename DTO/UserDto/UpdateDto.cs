@@ -8,10 +8,8 @@ namespace Project_Manager.DTO.UserDto
 
         public string LastName { get; set; } = string.Empty;
 
-        public DateOnly BirthDate { get; set; }
-
-        [Phone]
-        [MaxLength(13)]
         public string PhoneNumber { get; set; } = string.Empty;
+
+        public DateOnly BirthDate {  get; set; }
     }
 }
