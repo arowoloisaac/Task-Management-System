@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="DTO\GroupDto\" />
-    <Folder Include="DTO\ProjectDto\" />
   </ItemGroup>
 
 </Project>

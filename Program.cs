@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Project_Manager.Service.Configuration.TokenGenerator;
 using Project_Manager.Model;
+using Project_Manager.Service.ProjectService;
 
 namespace Project_Manager
 {
@@ -78,6 +79,7 @@ namespace Project_Manager
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
+            builder.Services.AddScoped<IProjectService, ProjectService>();
 
 
             builder.Services.AddIdentity<User, Role>(

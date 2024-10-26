@@ -1,8 +1,10 @@
-﻿namespace Project_Manager.Model
+﻿using Project_Manager.Enum;
+
+namespace Project_Manager.Model
 {
-    public class Project : ObjectDateTime
+    public class Project : StatusDateTime
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
 
@@ -12,13 +14,17 @@
 
         public Guid UpdatedBy { get; set; }
 
+        public Progress Progress { get; set; }
+
+        public Complexity Complexity { get; set; }
+
         //foreign key for personal projects
-        public Guid UserId { get; set; }
+        public User? Creator { get; set; }
 
         public ICollection<Issue>? Issues { get; set; }
 
         public ICollection<Wiki>? Wiki { get; set; }
 
-        public Guid GroupId { get; set; }
+        public Group? Group { get; set; }
     }
 }
