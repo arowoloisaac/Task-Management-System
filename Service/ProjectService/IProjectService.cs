@@ -8,17 +8,13 @@ namespace Project_Manager.Service.ProjectService
         //to update this by addsing a boolean later on isPersonnal then add conditional statement to the service methods
         Task<string> CreateProject(CreateDto dto, string mail);
 
-        Task<string> UpdateProject(UpdateDto dto, Guid projectId);
+        Task<string> UpdateProject(Guid projectId, string? Name, string? Description, Progress? progress, Complexity? complexity, string mail);
 
         Task<string> DeleteProject(Guid projectId, string mail);
 
         Task<GetProjectDto> GetProjectById(Guid projectId, string mail);
 
         Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, string mail);
-        /**
-         * create project
-         * edit project
-         * delete project
-         * list projects of users**/
+        
     }
 }

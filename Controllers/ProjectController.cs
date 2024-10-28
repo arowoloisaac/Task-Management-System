@@ -87,7 +87,6 @@ namespace Project_Manager.Controllers
 
 
         [HttpGet]
-        [Route("{progress}&{complexity}")]
         public async Task<IActionResult> GetUserProjects(Progress? progress, Complexity? complexity)
         {
             try
@@ -104,6 +103,30 @@ namespace Project_Manager.Controllers
                 }
             }
             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPut]
+        [Route("update/{projectId}")]// user parameters instead
+        public async Task<IActionResult> UpdateProject(Guid projectId, string? Name, string? Description, Progress? progress, Complexity? complexity)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("user not found");
+                }
+                else
+                {
+                    return Ok(await _projectService.UpdateProject(projectId, Name, Description, progress, complexity, user.Value));
+                }
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

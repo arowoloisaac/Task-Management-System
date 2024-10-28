@@ -145,15 +145,56 @@ namespace Project_Manager.Service.ProjectService
             }
         }
 
-        public async Task<string> UpdateProject(UpdateDto dto, Guid projectId)
+        public async Task<string> UpdateProject(Guid projectId, string? Name, string? Description, Progress? progress, Complexity? complexity, string mail)
         {
-            throw new NotImplementedException();
+            var user = await FindUser(mail);
+
+            var findProject = await _context.Projects.FindAsync(projectId);
+
+            if (findProject == null)
+            {
+                throw new Exception("Project doesn't exist");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    findProject.Name = Name;
+                }
+
+                if (!string.IsNullOrEmpty(Description))
+                {
+                    findProject.Description = Description;
+                }
+
+                if (progress.HasValue)
+                {
+                    findProject.Progress = progress.Value;
+                }
+                if (complexity.HasValue)
+                {
+                    findProject.Complexity = complexity.Value;
+                }
+
+                findProject.UpdatedBy = user.Id;
+                findProject.UpdatedTime = DateTime.Now;
+
+                var updateResponse = _context.Projects.Update(findProject);
+
+                if (updateResponse is null)
+                {
+                    throw new InvalidOperationException("invalid");
+                }
+                
+                await _context.SaveChangesAsync();
+
+                return "updated";
+            }
         }
 
 
         private async Task<User> FindUser(string mail)
         {
-
             var user = await _userManager.FindByEmailAsync(mail);
 
             if (user == null)
