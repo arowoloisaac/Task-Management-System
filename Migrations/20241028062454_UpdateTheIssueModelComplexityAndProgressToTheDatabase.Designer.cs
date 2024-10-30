@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_Manager.Data;
 
@@ -11,9 +12,11 @@ using Project_Manager.Data;
 namespace Project_Manager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241028062454_UpdateTheIssueModelComplexityAndProgressToTheDatabase")]
+    partial class UpdateTheIssueModelComplexityAndProgressToTheDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,7 +233,10 @@ namespace Project_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AssignedUserTo")
+                    b.Property<string>("AssignedTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ChildIssueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Complexity")
@@ -252,15 +258,12 @@ namespace Project_Manager.Migrations
                     b.Property<long>("EstimatedTimeInMinutes")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("IssueType")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IssueId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ParentIssueId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Progress")
                         .HasColumnType("int");
@@ -279,7 +282,7 @@ namespace Project_Manager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentIssueId");
+                    b.HasIndex("IssueId");
 
                     b.HasIndex("ProjectId");
 
@@ -681,15 +684,13 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>
                 {
-                    b.HasOne("Project_Manager.Model.Issue", "ParentIssue")
-                        .WithMany()
-                        .HasForeignKey("ParentIssueId");
+                    b.HasOne("Project_Manager.Model.Issue", null)
+                        .WithMany("SubIssues")
+                        .HasForeignKey("IssueId");
 
                     b.HasOne("Project_Manager.Model.Project", "Project")
                         .WithMany("Issues")
                         .HasForeignKey("ProjectId");
-
-                    b.Navigation("ParentIssue");
 
                     b.Navigation("Project");
                 });
@@ -716,7 +717,7 @@ namespace Project_Manager.Migrations
                         .HasForeignKey("CreatorId");
 
                     b.HasOne("Project_Manager.Model.Group", "Group")
-                        .WithMany("Projects")
+                        .WithMany()
                         .HasForeignKey("GroupId");
 
                     b.Navigation("Creator");
@@ -739,16 +740,13 @@ namespace Project_Manager.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Project_Manager.Model.Group", b =>
-                {
-                    b.Navigation("Projects");
-                });
-
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("Notes");
+
+                    b.Navigation("SubIssues");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Organization", b =>

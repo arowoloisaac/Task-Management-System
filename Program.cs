@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Project_Manager.Service.Configuration.TokenGenerator;
 using Project_Manager.Model;
 using Project_Manager.Service.ProjectService;
+using Project_Manager.Service.IssueService;
 
 namespace Project_Manager
 {
@@ -78,6 +79,7 @@ namespace Project_Manager
             );
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IssueService, IssueService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
 

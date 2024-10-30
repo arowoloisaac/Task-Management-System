@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_Manager.Data;
 
@@ -11,9 +12,11 @@ using Project_Manager.Data;
 namespace Project_Manager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241029090553_UpdateTheIssueModelParentWithSubIssueToTheDatabaseAgain")]
+    partial class UpdateTheIssueModelParentWithSubIssueToTheDatabaseAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,9 +262,6 @@ namespace Project_Manager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ParentIssueId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Progress")
                         .HasColumnType("int");
 
@@ -271,6 +271,9 @@ namespace Project_Manager.Migrations
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
+                    b.Property<Guid?>("SubIssueId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -279,9 +282,9 @@ namespace Project_Manager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentIssueId");
-
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("SubIssueId");
 
                     b.ToTable("Issues");
                 });
@@ -681,17 +684,17 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>
                 {
-                    b.HasOne("Project_Manager.Model.Issue", "ParentIssue")
-                        .WithMany()
-                        .HasForeignKey("ParentIssueId");
-
                     b.HasOne("Project_Manager.Model.Project", "Project")
                         .WithMany("Issues")
                         .HasForeignKey("ProjectId");
 
-                    b.Navigation("ParentIssue");
+                    b.HasOne("Project_Manager.Model.Issue", "SubIssue")
+                        .WithMany()
+                        .HasForeignKey("SubIssueId");
 
                     b.Navigation("Project");
+
+                    b.Navigation("SubIssue");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Note", b =>
