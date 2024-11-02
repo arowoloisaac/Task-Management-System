@@ -6,6 +6,7 @@ using Project_Manager.DTO.IssueDto;
 using Project_Manager.DTO.TaskDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
+using System;
 
 namespace Project_Manager.Service.IssueService
 {
@@ -55,6 +56,7 @@ namespace Project_Manager.Service.IssueService
                             Progress = Progress.GroundLevel,
                             IssueType = issueDto.IssueType,
                             Project = checkProject,
+                            
                         });
                         await _context.SaveChangesAsync();
                         return "Issue successfully created";
@@ -81,7 +83,7 @@ namespace Project_Manager.Service.IssueService
 
             var checkProject = await ValidateProject(projectId);
 
-            var getParentIssue = await ValidateIssue(parentIssueId);
+            var getParentIssue = await ValidateIssue(parentIssueId, user.Id);
 
             var validateIssueName = await _context.Issues
                 .Where(issue => issue.Name == issueDto.Name && issue.Project.Id == projectId).SingleOrDefaultAsync();
@@ -150,7 +152,7 @@ namespace Project_Manager.Service.IssueService
             {
                 var user = await GetUser(mail);
 
-                var issue = await ValidateIssue(issueId);
+                var issue = await ValidateIssue(issueId, user.Id);
 
                 var issueChildren = await _context.Issues
                         .Where(filter => filter.ParentIssue.Id == issueId)
@@ -180,15 +182,19 @@ namespace Project_Manager.Service.IssueService
             }
         }
 
-        public Task<IEnumerable<RetrieveIssue>> GetIssues(string mail)
+        public Task<IEnumerable<RetrieveIssue>> GetIssues(IssueType? issueType, Complexity? complexity, Progress? progress, string mail)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,
-            Complexity? complexity, uint? EstimatedTimeInMinute, string mail)
+        public async Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,
+            Complexity? complexity, uint? EstimatedTimeInMinute, uint timeSpent, int issueLevel, string mail)
         {
-            throw new NotImplementedException();
+            var user = await GetUser(mail);
+
+            await ValidateIssueUpdate(issueId, Name, Description, complexity, EstimatedTimeInMinute, timeSpent, issueLevel, user.Id);
+
+            return "Task successful";
         }
 
         public async Task<List<RetrieveIssue>> GetIssue(Guid projectId)
@@ -209,6 +215,116 @@ namespace Project_Manager.Service.IssueService
 
                 return response;
             }
+        }
+
+
+        private async Task<string> ValidateIssueUpdate(Guid id, string? Name, string? Description,
+            Complexity? complexity, uint? estimatedTimeInMinute, uint timeSpent, int issueLevel, Guid userId)
+        {
+            
+            var getIssue = await ValidateIssue(id, userId);
+            
+            
+            if (!string.IsNullOrEmpty(Name))
+            {
+                getIssue.Name = Name;
+            }
+
+            if (!string.IsNullOrEmpty(Description))
+            {
+                getIssue.Description = Description;
+            }
+
+            if (complexity.HasValue)
+            {
+                getIssue.Complexity = complexity.Value;
+            }
+
+            uint initializedTime = getIssue.TimeSpent + timeSpent;
+
+            if (estimatedTimeInMinute.HasValue)
+            {
+                getIssue.EstimatedTimeInMinutes = estimatedTimeInMinute.Value;
+
+                if (initializedTime > estimatedTimeInMinute)
+                {
+                    throw new Exception("Time spent can't be greater than estimated time");
+                }
+                else
+                {
+                    uint v = initializedTime > estimatedTimeInMinute ? throw new Exception("reduce time spent") : getIssue.TimeSpent = initializedTime;
+
+                    if (issueLevel < 100 && issueLevel > 0 ||  v > 0)
+                    {
+                        getIssue.IssueLevel = issueLevel;
+                        getIssue.Progress = Progress.InProcess;
+                    }
+                    else if (issueLevel == 100 || v == estimatedTimeInMinute)
+                    {
+                        getIssue.IssueLevel = 100;
+                        getIssue.Progress = Progress.Finished;
+                    }
+                    else
+                    {
+                        if (getIssue.IssueLevel == 0)
+                        {
+                            //continue
+                        }
+                        else if (getIssue.IssueLevel < 0)
+                        {
+                            throw new InvalidOperationException("can't be less than zero");
+                        }
+                        else
+                        {
+                            throw new Exception("can't validate action");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (initializedTime > getIssue.EstimatedTimeInMinutes)
+                {
+                    throw new Exception("you can't be greater than the time spent");
+                }
+                else
+                {
+                    
+                    uint v = initializedTime > estimatedTimeInMinute ? throw new Exception("reduce time spent") : getIssue.TimeSpent = initializedTime;
+                    if (issueLevel < 100 && issueLevel > 0)
+                    {
+                        getIssue.IssueLevel = issueLevel;
+                        getIssue.Progress = Progress.InProcess;
+                    }
+                    else if (issueLevel == 100)
+                    {
+                        getIssue.IssueLevel = 100;
+                        getIssue.Progress = Progress.Finished;
+                    }
+                    else
+                    {
+                        if (getIssue.IssueLevel == 0)
+                        {
+                            //continue
+                        }
+                        else if (getIssue.IssueLevel < 0)
+                        {
+                            throw new InvalidOperationException("can't be less than zero");
+                        }
+                        else
+                        {
+                            throw new Exception("can't validate action");
+                        }
+                    }
+                }
+            }
+
+            _context.Issues.Update(getIssue);
+
+            await _context.SaveChangesAsync();
+            return "successful";
+            
+            
         }
 
         private int CheckDate( DateOnly startDate, DateOnly endDate)
@@ -243,21 +359,21 @@ namespace Project_Manager.Service.IssueService
             return validateProject;
         }
 
-        private async Task<Issue> ValidateIssue(Guid issueId)
+        private async Task<Issue> ValidateIssue(Guid issueId, Guid userId)
         {
-            var getIssue = await _context.Issues.FindAsync(issueId);
+            var getIssue = await _context.Issues.Where(search => search.Id == issueId && search.CreatedBy == userId).SingleOrDefaultAsync();
 
             if (getIssue == null)
             {
-                throw new Exception("Can not this issue");
+                throw new Exception("Can not find this issue");
             }
             return getIssue;
         }
 
         //to check if the parent issue is the sub issue of itself
-        private async Task<Issue> ParentIssue(Guid issueId)
+        private async Task<Issue> ParentIssue(Guid issueId, Guid userId)
         {
-            var getIssue = await ValidateIssue(issueId);
+            var getIssue = await ValidateIssue(issueId, userId);
 
             if (getIssue.ParentIssue == getIssue)
             {

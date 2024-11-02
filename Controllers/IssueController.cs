@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.DTO.IssueDto;
+using Project_Manager.Enum;
 using Project_Manager.Service.IssueService;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -74,6 +75,26 @@ namespace Project_Manager.Controllers
                     return NotFound("User not found");
                 }
                 return Ok(await _issueService.DeleteIssues(issueId, isDeleteChildren, user.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("{issueId}/update")]
+        public async Task<IActionResult> UpdateIssue(Guid issueId, string? name, string? description, Complexity? complexity, 
+            uint? estimatedTimeInMinute, uint timeSpent, int issueLevel)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                return Ok(await _issueService.UpdateIssues(issueId, name, description, complexity,estimatedTimeInMinute, timeSpent, issueLevel,user.Value));
             }
             catch (Exception ex)
             {

@@ -14,6 +14,10 @@ namespace Project_Manager.Model
 
         public IssueType IssueType { get; set; }
 
+        public int IssueLevel { get; set; } = 0;
+
+        public uint TimeSpent { get; set; } = 0;
+
         //this works for the minute
         public uint EstimatedTimeInMinutes { get; set; }
 
@@ -34,8 +38,6 @@ namespace Project_Manager.Model
 
         public Issue? ParentIssue { get; set; }
 
-        //public ICollection<Issue>? SubIssues { get; set; }
-        //foreign key for the task for single projects
         //public Guid ProjectId { get; set; }
 
         public Project? Project { get; set; }

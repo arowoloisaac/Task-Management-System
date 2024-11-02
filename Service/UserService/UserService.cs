@@ -163,7 +163,7 @@ namespace Project_Manager.Service.UserService
 
             if (user == null)
             {
-                throw new Exception($"User can be found {loginDto.Email}");
+                throw new Exception($"User cannot be found {loginDto.Email}");
             }
 
             else
