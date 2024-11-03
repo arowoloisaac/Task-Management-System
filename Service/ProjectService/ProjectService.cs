@@ -76,6 +76,8 @@ namespace Project_Manager.Service.ProjectService
             }
             else
             {
+                var getAllIssues = await _context.Issues.Where(issue => issue.Project == findProjectById).ToListAsync();
+                _context.Issues.RemoveRange(getAllIssues);
                 _context.Projects.Remove(findProjectById);
 
                 await _context.SaveChangesAsync();
