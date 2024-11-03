@@ -102,6 +102,25 @@ namespace Project_Manager.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("projectId={projectId}/issues")]
+        public async Task<IActionResult> GetProjectIssues(Guid projectId, [FromQuery]IssueType? issueType, [FromQuery]Complexity? complexity, [FromQuery]Progress? progress)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+                if (user == null)
+                {
+                    return NotFound("user not found");
+                }
+                return Ok(await _issueService.GetIssues(issueType, complexity, progress, projectId, user.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpGet]
         [Route("yo")]

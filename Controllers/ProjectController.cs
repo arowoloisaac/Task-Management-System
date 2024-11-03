@@ -87,7 +87,7 @@ namespace Project_Manager.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetUserProjects(Progress? progress, Complexity? complexity)
+        public async Task<IActionResult> GetUserProjects([FromQuery] Progress? progress, [FromQuery] Complexity? complexity)
         {
             try
             {

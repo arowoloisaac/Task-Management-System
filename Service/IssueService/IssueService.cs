@@ -182,9 +182,33 @@ namespace Project_Manager.Service.IssueService
             }
         }
 
-        public Task<IEnumerable<RetrieveIssue>> GetIssues(IssueType? issueType, Complexity? complexity, Progress? progress, string mail)
+        public async Task<IEnumerable<RetrieveIssue>> GetIssues(IssueType? issueType, Complexity? complexity, Progress? progress, Guid projectId, string mail)
         {
-            throw new NotImplementedException();
+            var user = await GetUser(mail);
+            IQueryable<Issue> query = _context.Issues;
+
+            if (issueType.HasValue)
+            {
+                query = query.Where(filter => filter.IssueType == issueType.Value);
+            }
+            if (complexity.HasValue)
+            {
+                query = query.Where(filter => filter.Complexity == complexity.Value);
+            }
+            if (progress.HasValue)
+            {
+                query = query.Where(filter => filter.Progress == progress.Value);
+            }
+
+            var getAllIssues = await query.Where(find => find.Project.Id  == projectId && find.CreatedBy == user.Id).ToListAsync();
+
+            if(getAllIssues.Count <= 0)
+            {
+                return new List<RetrieveIssue>();
+            }
+
+            var response = getAllIssues.Select(find => new RetrieveIssue { id = find.Id }).ToList();
+            return response;
         }
 
         public async Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,
