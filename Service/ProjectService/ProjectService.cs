@@ -6,6 +6,7 @@ using Project_Manager.Data;
 using Project_Manager.DTO.ProjectDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
+using Project_Manager.Service.UserConfiguration;
 
 namespace Project_Manager.Service.ProjectService
 {
@@ -14,18 +15,20 @@ namespace Project_Manager.Service.ProjectService
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserConfig _userConfig;
 
-        public ProjectService(UserManager<User> userManager, ApplicationDbContext context, IMapper mapper)
+        public ProjectService(UserManager<User> userManager, ApplicationDbContext context, IMapper mapper, IUserConfig userConfig)
         {
             _userManager = userManager;
             _context = context;
             _mapper = mapper;
+            _userConfig = userConfig;
         }
 
 
         public async Task<string> CreateProject(CreateDto dto, string mail)
         {
-            var user = await FindUser(mail);
+            var user = await _userConfig.GetUser(mail);
             
             try
             {
@@ -66,7 +69,7 @@ namespace Project_Manager.Service.ProjectService
 
         public async Task<string> DeleteProject(Guid projectId, string mail)
         {
-            var user = await FindUser(mail);
+            var user = await _userConfig.GetUser(mail);
 
             var findProjectById = await _context.Projects.Where(project => project.Id ==projectId && project.CreatedBy ==user.Id).SingleOrDefaultAsync();
 
@@ -94,7 +97,7 @@ namespace Project_Manager.Service.ProjectService
 
         public async Task<GetProjectDto> GetProjectById(Guid projectId, string mail)
         {
-            var user = await FindUser(mail);
+            var user = await _userConfig.GetUser(mail);
 
             var project = await _context.Projects.FindAsync(projectId); 
 
@@ -117,7 +120,7 @@ namespace Project_Manager.Service.ProjectService
 
         public async Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, string mail)
         {
-            var user = await FindUser(mail);
+            var user = await _userConfig.GetUser(mail);
 
             IQueryable<Project> query = _context.Projects.Where(findProjects => findProjects.CreatedBy == user.Id);
 
@@ -154,7 +157,7 @@ namespace Project_Manager.Service.ProjectService
 
         public async Task<string> UpdateProject(Guid projectId, string? Name, string? Description, Progress? progress, Complexity? complexity, string mail)
         {
-            var user = await FindUser(mail);
+            var user = await _userConfig.GetUser(mail);
 
             var findProject = await _context.Projects.FindAsync(projectId);
 
@@ -197,19 +200,6 @@ namespace Project_Manager.Service.ProjectService
 
                 return "updated";
             }
-        }
-
-
-        private async Task<User> FindUser(string mail)
-        {
-            var user = await _userManager.FindByEmailAsync(mail);
-
-            if (user == null)
-            {
-                throw new Exception("Not found");
-            }
-
-            return user;
         }
     }
 }

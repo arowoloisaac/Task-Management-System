@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="DTO\GroupDto\" />
+    <Folder Include="Service\UserOrganizationService\" />
   </ItemGroup>
 
 </Project>

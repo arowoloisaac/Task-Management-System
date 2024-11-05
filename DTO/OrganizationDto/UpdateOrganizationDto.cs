@@ -1,6 +1,6 @@
 ﻿namespace Project_Manager.DTO.OrganizationDto
 {
-    public class UpdateDto
+    public class UpdateOrganizationDto
     {
     }
 }

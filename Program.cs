@@ -13,6 +13,8 @@ using Project_Manager.Service.Configuration.TokenGenerator;
 using Project_Manager.Model;
 using Project_Manager.Service.ProjectService;
 using Project_Manager.Service.IssueService;
+using Project_Manager.Service.OrganizationService;
+using Project_Manager.Service.UserConfiguration;
 
 namespace Project_Manager
 {
@@ -79,9 +81,11 @@ namespace Project_Manager
             );
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserConfig, UserConfig>();
             builder.Services.AddScoped<IssueService, IssueService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 
 
             builder.Services.AddIdentity<User, Role>(

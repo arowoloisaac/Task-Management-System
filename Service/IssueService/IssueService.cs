@@ -6,6 +6,7 @@ using Project_Manager.DTO.IssueDto;
 using Project_Manager.DTO.TaskDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
+using Project_Manager.Service.UserConfiguration;
 using System;
 
 namespace Project_Manager.Service.IssueService
@@ -15,18 +16,20 @@ namespace Project_Manager.Service.IssueService
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserConfig _userConfig;
 
-        public IssueService(UserManager<User> userManager, ApplicationDbContext context, IMapper mapper)
+        public IssueService(UserManager<User> userManager, ApplicationDbContext context, IMapper mapper, IUserConfig userConfig)
         {
             _userManager = userManager;
             _context = context;
             _mapper = mapper;
+            _userConfig = userConfig;
         }
 
 
         public async Task<string> CreateIssues(Guid projectId, CreateIssue issueDto, string mail)
         {
-            var user = await GetUser(mail);
+            var user = await _userConfig.GetUser(mail);
 
             var checkProject = await ValidateProject(projectId);
           
@@ -79,7 +82,7 @@ namespace Project_Manager.Service.IssueService
 
         public async Task<string> CreateSubIssue(Guid projectId, CreateIssue issueDto, Guid parentIssueId, string mail)
         {
-            var user = await GetUser(mail);
+            var user = await _userConfig.GetUser(mail);
 
             var checkProject = await ValidateProject(projectId);
 
@@ -150,7 +153,7 @@ namespace Project_Manager.Service.IssueService
         {
             try
             {
-                var user = await GetUser(mail);
+                var user = await _userConfig.GetUser(mail);
 
                 var issue = await ValidateIssue(issueId, user.Id);
 
@@ -184,7 +187,7 @@ namespace Project_Manager.Service.IssueService
 
         public async Task<IEnumerable<RetrieveIssue>> GetIssues(IssueType? issueType, Complexity? complexity, Progress? progress, Guid projectId, string mail)
         {
-            var user = await GetUser(mail);
+            var user = await _userConfig.GetUser(mail);
             IQueryable<Issue> query = _context.Issues;
 
             if (issueType.HasValue)
@@ -214,7 +217,7 @@ namespace Project_Manager.Service.IssueService
         public async Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,
             Complexity? complexity, uint? EstimatedTimeInMinute, uint timeSpent, int issueLevel, string mail)
         {
-            var user = await GetUser(mail);
+            var user = await _userConfig.GetUser(mail);
 
             await ValidateIssueUpdate(issueId, Name, Description, complexity, EstimatedTimeInMinute, timeSpent, issueLevel, user.Id);
 
@@ -360,16 +363,6 @@ namespace Project_Manager.Service.IssueService
             return daysDifference;
         }
 
-        private async Task<User> GetUser(string mail)
-        {
-            var user = await _userManager.FindByEmailAsync(mail);
-
-            if(user == null)
-            {
-                throw new Exception($"user with mail - {mail} not found");
-            }
-            return user;
-        }
 
         private async Task<Project> ValidateProject(Guid projectId)
         {
