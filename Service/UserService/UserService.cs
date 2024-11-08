@@ -11,6 +11,7 @@ namespace Project_Manager.Service.UserService
         private readonly UserManager<User> _userManager;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMapper _mapper;
+        private readonly SignInManager<User> _signInMa;
 
         public UserService(UserManager<User> userManager, ITokenGenerator tokenGenerator, IMapper mapper)
         {
@@ -48,11 +49,9 @@ namespace Project_Manager.Service.UserService
                 {
                     throw new Exception("BirthDate must be at least 10 years in the past.");
                 }
-                
 
                 var createUser = await _userManager.CreateAsync( new User
                 {
-                    Id = Guid.NewGuid(),
                     Email = registerDto.Email,
                     UserName = registerDto.Email,
                     FirstName = registerDto.FirstName,

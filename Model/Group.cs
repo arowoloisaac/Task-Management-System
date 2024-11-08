@@ -18,5 +18,7 @@ namespace Project_Manager.Model
         public ICollection<User>? Users { get; set; }
 
         public ICollection<Project>? Projects { get; set; }
+
+        public ICollection<GroupUser>? GroupUsers { get; set; }
     }
 }

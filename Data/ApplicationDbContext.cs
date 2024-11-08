@@ -20,9 +20,9 @@ namespace Project_Manager.Data
 
         public DbSet<Project> Projects { get; set; }
 
-        public DbSet<OrganizationRole> OrganizationsRoles { get; set; }
+        public DbSet<OrganizationUser> OrganizationUser { get; set; }
 
-        public DbSet<ProjectRole> ProjectRoles { get; set; }
+        public DbSet<GroupUser> GroupUsers { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
 

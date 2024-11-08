@@ -20,7 +20,7 @@ namespace Project_Manager
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -102,7 +102,6 @@ namespace Project_Manager
             ).AddEntityFrameworkStores<ApplicationDbContext>(); 
 
 
-
             var jwtSection = builder.Configuration.GetSection("JwtBearerToken");
             builder.Services.Configure<JwtBearerSetting>(jwtSection);
 
@@ -141,8 +140,9 @@ namespace Project_Manager
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            await app.ConfigureIdentityAsync();
 
             app.MapControllers();
 
