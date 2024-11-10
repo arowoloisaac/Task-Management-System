@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project_Manager.Model;
+using System.Reflection.Emit;
 
 namespace Project_Manager.Data
 {
@@ -29,5 +30,12 @@ namespace Project_Manager.Data
         public DbSet<Note> Notes { get; set; }
 
         public DbSet<Issue> Issues { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            
+        }
     }
 }

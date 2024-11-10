@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.DTO.OrganizationDto;
+using Project_Manager.Enum;
 using Project_Manager.Service.OrganizationService;
 using System.Security.Claims;
 
 namespace Project_Manager.Controllers
 {
-    [Route("api/")]
+    [Route("api/organization")]
     [ApiController]
     public class OrganizationController : ControllerBase
     {
@@ -77,6 +78,27 @@ namespace Project_Manager.Controllers
                 {
                     return Ok(await _organizationService.GetOrganization(id, user.Value));
                 }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetOrganization([FromQuery] OrganizationFilter? filter)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if(user == null)
+                {
+                    return NotFound("user not found");
+                }
+                return Ok(await _organizationService.GetOrganizations(filter, user.Value));
             }
             catch (Exception ex)
             {

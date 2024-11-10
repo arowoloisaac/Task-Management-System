@@ -15,6 +15,6 @@ namespace Project_Manager.Service.OrganizationService
 
         //Task<string> GetOrganizationUsers(Guid organizationId);
 
-        Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter filter, string userMail);
+        Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter? filter, string userMail);
     }
 }

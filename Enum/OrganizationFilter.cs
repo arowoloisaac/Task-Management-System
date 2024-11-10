@@ -1,5 +1,8 @@
-﻿namespace Project_Manager.Enum
+﻿using System.Text.Json.Serialization;
+
+namespace Project_Manager.Enum
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum OrganizationFilter
     {
         Created,

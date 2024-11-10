@@ -118,7 +118,18 @@ namespace Project_Manager.Service.OrganizationService
             }
             else
             {
-                 _context.OrganizationUser.Remove(validateOrg);
+                var getOrg = await _context.Organizations
+                    .Where(org => org.CreatedBy == validateOrg.User.Id && org.Id == validateOrg.Organization.Id)
+                    .FirstOrDefaultAsync();
+
+                if (getOrg == null)
+                {
+                    throw new Exception("");
+                }
+
+                _context.Remove(getOrg);
+                _context.Organizations.Remove(getOrg);
+                _context.OrganizationUser.RemoveRange(validateOrg);
 
                 await _context.SaveChangesAsync();
                 return "Delete successfully";
@@ -159,9 +170,50 @@ namespace Project_Manager.Service.OrganizationService
             }
         }
 
-        public Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter filter, string userMail)
+        public async Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter? filter, string mail)
         {
-            throw new NotImplementedException();
+            var user = await _userConfig.GetUser(mail);
+
+            IQueryable<OrganizationUser> query = _context.OrganizationUser
+                .Where(u => u.User.Id == user.Id)
+                .Include(org => org.Organization)
+                .Include(role => role.Role);
+
+            if (filter.HasValue)
+            {
+                if (filter.Value == OrganizationFilter.Created)
+                {
+                    query = query.Where(val => val.Organization.CreatedBy == user.Id);
+                }
+                else
+                {
+                    query = query.Where(val => val.Organization.CreatedBy != user.Id);
+                }
+            }
+            var organizationList = await query.ToListAsync();
+
+            if(organizationList.Count < 1)
+            {
+                return new List<GetOrganizationDto>(); 
+            }
+
+            var creatorIds = organizationList
+                .Select(o => o.Organization.CreatedBy).Distinct().ToList();
+
+            var creators = await _context.Users
+                .Where(u => creatorIds.Contains(u.Id))
+                .ToDictionaryAsync(u => u.Id, u => new { u.Email, u.FirstName });
+
+
+            var mapOrg = organizationList.Select( check => new GetOrganizationDto
+            {
+                Id = check.Id,
+                Name = check.Organization.Name,
+                Role = check.Role.Name,
+                Creator = creators[check.Organization.CreatedBy].Email == user.Email? "created by you" : "Joined"
+            }).ToList();
+            
+            return mapOrg;
         }
 
         public Task<string> UpdateOrganization(Guid organizationId, string mail, UpdateOrganizationDto dto)

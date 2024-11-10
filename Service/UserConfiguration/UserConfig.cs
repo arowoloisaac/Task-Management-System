@@ -23,5 +23,16 @@ namespace Project_Manager.Service.UserConfiguration
             
             return user;
         }
+
+        public async Task<User> GetUserById(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                throw new ArgumentNullException("User is null");
+            }
+            return user;
+        }
     }
 }
