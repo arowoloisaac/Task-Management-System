@@ -60,50 +60,5 @@ namespace Project_Manager.Controllers
                 return BadRequest($"Could not delete {ex.Message}");
             }
         }
-
-
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetProject(Guid id)
-        {
-            try
-            {
-                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
-
-                if (user == null)
-                {
-                    return NotFound("User not found");
-                }
-                else
-                {
-                    return Ok(await _organizationService.GetOrganization(id, user.Value));
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-        [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> GetOrganization([FromQuery] OrganizationFilter? filter)
-        {
-            try
-            {
-                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
-
-                if(user == null)
-                {
-                    return NotFound("user not found");
-                }
-                return Ok(await _organizationService.GetOrganizations(filter, user.Value));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }

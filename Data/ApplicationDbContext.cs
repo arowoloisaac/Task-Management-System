@@ -35,7 +35,6 @@ namespace Project_Manager.Data
         {
             base.OnModelCreating(builder);
 
-            
         }
     }
 }

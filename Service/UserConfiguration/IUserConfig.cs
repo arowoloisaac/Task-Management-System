@@ -7,5 +7,7 @@ namespace Project_Manager.Service.UserConfiguration
         Task<User> GetUser(string mail); 
 
         Task<User> GetUserById(string id);
+
+        Task<OrganizationUser> ValidateOrganizationUser(string mail,Guid organizationId, string roleName);
     }
 }
