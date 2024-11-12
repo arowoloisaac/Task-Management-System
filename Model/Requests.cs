@@ -5,6 +5,8 @@
     {
         public Guid Id { get; set; }
 
+        public string InviteeEmail { get; set; } = string.Empty;
+
         public Guid OrganizationId { get; set; }
 
         public Guid UserId { get; set; }

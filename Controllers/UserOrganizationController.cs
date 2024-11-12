@@ -62,5 +62,26 @@ namespace Project_Manager.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("{organizationId}/invite={inviteeMail}")]
+        public async Task<IActionResult> AddUserToOrganization(Guid organizationId, string inviteeMail)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication);
+
+                if (user == null)
+                {
+                    return NotFound("User doesn't exist");
+                }
+
+                return Ok(await _organizationUser.AddUserToOrganization(organizationId, inviteeMail, user.Value));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

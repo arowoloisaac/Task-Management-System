@@ -17,5 +17,7 @@
         public ICollection<Group>? Groups { get; set; }
 
         public ICollection<Project>? Projects { get; set; }
+
+        public ICollection<Requests>? Requests { get; set; }
     }
 }

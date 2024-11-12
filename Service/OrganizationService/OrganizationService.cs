@@ -107,15 +107,24 @@ namespace Project_Manager.Service.OrganizationService
         public async Task<string> DeleteOrganization(Guid organizationId, string mail)
         {
             var user = await _userConfig.GetUser(mail);
+            var orgAdmin = await _userConfig.ValidateOrganizationAdmin(mail, organizationId, role);
             /***
              * inject the validate user role here
              * remove the validate org
              * then update the getOrg var by including the org and finding the createdby the user***/
-            var validateOrg = await _context.OrganizationUser
-                .Where(org => org.Role.Name == role && org.User.Id == user.Id && org.Organization.Id == organizationId)
-                .FirstOrDefaultAsync();
 
-            if (validateOrg == null)
+            
+            /*var validateOrg = await _context.OrganizationUser
+                .Where(org => org.Role.Name == role && org.User.Id == user.Id && org.Organization.Id == organizationId)
+                .FirstOrDefaultAsync();*/
+
+            var valToRemoveOrg = await _context.OrganizationUser
+                .Include(org => org.Organization)
+                .Include(org => org.User)
+                .Include(org => org.Role)
+                .Where(org => org.Organization.Id == organizationId).ToListAsync();
+
+            if (valToRemoveOrg == null)
             {
                 throw new Exception("Either permssion or invalid Inputs");
             }
@@ -126,16 +135,15 @@ namespace Project_Manager.Service.OrganizationService
                     .FirstOrDefaultAsync();*/
 
                 var getOrg = await _context.Organizations
-                    .Include(uo => uo.Users)
                     .FirstOrDefaultAsync(org => org.Id == organizationId);
 
                 if (getOrg == null)
                 {
-                    throw new Exception("");
+                    throw new Exception("Doesn't exist in the database");
                 }
 
                 _context.Organizations.Remove(getOrg);
-                _context.OrganizationUser.RemoveRange(validateOrg);
+                _context.OrganizationUser.RemoveRange(valToRemoveOrg);
 
                 await _context.SaveChangesAsync();
                 return "Delete successfully";

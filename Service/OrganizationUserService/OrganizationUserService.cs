@@ -23,20 +23,55 @@ namespace Project_Manager.Service.OrganizationUserService
             _userConfig = userConfig;
         }
 
-        public async Task<string> AddUserToOrganization(Guid organization, string invitee, string adminId)
+        public async Task<string> AddUserToOrganization(Guid organizationId, string inviteeEmail, string adminId)
         {
-            var adminUser = await _userConfig.ValidateOrganizationUser(adminId, organization, AdminRole);
+            try
+            {
+                var adminUser = await _userConfig.ValidateOrganizationAdmin(adminId, organizationId, AdminRole);
 
-            /***
-             * todo later on
-             * validate the receiver
-             * add the invitee to the request table
-             * send an email to the invitee
-             * if the invitee accepts the request 
-             * then add them to the organization then remove the user from the request
-             * else remove then from the request table
-             * ***/
-            throw new Exception();
+                if (adminUser == null)
+                {
+                    throw new Exception("Unable to validate user");
+                }
+                else
+                {
+                    var retrieveInvitee = await _userConfig.GetUser(inviteeEmail);
+
+                    var checkIfUserOrgExist = await _context.OrganizationUser
+                        .Where(u => u.User == retrieveInvitee && u.Organization.Id == organizationId)
+                        .SingleOrDefaultAsync();
+
+                    if (retrieveInvitee == null || retrieveInvitee.Email is null && checkIfUserOrgExist != null)
+                    {
+                        throw new Exception("This user does not exist in our system");
+                    }
+
+                    else
+                    {
+                        var request = await _context.Requests
+                            .SingleOrDefaultAsync(req => req.UserId == retrieveInvitee.Id && req.OrganizationId == organizationId);
+
+                        if (request != null)
+                        {
+                            throw new Exception("There is an existing request for this user for this organization");
+                        }
+
+                        var sendResponse = await _context.Requests.AddAsync(new Requests
+                        {
+                            Id = Guid.NewGuid(),
+                            OrganizationId = organizationId,
+                            InviteeEmail = retrieveInvitee.Email,
+                            UserId = retrieveInvitee.Id
+                        });
+                    }
+                    await _context.SaveChangesAsync();
+                    return "Request sent to the user";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<GetOrganizationDto> GetOrganization(Guid organizationId, string mail)
@@ -113,5 +148,11 @@ namespace Project_Manager.Service.OrganizationUserService
 
             return mapOrg;
         }
+
+        public async Task<string> RemoveUserFromOrganization(Guid organization, string receiver, string adminId)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

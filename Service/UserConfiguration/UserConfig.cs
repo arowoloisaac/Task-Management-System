@@ -41,7 +41,7 @@ namespace Project_Manager.Service.UserConfiguration
             return user;
         }
 
-        public async Task<OrganizationUser> ValidateOrganizationUser(string mail, Guid organizationId, string roleName)
+        public async Task<OrganizationUser> ValidateOrganizationAdmin(string mail, Guid organizationId, string roleName)
         {
             var getRole = await _roleManager.FindByNameAsync(roleName);
 
@@ -63,7 +63,7 @@ namespace Project_Manager.Service.UserConfiguration
             {
                 var organizationAdmin = await _context.OrganizationUser
                     .Where(u => u.Role == getRole && u.User == user && u.Organization == organization)
-                    .FirstOrDefaultAsync();
+                    .SingleOrDefaultAsync();
 
                 if (organizationAdmin == null)
                 {
@@ -72,7 +72,6 @@ namespace Project_Manager.Service.UserConfiguration
 
                 return organizationAdmin;
             }
-            
         }
     }
 }

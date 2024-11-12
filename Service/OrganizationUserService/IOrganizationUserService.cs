@@ -7,6 +7,8 @@ namespace Project_Manager.Service.UserOrganizationService
     {
         Task<string> AddUserToOrganization(Guid organization, string receiver, string adminId);
 
+        Task<string> RemoveUserFromOrganization(Guid organization, string receiver, string adminId);
+
         Task<GetOrganizationDto> GetOrganization(Guid organizationId, string mail);
 
         Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter? filter, string userMail);

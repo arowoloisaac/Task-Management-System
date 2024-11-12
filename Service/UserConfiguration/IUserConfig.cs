@@ -8,6 +8,6 @@ namespace Project_Manager.Service.UserConfiguration
 
         Task<User> GetUserById(string id);
 
-        Task<OrganizationUser> ValidateOrganizationUser(string mail,Guid organizationId, string roleName);
+        Task<OrganizationUser> ValidateOrganizationAdmin(string mail,Guid organizationId, string roleName);
     }
 }
