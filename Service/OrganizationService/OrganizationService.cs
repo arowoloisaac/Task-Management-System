@@ -108,12 +108,7 @@ namespace Project_Manager.Service.OrganizationService
         {
             var user = await _userConfig.GetUser(mail);
             var orgAdmin = await _userConfig.ValidateOrganizationAdmin(mail, organizationId, role);
-            /***
-             * inject the validate user role here
-             * remove the validate org
-             * then update the getOrg var by including the org and finding the createdby the user***/
-
-            
+           
             /*var validateOrg = await _context.OrganizationUser
                 .Where(org => org.Role.Name == role && org.User.Id == user.Id && org.Organization.Id == organizationId)
                 .FirstOrDefaultAsync();*/
@@ -150,9 +145,29 @@ namespace Project_Manager.Service.OrganizationService
             }
         }
 
-        public Task<string> UpdateOrganization(Guid organizationId, string mail, UpdateOrganizationDto dto)
+        public async Task<string> UpdateOrganization(Guid organizationId, string mail, UpdateOrganizationDto dto)
         {
-            throw new NotImplementedException();
+            var admin = await _userConfig.GetUser(mail);
+
+            var validateOrg = await _context.Organizations.FindAsync(organizationId);
+
+            if(validateOrg == null)
+            {
+                throw new Exception("Organzaition doesn't exist");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(dto.Name) && !string.IsNullOrEmpty(dto.Description))
+                {
+                    validateOrg.Name = dto.Name;
+                    validateOrg.Description = dto.Description;
+                }
+
+                var saveUpdate = _context.Organizations.Update(validateOrg);
+                await _context.SaveChangesAsync();
+
+                return "Organization updated";
+            }
         }
     }
 }

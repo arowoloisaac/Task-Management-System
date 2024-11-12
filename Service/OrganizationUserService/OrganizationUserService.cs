@@ -161,13 +161,13 @@ namespace Project_Manager.Service.OrganizationUserService
                 }
                 else
                 {
-                    var retrieveInvitee = await _userConfig.GetUser(memberMail);
+                    var member = await _userConfig.GetUser(memberMail);
 
                     var checkIfUserOrgExist = await _context.OrganizationUser
-                        .Where(u => u.User == retrieveInvitee && u.Organization.Id == organizationId)
+                        .Where(u => u.User == member && u.Organization.Id == organizationId && u.Organization.CreatedBy != adminUser.Id)
                         .SingleOrDefaultAsync();
 
-                    if (retrieveInvitee == null || checkIfUserOrgExist == null)
+                    if (member == null || checkIfUserOrgExist == null)
                     {
                         throw new Exception("This user does not exist in the system");
                     }

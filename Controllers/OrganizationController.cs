@@ -60,5 +60,27 @@ namespace Project_Manager.Controllers
                 return BadRequest($"Could not delete {ex.Message}");
             }
         }
+
+        [HttpPut]
+        [Route("{organizationId}/update")]
+        public async Task<IActionResult> UpdateOrganization(Guid organizationId,[FromQuery] UpdateOrganizationDto dto)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                else
+                {
+                    return Ok(await _organizationService.UpdateOrganization(organizationId, user.Value, dto));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

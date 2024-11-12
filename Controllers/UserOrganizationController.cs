@@ -105,6 +105,5 @@ namespace Project_Manager.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }
