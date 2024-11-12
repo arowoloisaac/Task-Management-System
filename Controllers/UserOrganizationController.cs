@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Project_Manager.Controllers
 {
-    [Route("api/")]
+    [Route("api/organization")]
     [ApiController]
     public class UserOrganizationController : ControllerBase
     {
@@ -83,5 +83,28 @@ namespace Project_Manager.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpDelete]
+        [Route("{id}/remove/{memberEmail}")]
+        public async Task<IActionResult> RemoveUserFromOrganization(Guid id, string memberEmail)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication);
+
+                if(user == null)
+                {
+                    return NotFound("User does not exist");
+                }
+
+                return Ok(await _organizationUser.RemoveUserFromOrganization(id, memberEmail, user.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

@@ -149,9 +149,41 @@ namespace Project_Manager.Service.OrganizationUserService
             return mapOrg;
         }
 
-        public async Task<string> RemoveUserFromOrganization(Guid organization, string receiver, string adminId)
+        public async Task<string> RemoveUserFromOrganization(Guid organizationId, string memberMail, string adminId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var adminUser = await _userConfig.ValidateOrganizationAdmin(adminId, organizationId, AdminRole);
+
+                if (adminUser == null)
+                {
+                    throw new Exception("Unable to validate user");
+                }
+                else
+                {
+                    var retrieveInvitee = await _userConfig.GetUser(memberMail);
+
+                    var checkIfUserOrgExist = await _context.OrganizationUser
+                        .Where(u => u.User == retrieveInvitee && u.Organization.Id == organizationId)
+                        .SingleOrDefaultAsync();
+
+                    if (retrieveInvitee == null || checkIfUserOrgExist == null)
+                    {
+                        throw new Exception("This user does not exist in the system");
+                    }
+
+                    else
+                    {
+                        _context.OrganizationUser.Remove(checkIfUserOrgExist);
+                    }
+                    await _context.SaveChangesAsync();
+                    return "user removed from the organization";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
     }

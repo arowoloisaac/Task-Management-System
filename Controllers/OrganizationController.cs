@@ -39,7 +39,7 @@ namespace Project_Manager.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("{id}/delete")]
         public async Task<IActionResult> DeleteOrganization(Guid id)
         {
             try
