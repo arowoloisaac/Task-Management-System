@@ -17,6 +17,7 @@ using Project_Manager.Service.OrganizationService;
 using Project_Manager.Service.UserConfiguration;
 using Project_Manager.Service.UserOrganizationService;
 using Project_Manager.Service.OrganizationUserService;
+using Project_Manager.Service.OrganizationProjectService;
 
 namespace Project_Manager
 {
@@ -89,6 +90,7 @@ namespace Project_Manager
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
             builder.Services.AddScoped<IOrganizationUserService, OrganizationUserService>();
+            builder.Services.AddScoped<IOrganizationGroupService, OrganizationGroupService>();
 
 
             builder.Services.AddIdentity<User, Role>(

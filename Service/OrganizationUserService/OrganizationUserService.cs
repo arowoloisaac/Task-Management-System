@@ -27,7 +27,7 @@ namespace Project_Manager.Service.OrganizationUserService
         {
             try
             {
-                var adminUser = await _userConfig.ValidateOrganizationAdmin(adminId, organizationId, AdminRole);
+                var adminUser = await _userConfig.ValidateOrganizationUser(adminId, organizationId, AdminRole);
 
                 if (adminUser == null)
                 {
@@ -153,7 +153,7 @@ namespace Project_Manager.Service.OrganizationUserService
         {
             try
             {
-                var adminUser = await _userConfig.ValidateOrganizationAdmin(adminId, organizationId, AdminRole);
+                var adminUser = await _userConfig.ValidateOrganizationUser(adminId, organizationId, AdminRole);
 
                 if (adminUser == null)
                 {

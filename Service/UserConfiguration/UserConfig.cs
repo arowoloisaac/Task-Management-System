@@ -41,7 +41,7 @@ namespace Project_Manager.Service.UserConfiguration
             return user;
         }
 
-        public async Task<OrganizationUser> ValidateOrganizationAdmin(string mail, Guid organizationId, string roleName)
+        public async Task<OrganizationUser> ValidateOrganizationUser(string mail, Guid organizationId, string roleName)
         {
             var getRole = await _roleManager.FindByNameAsync(roleName);
 

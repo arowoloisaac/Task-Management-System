@@ -107,7 +107,7 @@ namespace Project_Manager.Service.OrganizationService
         public async Task<string> DeleteOrganization(Guid organizationId, string mail)
         {
             var user = await _userConfig.GetUser(mail);
-            var orgAdmin = await _userConfig.ValidateOrganizationAdmin(mail, organizationId, role);
+            var orgAdmin = await _userConfig.ValidateOrganizationUser(mail, organizationId, role);
            
             /*var validateOrg = await _context.OrganizationUser
                 .Where(org => org.Role.Name == role && org.User.Id == user.Id && org.Organization.Id == organizationId)
