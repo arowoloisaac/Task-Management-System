@@ -3,6 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\",
   "Documents": [
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\service\\projectservice\\projectservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:service\\projectservice\\projectservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,6 +14,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\controllers\\projectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:controllers\\projectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+=======
+      "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\service\\issueservice\\iissueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:service\\issueservice\\iissueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> project_section
     },
     {
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\controllers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -49,6 +54,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\service\\userservice\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:service\\userservice\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\controllers\\projectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:controllers\\projectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\service\\projectservice\\iprojectservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -191,6 +200,17 @@
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:model\\wiki.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+<<<<<<< HEAD
+=======
+      "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\controllers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:controllers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\service\\issueservice\\issueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:service\\issueservice\\issueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+>>>>>>> project_section
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\dto\\userdto\\updatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:dto\\userdto\\updatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -303,6 +323,7 @@
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:migrations\\20241025021907_initialmigrationtothedatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\migrations\\20241029085136_updatetheissuemodelparenttothedatabaseagain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:migrations\\20241029085136_updatetheissuemodelparenttothedatabaseagain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -325,6 +346,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\migrations\\20241028052900_updatetheissuemodeltothedatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:migrations\\20241028052900_updatetheissuemodeltothedatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+=======
+      "AbsoluteMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|c:\\users\\arowo\\source\\repos\\project-manager\\dto\\projectdto\\updateprojectdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98CCD28E-4701-4BE3-86BE-D6A0FE0AB179}|Project-Manager.csproj|solutionrelative:dto\\projectdto\\updateprojectdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> project_section
     }
   ],
   "DocumentGroupContainers": [
@@ -334,7 +359,11 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
+<<<<<<< HEAD
           "SelectedChildIndex": 11,
+=======
+          "SelectedChildIndex": 12,
+>>>>>>> project_section
           "Children": [
             {
               "$type": "Bookmark",
@@ -365,11 +394,8 @@
               "Name": "ST:2087539004:0:{83107a3e-496a-485e-b455-16ddb978e55e}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
-            {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 4,
               "Title": "IssueService.cs",
               "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\IssueService\\IssueService.cs",
@@ -377,6 +403,15 @@
               "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\IssueService\\IssueService.cs",
               "RelativeToolTip": "Service\\IssueService\\IssueService.cs",
               "ViewState": "AQIAAJoAAAAAAAAAAAAAANIAAAAcAAAA",
+=======
+              "DocumentIndex": 2,
+              "Title": "ProjectController.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\ProjectController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ProjectController.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\ProjectController.cs",
+              "RelativeToolTip": "Controllers\\ProjectController.cs",
+              "ViewState": "AQIAAGAAAAAAAAAAAAAAAHEAAABbAAAA",
+>>>>>>> project_section
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-24T12:28:12.607Z",
               "EditorCaption": ""
@@ -414,14 +449,227 @@
               "RelativeDocumentMoniker": "Service\\ProjectService\\ProjectService.cs",
               "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\ProjectService\\ProjectService.cs",
               "RelativeToolTip": "Service\\ProjectService\\ProjectService.cs",
+<<<<<<< HEAD
               "ViewState": "AQIAAEcAAAAAAAAAAAAAAFQAAABBAAAA",
+=======
+              "ViewState": "AQIAAEUAAAAAAAAAAAAAAE8AAAAQAAAA",
+>>>>>>> project_section
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-24T17:25:50.253Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 7,
+=======
+              "DocumentIndex": 73,
+              "Title": "UpdateProjectDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\ProjectDto\\UpdateProjectDto.cs",
+              "RelativeDocumentMoniker": "DTO\\ProjectDto\\UpdateProjectDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\ProjectDto\\UpdateProjectDto.cs",
+              "RelativeToolTip": "DTO\\ProjectDto\\UpdateProjectDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T01:10:49.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Controllers\\UsersController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T05:53:37.757Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "OrganizationController.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\OrganizationController.cs",
+              "RelativeDocumentMoniker": "Controllers\\OrganizationController.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\OrganizationController.cs",
+              "RelativeToolTip": "Controllers\\OrganizationController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T05:54:18.32Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "IIssueService.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\IssueService\\IIssueService.cs",
+              "RelativeDocumentMoniker": "Service\\IssueService\\IIssueService.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\IssueService\\IIssueService.cs",
+              "RelativeToolTip": "Service\\IssueService\\IIssueService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T12:28:27.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IProjectService.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\ProjectService\\IProjectService.cs",
+              "RelativeDocumentMoniker": "Service\\ProjectService\\IProjectService.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\ProjectService\\IProjectService.cs",
+              "RelativeToolTip": "Service\\ProjectService\\IProjectService.cs",
+              "ViewState": "AQIAABQAAAAAAAAAAAAAABEAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T17:23:43.22Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\UserService\\UserService.cs",
+              "RelativeDocumentMoniker": "Service\\UserService\\UserService.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\UserService\\UserService.cs",
+              "RelativeToolTip": "Service\\UserService\\UserService.cs",
+              "ViewState": "AQIAAHUAAAAAAAAAAAAAADYAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T07:18:46.648Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Progress.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Enum\\Progress.cs",
+              "RelativeDocumentMoniker": "Enum\\Progress.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Enum\\Progress.cs",
+              "RelativeToolTip": "Enum\\Progress.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T08:19:51.846Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CreateDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\ProjectDto\\CreateDto.cs",
+              "RelativeDocumentMoniker": "DTO\\ProjectDto\\CreateDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\ProjectDto\\CreateDto.cs",
+              "RelativeToolTip": "DTO\\ProjectDto\\CreateDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T01:00:39.41Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ProjectRole.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\ProjectRole.cs",
+              "RelativeDocumentMoniker": "Model\\ProjectRole.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\ProjectRole.cs",
+              "RelativeToolTip": "Model\\ProjectRole.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-14T11:57:01.343Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Organization.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Organization.cs",
+              "RelativeDocumentMoniker": "Model\\Organization.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Organization.cs",
+              "RelativeToolTip": "Model\\Organization.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T06:06:33.043Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Group.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Group.cs",
+              "RelativeDocumentMoniker": "Model\\Group.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Group.cs",
+              "RelativeToolTip": "Model\\Group.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T17:16:15.294Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "StatusDateTime.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\StatusDateTime.cs",
+              "RelativeDocumentMoniker": "Model\\StatusDateTime.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\StatusDateTime.cs",
+              "RelativeToolTip": "Model\\StatusDateTime.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T17:24:29.298Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ObjectDateTime.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\ObjectDateTime.cs",
+              "RelativeDocumentMoniker": "Model\\ObjectDateTime.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\ObjectDateTime.cs",
+              "RelativeToolTip": "Model\\ObjectDateTime.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T17:24:42.748Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "GetProjectDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\ProjectDto\\GetProjectDto.cs",
+              "RelativeDocumentMoniker": "DTO\\ProjectDto\\GetProjectDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\ProjectDto\\GetProjectDto.cs",
+              "RelativeToolTip": "DTO\\ProjectDto\\GetProjectDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T07:30:04.04Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Role.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Role.cs",
+              "RelativeDocumentMoniker": "Model\\Role.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Role.cs",
+              "RelativeToolTip": "Model\\Role.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T06:20:07.721Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "JwtBearerSetting.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Configuration\\JwtBearerSetting.cs",
+              "RelativeDocumentMoniker": "Configuration\\JwtBearerSetting.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Configuration\\JwtBearerSetting.cs",
+              "RelativeToolTip": "Configuration\\JwtBearerSetting.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T14:39:40.705Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\User.cs",
+              "RelativeDocumentMoniker": "Model\\User.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\User.cs",
+              "RelativeToolTip": "Model\\User.cs",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAwwBsAAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T06:06:01.913Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+>>>>>>> project_section
               "Title": "Project.cs",
               "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Project.cs",
               "RelativeDocumentMoniker": "Model\\Project.cs",
@@ -433,6 +681,7 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 1,
               "Title": "IssueController.cs",
               "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\IssueController.cs",
@@ -440,12 +689,22 @@
               "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\IssueController.cs",
               "RelativeToolTip": "Controllers\\IssueController.cs",
               "ViewState": "AQIAAFQAAAAAAAAAAAAAAFkAAAAPAAAA",
+=======
+              "DocumentIndex": 19,
+              "Title": "UserSection.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\UserSection.cs",
+              "RelativeDocumentMoniker": "Model\\UserSection.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\UserSection.cs",
+              "RelativeToolTip": "Model\\UserSection.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAFAAAA",
+>>>>>>> project_section
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T05:54:48.738Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 2,
               "Title": "ProjectController.cs",
               "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\ProjectController.cs",
@@ -453,13 +712,278 @@
               "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\ProjectController.cs",
               "RelativeToolTip": "Controllers\\ProjectController.cs",
               "ViewState": "AQIAAFQAAAAAAAAAAAAAAFwAAAANAAAA",
+=======
+              "DocumentIndex": 20,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2024-10-26T06:13:52.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "OrganizationRole.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\OrganizationRole.cs",
+              "RelativeDocumentMoniker": "Model\\OrganizationRole.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\OrganizationRole.cs",
+              "RelativeToolTip": "Model\\OrganizationRole.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAkAAAA",
+>>>>>>> project_section
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T05:54:35.429Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 3,
+=======
+              "DocumentIndex": 68,
+              "Title": "20241025092444_MigrationToTheDatabaseForComplexityToProject.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025092444_MigrationToTheDatabaseForComplexityToProject.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025092444_MigrationToTheDatabaseForComplexityToProject.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025092444_MigrationToTheDatabaseForComplexityToProject.cs",
+              "RelativeToolTip": "Migrations\\20241025092444_MigrationToTheDatabaseForComplexityToProject.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T09:24:45.057Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Complexity.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Enum\\Complexity.cs",
+              "RelativeDocumentMoniker": "Enum\\Complexity.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Enum\\Complexity.cs",
+              "RelativeToolTip": "Enum\\Complexity.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAA0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T09:12:51.668Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "20241025083000_MigrationToTheDatabaseForProgressToProject.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025083000_MigrationToTheDatabaseForProgressToProject.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025083000_MigrationToTheDatabaseForProgressToProject.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025083000_MigrationToTheDatabaseForProgressToProject.cs",
+              "RelativeToolTip": "Migrations\\20241025083000_MigrationToTheDatabaseForProgressToProject.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T08:30:01.633Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "20241025080510_MigrationToTheDatabaseForDateTimeStatus.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025080510_MigrationToTheDatabaseForDateTimeStatus.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025080510_MigrationToTheDatabaseForDateTimeStatus.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025080510_MigrationToTheDatabaseForDateTimeStatus.cs",
+              "RelativeToolTip": "Migrations\\20241025080510_MigrationToTheDatabaseForDateTimeStatus.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T08:05:10.443Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\UserService\\IUserService.cs",
+              "RelativeDocumentMoniker": "Service\\UserService\\IUserService.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\UserService\\IUserService.cs",
+              "RelativeToolTip": "Service\\UserService\\IUserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T07:18:59.396Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "TaskType.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Enum\\TaskType.cs",
+              "RelativeDocumentMoniker": "Enum\\TaskType.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Enum\\TaskType.cs",
+              "RelativeToolTip": "Enum\\TaskType.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T17:39:01.017Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "TokenResponse.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\TokenResponse.cs",
+              "RelativeDocumentMoniker": "Model\\TokenResponse.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\TokenResponse.cs",
+              "RelativeToolTip": "Model\\TokenResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T07:20:27.324Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAG4AAAAAAAAAAAAgwJEAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-12T15:17:25.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "20241025021150_InitialMigrationToTheDatabase.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025021150_InitialMigrationToTheDatabase.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025021150_InitialMigrationToTheDatabase.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025021150_InitialMigrationToTheDatabase.cs",
+              "RelativeToolTip": "Migrations\\20241025021150_InitialMigrationToTheDatabase.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T02:11:51.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-10-16T01:42:27.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "20241025042803_MigrationToTheDatabaseForUpdatedGroup.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025042803_MigrationToTheDatabaseForUpdatedGroup.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025042803_MigrationToTheDatabaseForUpdatedGroup.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025042803_MigrationToTheDatabaseForUpdatedGroup.cs",
+              "RelativeToolTip": "Migrations\\20241025042803_MigrationToTheDatabaseForUpdatedGroup.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T04:28:03.705Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "20241025021907_InitialMigrationToTheDatabase.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025021907_InitialMigrationToTheDatabase.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025021907_InitialMigrationToTheDatabase.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025021907_InitialMigrationToTheDatabase.cs",
+              "RelativeToolTip": "Migrations\\20241025021907_InitialMigrationToTheDatabase.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T02:19:07.403Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "20241025020926_UpdateDatabaseForProjectTableWithGuid.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025020926_UpdateDatabaseForProjectTableWithGuid.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025020926_UpdateDatabaseForProjectTableWithGuid.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025020926_UpdateDatabaseForProjectTableWithGuid.cs",
+              "RelativeToolTip": "Migrations\\20241025020926_UpdateDatabaseForProjectTableWithGuid.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T02:09:26.431Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "TokenGenerator.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\Configuration\\TokenGenerator\\TokenGenerator.cs",
+              "RelativeDocumentMoniker": "Service\\Configuration\\TokenGenerator\\TokenGenerator.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\Configuration\\TokenGenerator\\TokenGenerator.cs",
+              "RelativeToolTip": "Service\\Configuration\\TokenGenerator\\TokenGenerator.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAwwDQAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T08:56:18.019Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "ITokenGenerator.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\Configuration\\TokenGenerator\\ITokenGenerator.cs",
+              "RelativeDocumentMoniker": "Service\\Configuration\\TokenGenerator\\ITokenGenerator.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\Configuration\\TokenGenerator\\ITokenGenerator.cs",
+              "RelativeToolTip": "Service\\Configuration\\TokenGenerator\\ITokenGenerator.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T08:56:33.429Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Issue.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Issue.cs",
+              "RelativeDocumentMoniker": "Model\\Issue.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Issue.cs",
+              "RelativeToolTip": "Model\\Issue.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T06:07:23.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Note.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Note.cs",
+              "RelativeDocumentMoniker": "Model\\Note.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Note.cs",
+              "RelativeToolTip": "Model\\Note.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-21T08:05:56.947Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "20241025012045_UpdateDatabaseForProjectTable.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025012045_UpdateDatabaseForProjectTable.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241025012045_UpdateDatabaseForProjectTable.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241025012045_UpdateDatabaseForProjectTable.cs",
+              "RelativeToolTip": "Migrations\\20241025012045_UpdateDatabaseForProjectTable.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-25T01:20:46.148Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Project-Manager.http",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Project-Manager.http",
+              "RelativeDocumentMoniker": "Project-Manager.http",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Project-Manager.http",
+              "RelativeToolTip": "Project-Manager.http",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2024-10-12T15:17:28.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Wiki.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Wiki.cs",
+              "RelativeDocumentMoniker": "Model\\Wiki.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Wiki.cs",
+              "RelativeToolTip": "Model\\Wiki.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T06:20:46.167Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+>>>>>>> project_section
               "Title": "GroupController.cs",
               "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\GroupController.cs",
               "RelativeDocumentMoniker": "Controllers\\GroupController.cs",
@@ -472,6 +996,7 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 6,
               "Title": "TokenGenerator.cs",
               "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\Configuration\\TokenGenerator\\TokenGenerator.cs",
@@ -486,6 +1011,177 @@
             {
               "$type": "Document",
               "DocumentIndex": 17,
+=======
+              "DocumentIndex": 38,
+              "Title": "IssueService.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\IssueService\\IssueService.cs",
+              "RelativeDocumentMoniker": "Service\\IssueService\\IssueService.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\IssueService\\IssueService.cs",
+              "RelativeToolTip": "Service\\IssueService\\IssueService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T12:28:12.607Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "AutoMapperConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Configuration\\AutoMapperConfiguration.cs",
+              "RelativeDocumentMoniker": "Configuration\\AutoMapperConfiguration.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Configuration\\AutoMapperConfiguration.cs",
+              "RelativeToolTip": "Configuration\\AutoMapperConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T06:55:07.275Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "DateOnlyJsonConverter.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\Configuration\\DateOnlyJsonConverter.cs",
+              "RelativeDocumentMoniker": "Service\\Configuration\\DateOnlyJsonConverter.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Service\\Configuration\\DateOnlyJsonConverter.cs",
+              "RelativeToolTip": "Service\\Configuration\\DateOnlyJsonConverter.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-21T05:21:29.251Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "UpdateDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\UpdateDto.cs",
+              "RelativeDocumentMoniker": "DTO\\UserDto\\UpdateDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\UpdateDto.cs",
+              "RelativeToolTip": "DTO\\UserDto\\UpdateDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-21T06:07:00.869Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\LoginDto.cs",
+              "RelativeDocumentMoniker": "DTO\\UserDto\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\LoginDto.cs",
+              "RelativeToolTip": "DTO\\UserDto\\LoginDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-21T05:58:06.332Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "Project-Manager.csproj",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Project-Manager.csproj",
+              "RelativeDocumentMoniker": "Project-Manager.csproj",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Project-Manager.csproj",
+              "RelativeToolTip": "Project-Manager.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-10-12T15:16:15.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "RegisterDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\RegisterDto.cs",
+              "RelativeDocumentMoniker": "DTO\\UserDto\\RegisterDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\RegisterDto.cs",
+              "RelativeToolTip": "DTO\\UserDto\\RegisterDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-21T05:10:05.345Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "GetProfileDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\GetProfileDto.cs",
+              "RelativeDocumentMoniker": "DTO\\UserDto\\GetProfileDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\UserDto\\GetProfileDto.cs",
+              "RelativeToolTip": "DTO\\UserDto\\GetProfileDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T07:24:44.833Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "20241024050334_UpdateDatabaseAgain.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241024050334_UpdateDatabaseAgain.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241024050334_UpdateDatabaseAgain.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241024050334_UpdateDatabaseAgain.cs",
+              "RelativeToolTip": "Migrations\\20241024050334_UpdateDatabaseAgain.cs",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAAE4AAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T05:03:34.666Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "20241024050307_UpdateDatabaseAgain2.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241024050307_UpdateDatabaseAgain2.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241024050307_UpdateDatabaseAgain2.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241024050307_UpdateDatabaseAgain2.cs",
+              "RelativeToolTip": "Migrations\\20241024050307_UpdateDatabaseAgain2.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T05:03:07.993Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "OrganizationUserDto.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\OrganizationDto\\OrganizationUserDto.cs",
+              "RelativeDocumentMoniker": "DTO\\OrganizationDto\\OrganizationUserDto.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\DTO\\OrganizationDto\\OrganizationUserDto.cs",
+              "RelativeToolTip": "DTO\\OrganizationDto\\OrganizationUserDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T05:52:51.191Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "IssueController.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\IssueController.cs",
+              "RelativeDocumentMoniker": "Controllers\\IssueController.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Controllers\\IssueController.cs",
+              "RelativeToolTip": "Controllers\\IssueController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T05:54:48.738Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "20241023053820_InitialCompleteOfModels.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241023053820_InitialCompleteOfModels.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241023053820_InitialCompleteOfModels.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241023053820_InitialCompleteOfModels.cs",
+              "RelativeToolTip": "Migrations\\20241023053820_InitialCompleteOfModels.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T05:38:21.045Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "20241023053643_InitialCompleteOfModels.cs",
+              "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241023053643_InitialCompleteOfModels.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241023053643_InitialCompleteOfModels.cs",
+              "ToolTip": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Migrations\\20241023053643_InitialCompleteOfModels.cs",
+              "RelativeToolTip": "Migrations\\20241023053643_InitialCompleteOfModels.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T05:36:43.785Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+>>>>>>> project_section
               "Title": "Comment.cs",
               "DocumentMoniker": "C:\\Users\\arowo\\source\\repos\\Project-Manager\\Model\\Comment.cs",
               "RelativeDocumentMoniker": "Model\\Comment.cs",
@@ -1330,6 +2026,10 @@
               "RelativeToolTip": "Migrations\\20241016062730_AddFieldsToTheDatabase.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-16T06:27:30.974Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         },

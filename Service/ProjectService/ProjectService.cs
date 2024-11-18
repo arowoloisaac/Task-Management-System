@@ -76,6 +76,7 @@ namespace Project_Manager.Service.ProjectService
             }
             else
             {
+<<<<<<< HEAD
                 var removeCreatedIssues = await _context.Issues.Where(issue => issue.Project == findProjectById).ToListAsync();
 
                 if (removeCreatedIssues.Count <= 0)
@@ -83,6 +84,10 @@ namespace Project_Manager.Service.ProjectService
                     //continue
                 }
                 _context.Issues.RemoveRange(removeCreatedIssues);
+=======
+                var getAllIssues = await _context.Issues.Where(issue => issue.Project == findProjectById).ToListAsync();
+                _context.Issues.RemoveRange(getAllIssues);
+>>>>>>> project_section
                 _context.Projects.Remove(findProjectById);
 
                 await _context.SaveChangesAsync();
