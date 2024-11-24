@@ -929,12 +929,12 @@
           "startDate": {
             "type": "string",
             "format": "date",
-            "example": "2024-11-18"
+            "example": "11/20/2024"
           },
           "endDate": {
             "type": "string",
             "format": "date",
-            "example": "2024-11-18"
+            "example": "11/20/2024"
           }
         },
         "additionalProperties": false
@@ -996,7 +996,7 @@
           "birthDate": {
             "type": "string",
             "format": "date",
-            "example": "2024-11-18"
+            "example": "11/20/2024"
           },
           "phoneNumber": {
             "type": "string",
@@ -1029,7 +1029,7 @@
           "birthDate": {
             "type": "string",
             "format": "date",
-            "example": "2024-11-18"
+            "example": "11/20/2024"
           }
         },
         "additionalProperties": false
