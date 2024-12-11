@@ -16,6 +16,7 @@ namespace Project_Manager.Service.ProjectService
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IUserConfig _userConfig;
+        public int paginationSize = 12;
 
         public ProjectService(UserManager<User> userManager, ApplicationDbContext context, IMapper mapper, IUserConfig userConfig)
         {
@@ -32,7 +33,7 @@ namespace Project_Manager.Service.ProjectService
             
             try
             {
-                var validateProject = await _context.Projects.Where(duplicateName => duplicateName.Name == dto.Name).SingleOrDefaultAsync();
+                var validateProject = await _context.Projects.Where(duplicateName => duplicateName.Name == dto.Name && duplicateName.Creator.UserName == user.UserName).SingleOrDefaultAsync();
 
                 if (validateProject != null)
                 {
@@ -118,6 +119,8 @@ namespace Project_Manager.Service.ProjectService
             }
         }
 
+
+        //to add pagination later on, in which there will be a default value of 10-12 and also the user can also set a default value
         public async Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, string mail)
         {
             var user = await _userConfig.GetUser(mail);
@@ -154,6 +157,64 @@ namespace Project_Manager.Service.ProjectService
                 return projects;
             }
         }
+
+        //to be completed later on using the paginationSize field, here to give the user choice 
+        public async Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, string mail)
+        {
+            var user = await _userConfig.GetUser(mail);
+
+            IQueryable<Project> query = _context.Projects.Where(findProjects => findProjects.CreatedBy == user.Id);
+
+            if (progress.HasValue)
+            {
+                query = query.Where(project => project.Progress == progress);
+            }
+
+            if (complexity.HasValue)
+            {
+                query = query.Where(project => project.Complexity == complexity);
+            }
+
+            var projectList = await query.ToListAsync();
+
+            if (projectList.Count == 0)
+            {
+                return new ProjectResponse(new List<GetProjectDto>(),0,0,0,0,0);
+            }
+
+            else
+            {
+
+                int pageResult = 5;
+                int currentPage = page.HasValue && page > 0 ? page.Value : 1;
+
+                
+
+                int totalItems = await query.CountAsync();
+                int pageCount = (int)Math.Ceiling((double)totalItems / pageResult);
+
+                var projects = await query.Skip((currentPage - 1) * pageResult)
+                                        .Take(pageResult)
+                                        .ToListAsync();
+
+                totalItems = projects.Count;
+
+                int itemStart = (currentPage - 1) * pageResult + 1; ;
+
+                int itemEnd = Math.Min(currentPage * pageResult, totalItems) + (itemStart-1);
+
+                var mappedProjects = projects.Select(project => new GetProjectDto
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    Creator = project.Creator.Email,
+                    DateCreated = project.CreatedTime
+                });
+                var response = new ProjectResponse(mappedProjects.ToList(), currentPage, totalItems, pageCount, itemStart, itemEnd);
+                return response;
+            }
+        }
+
 
         public async Task<string> UpdateProject(Guid projectId, string? Name, string? Description, Progress? progress, Complexity? complexity, string mail)
         {

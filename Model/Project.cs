@@ -27,6 +27,6 @@ namespace Project_Manager.Model
 
         public Group? Group { get; set; }
 
-        public Guid OrganizationId { get; set; }
+        public Guid? OrganizationId { get; set; }
     }
 }

@@ -130,6 +130,8 @@ namespace Project_Manager
                 };
             });
 
+            builder.Services.AddCors();
+
             var app = builder.Build();
 
             using var serviceScope = app.Services.CreateScope();
@@ -144,10 +146,16 @@ namespace Project_Manager
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 
             app.UseAuthentication();
             app.UseAuthorization();
             await app.ConfigureIdentityAsync();
+
+
 
             app.MapControllers();
 

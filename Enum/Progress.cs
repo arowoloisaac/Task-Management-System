@@ -7,6 +7,6 @@ namespace Project_Manager.Enum
     {
         GroundLevel,
         InProcess,
-        Finished
+        Finished, Cancelled
     }
 }

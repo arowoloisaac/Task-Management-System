@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.Enum;
 using Project_Manager.Service.UserOrganizationService;
@@ -8,6 +9,7 @@ namespace Project_Manager.Controllers
 {
     [Route("api/organization")]
     [ApiController]
+    [EnableCors]
     public class UserOrganizationController : ControllerBase
     {
         private readonly IOrganizationUserService _organizationUser;

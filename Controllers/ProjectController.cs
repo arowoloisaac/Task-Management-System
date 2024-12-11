@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Project_Manager.DTO.ProjectDto;
 using Project_Manager.Enum;
+using Project_Manager.Model;
 using Project_Manager.Service.ProjectService;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 
 namespace Project_Manager.Controllers
 {
     [Route("api/project")]
     [ApiController]
+    [EnableCors]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
@@ -106,6 +111,55 @@ namespace Project_Manager.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+
+        [HttpGet]
+        [Route("get")]
+        [SwaggerOperation(Summary = "Get the list of projects")]
+        public async Task<IActionResult> GetPaginated([FromQuery] Progress? progress, [FromQuery] Complexity? complexity, [FromQuery] int? page)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null) {
+                    return NotFound("User not found");
+                }
+
+                else
+                {
+                    var projects = await _projectService.GetProjectPaginated(progress, complexity, page, user.Value);
+
+
+
+                    if (projects is not null)
+                    {
+                        return Ok(projects);
+                    }
+
+                    else { return NotFound("Dish not fount"); }
+
+                }
+                
+            }
+
+            catch (BadHttpRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                var response = new ResponseBody
+                {
+                    Status = "Error"+ ex.Source,
+                    Message = ex.Message,
+                };
+
+                return StatusCode(500, response);
+            }
+
         }
 
 

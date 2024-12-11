@@ -1,5 +1,6 @@
 ﻿using Project_Manager.DTO.ProjectDto;
 using Project_Manager.Enum;
+using Project_Manager.Model;
 
 namespace Project_Manager.Service.ProjectService
 {
@@ -15,6 +16,8 @@ namespace Project_Manager.Service.ProjectService
         Task<GetProjectDto> GetProjectById(Guid projectId, string mail);
 
         Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, string mail);
-        
+
+        Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, string mail);
+
     }
 }

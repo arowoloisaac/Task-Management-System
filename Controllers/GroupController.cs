@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.Model;
 using Project_Manager.Service.OrganizationProjectService;
@@ -9,6 +10,7 @@ namespace Project_Manager.Controllers
 {
     [Route("api/")]
     [ApiController]
+    [EnableCors]
     public class GroupController : ControllerBase
     {
         private readonly IOrganizationGroupService _groupService;

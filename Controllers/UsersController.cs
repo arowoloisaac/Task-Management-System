@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.DTO.UserDto;
@@ -10,6 +11,7 @@ namespace Project_Manager.Controllers
 {
     [Route("api/")]
     [ApiController]
+    [EnableCors]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
