@@ -17,7 +17,7 @@ namespace Project_Manager.Service.ProjectService
 
         Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, string mail);
 
-        Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, string mail);
+        Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, int itemPerPage, string mail);
 
     }
 }

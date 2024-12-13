@@ -117,7 +117,7 @@ namespace Project_Manager.Controllers
         [HttpGet]
         [Route("get")]
         [SwaggerOperation(Summary = "Get the list of projects")]
-        public async Task<IActionResult> GetPaginated([FromQuery] Progress? progress, [FromQuery] Complexity? complexity, [FromQuery] int? page)
+        public async Task<IActionResult> GetPaginated([FromQuery] Progress? progress, [FromQuery] Complexity? complexity, [FromQuery] int? page, [FromQuery] int itemPerPage)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace Project_Manager.Controllers
 
                 else
                 {
-                    var projects = await _projectService.GetProjectPaginated(progress, complexity, page, user.Value);
+                    var projects = await _projectService.GetProjectPaginated(progress, complexity, page, itemPerPage, user.Value);
 
 
 

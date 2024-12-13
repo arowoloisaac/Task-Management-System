@@ -113,7 +113,7 @@ namespace Project_Manager.Service.ProjectService
                 {
                     Id = project.Id,
                     Name = project.Name,
-                    Creator = project.Creator.Email,
+                    Description = project.Description,
                     DateCreated = project.CreatedTime
                 };
             }
@@ -150,8 +150,9 @@ namespace Project_Manager.Service.ProjectService
                 {
                     Id = project.Id,
                     Name = project.Name,
-                    Creator = project.Creator.Email,
-                    DateCreated = project.CreatedTime
+                    Description = project.Description,
+                    DateCreated = project.CreatedTime,
+                    Complexity = project.Complexity
                 }).ToList();
 
                 return projects;
@@ -159,9 +160,13 @@ namespace Project_Manager.Service.ProjectService
         }
 
         //to be completed later on using the paginationSize field, here to give the user choice 
-        public async Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, string mail)
+        public async Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, int itemPerPage, string mail)
         {
             var user = await _userConfig.GetUser(mail);
+
+            int defaultItemsPerPage = 7;
+
+            var items =  itemPerPage == 0 ? defaultItemsPerPage : itemPerPage;
 
             IQueryable<Project> query = _context.Projects.Where(findProjects => findProjects.CreatedBy == user.Id);
 
@@ -179,13 +184,13 @@ namespace Project_Manager.Service.ProjectService
 
             if (projectList.Count == 0)
             {
-                return new ProjectResponse(new List<GetProjectDto>(),0,0,0,0,0);
+                return new ProjectResponse(new List<GetProjectDto>(),0,0,0,0,0,0);
+                //throw new Exception("page doesn't exist");
             }
 
             else
             {
-
-                int pageResult = 5;
+                int pageResult = items;
                 int currentPage = page.HasValue && page > 0 ? page.Value : 1;
 
                 
@@ -199,6 +204,11 @@ namespace Project_Manager.Service.ProjectService
 
                 totalItems = projects.Count;
 
+                if (totalItems < 1)
+                {
+                    throw new Exception("Page doesn't exist");
+                }
+
                 int itemStart = (currentPage - 1) * pageResult + 1; ;
 
                 int itemEnd = Math.Min(currentPage * pageResult, totalItems) + (itemStart-1);
@@ -207,10 +217,11 @@ namespace Project_Manager.Service.ProjectService
                 {
                     Id = project.Id,
                     Name = project.Name,
-                    Creator = project.Creator.Email,
-                    DateCreated = project.CreatedTime
+                    Description = project.Description,
+                    DateCreated = project.CreatedTime,
+                    Complexity = project.Complexity,
                 });
-                var response = new ProjectResponse(mappedProjects.ToList(), currentPage, totalItems, pageCount, itemStart, itemEnd);
+                var response = new ProjectResponse(mappedProjects.ToList(), currentPage, totalItems, pageCount, itemStart, itemEnd, projectList.Count);
                 return response;
             }
         }

@@ -10,3 +10,6 @@ namespace Project_Manager.Enum
         Complex
     }
 }
+
+
+//to add status enum later on

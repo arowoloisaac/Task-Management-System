@@ -8,7 +8,7 @@ namespace Project_Manager.Model
 
         public Pagination Pagination { get; set; }
 
-        public ProjectResponse(List<GetProjectDto> project, int page, int total, int count, int start,int end)
+        public ProjectResponse(List<GetProjectDto> project, int page, int total, int count, int start,int end, int totalItem)
         {
             this.Projects = project;
 
@@ -18,7 +18,8 @@ namespace Project_Manager.Model
                 Current = page,
                 Size = total,
                 Start = start,
-                End = end
+                End = end,
+               TotalItems = totalItem
             };
         }
     }
