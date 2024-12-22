@@ -18,6 +18,7 @@ using Project_Manager.Service.UserConfiguration;
 using Project_Manager.Service.UserOrganizationService;
 using Project_Manager.Service.OrganizationUserService;
 using Project_Manager.Service.OrganizationProjectService;
+using Project_Manager.Service.AvatarService;
 
 namespace Project_Manager
 {
@@ -88,6 +89,7 @@ namespace Project_Manager
             builder.Services.AddScoped<IssueService, IssueService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<IAvatarService, AvatarService>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
             builder.Services.AddScoped<IOrganizationUserService, OrganizationUserService>();
             builder.Services.AddScoped<IOrganizationGroupService, OrganizationGroupService>();
@@ -154,6 +156,7 @@ namespace Project_Manager
             app.UseAuthentication();
             app.UseAuthorization();
             await app.ConfigureIdentityAsync();
+            await app.ConfigureDefaultAvatar();
 
 
 

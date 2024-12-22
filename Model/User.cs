@@ -15,6 +15,10 @@ namespace Project_Manager.Model
 
         public DateTime UpdatedAt { get; set; }
 
+        public string? AvatarUrl { get; set; }
+
+        public Avatar? Avatar {  get; set; }
+
         //public ICollection<Organization>? Organizations { get; set; }
 
         public ICollection<OrganizationUser>? Organization { get; set; }

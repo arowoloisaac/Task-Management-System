@@ -11,6 +11,6 @@ namespace Project_Manager.Service.UserService
 
         Task<GetProfileDto> UserProfile(string userId);
 
-        Task<GetProfileDto> UpdateProfile(UpdateDto updateDto, string userId);
+        Task<GetProfileDto> UpdateProfile(UpdateDto updateDto, Guid? avatar, string userId);
     }
 }

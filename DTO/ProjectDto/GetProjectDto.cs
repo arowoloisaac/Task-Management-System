@@ -12,6 +12,8 @@ namespace Project_Manager.DTO.ProjectDto
 
         public Complexity Complexity { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public Progress Progress { get; set; }
+
+        //public DateTime DateCreated { get; set; }
     }
 }

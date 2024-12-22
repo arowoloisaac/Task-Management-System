@@ -125,6 +125,21 @@ namespace Project_Manager.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Project_Manager.Model.Avatar", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AvatarUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Avatars");
+                });
+
             modelBuilder.Entity("Project_Manager.Model.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -495,6 +510,12 @@ namespace Project_Manager.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("AvatarId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("Birthdate")
                         .HasColumnType("date");
 
@@ -515,9 +536,6 @@ namespace Project_Manager.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -561,7 +579,7 @@ namespace Project_Manager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("AvatarId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -796,9 +814,11 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.User", b =>
                 {
-                    b.HasOne("Project_Manager.Model.Group", null)
+                    b.HasOne("Project_Manager.Model.Avatar", "Avatar")
                         .WithMany("Users")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("AvatarId");
+
+                    b.Navigation("Avatar");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Wiki", b =>
@@ -816,13 +836,16 @@ namespace Project_Manager.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Project_Manager.Model.Avatar", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("Project_Manager.Model.Group", b =>
                 {
                     b.Navigation("GroupUsers");
 
                     b.Navigation("Projects");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>

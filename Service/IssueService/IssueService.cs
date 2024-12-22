@@ -56,7 +56,7 @@ namespace Project_Manager.Service.IssueService
                             StartDate = issueDto.StartDate,
                             EndDate = issueDto.EndDate,
                             Complexity = issueDto.Complexity,
-                            Progress = Progress.GroundLevel,
+                            Progress = Progress.Todo,
                             IssueType = issueDto.IssueType,
                             Project = checkProject,
                             
@@ -79,6 +79,12 @@ namespace Project_Manager.Service.IssueService
                 throw new Exception("you cannot create issue with same name");
             }
         }
+
+        public async Task<IEnumerable<RetrieveIssue>> GetIssuesPaginated(IssueType? issueType, Complexity? complexity, Progress? progress, int? page, int itemPerPage, Guid projectId, string mail)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public async Task<string> CreateSubIssue(Guid projectId, CreateIssue issueDto, Guid parentIssueId, string mail)
         {
@@ -119,7 +125,7 @@ namespace Project_Manager.Service.IssueService
                                 StartDate = issueDto.StartDate,
                                 EndDate = issueDto.EndDate,
                                 Complexity = issueDto.Complexity,
-                                Progress = Progress.GroundLevel,
+                                Progress = Progress.Todo,
                                 IssueType = issueDto.IssueType,
                                 Project = getParentIssue.Project,
                                 ParentIssue = getParentIssue
@@ -289,7 +295,7 @@ namespace Project_Manager.Service.IssueService
                     else if (issueLevel == 100 || v == estimatedTimeInMinute)
                     {
                         getIssue.IssueLevel = 100;
-                        getIssue.Progress = Progress.Finished;
+                        getIssue.Progress = Progress.Done;
                     }
                     else
                     {
@@ -326,7 +332,7 @@ namespace Project_Manager.Service.IssueService
                     else if (issueLevel == 100)
                     {
                         getIssue.IssueLevel = 100;
-                        getIssue.Progress = Progress.Finished;
+                        getIssue.Progress = Progress.Done;
                     }
                     else
                     {

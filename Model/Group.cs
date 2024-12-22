@@ -17,8 +17,6 @@ namespace Project_Manager.Model
         //foreign key to organization
         public Guid OrganizationId { get; set; }
 
-        public ICollection<User>? Users { get; set; }
-
         public ICollection<Project>? Projects { get; set; }
 
         public ICollection<GroupUser>? GroupUsers { get; set; }

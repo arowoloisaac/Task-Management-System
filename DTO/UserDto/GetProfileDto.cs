@@ -11,5 +11,7 @@
         public string PhoneNumber {  get; set; } = string.Empty;
 
         public DateOnly Birthdate { get; set; }
+
+        public string AvatarUrl { get; set; } = string.Empty;
     }
 }

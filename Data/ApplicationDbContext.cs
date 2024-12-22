@@ -31,6 +31,8 @@ namespace Project_Manager.Data
 
         public DbSet<Issue> Issues { get; set; }
 
+        public DbSet<Avatar> Avatars { get; set; }
+
         public DbSet<Requests> Requests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

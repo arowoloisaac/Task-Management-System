@@ -51,7 +51,7 @@ namespace Project_Manager.Service.ProjectService
                         Creator = user,
                         CreatedTime = DateTime.UtcNow,
                         Complexity = dto.Complexity,
-                        Progress = Progress.GroundLevel
+                        Progress = Progress.Todo
                     };
                     _context.Projects.Add(createProject);
 
@@ -114,7 +114,7 @@ namespace Project_Manager.Service.ProjectService
                     Id = project.Id,
                     Name = project.Name,
                     Description = project.Description,
-                    DateCreated = project.CreatedTime
+                    Progress = project.Progress
                 };
             }
         }
@@ -151,7 +151,7 @@ namespace Project_Manager.Service.ProjectService
                     Id = project.Id,
                     Name = project.Name,
                     Description = project.Description,
-                    DateCreated = project.CreatedTime,
+                    Progress = project.Progress,
                     Complexity = project.Complexity
                 }).ToList();
 
@@ -218,7 +218,7 @@ namespace Project_Manager.Service.ProjectService
                     Id = project.Id,
                     Name = project.Name,
                     Description = project.Description,
-                    DateCreated = project.CreatedTime,
+                    Progress = project.Progress,
                     Complexity = project.Complexity,
                 });
                 var response = new ProjectResponse(mappedProjects.ToList(), currentPage, totalItems, pageCount, itemStart, itemEnd, projectList.Count);

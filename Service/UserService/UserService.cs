@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Project_Manager.Data;
 using Project_Manager.DTO.UserDto;
 using Project_Manager.Model;
 using Project_Manager.Service.Configuration.TokenGenerator;
@@ -11,13 +12,15 @@ namespace Project_Manager.Service.UserService
         private readonly UserManager<User> _userManager;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMapper _mapper;
-        private readonly SignInManager<User> _signInMa;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _applicationDbContext;
 
-        public UserService(UserManager<User> userManager, ITokenGenerator tokenGenerator, IMapper mapper)
+        public UserService(UserManager<User> userManager, ITokenGenerator tokenGenerator, IMapper mapper, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _tokenGenerator = tokenGenerator;
             _mapper = mapper;
+            _applicationDbContext = dbContext;
         }
 
 
@@ -50,6 +53,8 @@ namespace Project_Manager.Service.UserService
                     throw new Exception("BirthDate must be at least 10 years in the past.");
                 }
 
+                //default avatar
+                var getAvatar = _applicationDbContext.Avatars.FirstOrDefault();
                 var createUser = await _userManager.CreateAsync( new User
                 {
                     Email = registerDto.Email,
@@ -59,6 +64,8 @@ namespace Project_Manager.Service.UserService
                     PhoneNumber = registerDto.PhoneNumber,
                     Birthdate = registerDto.BirthDate,
                     CreatedAt = DateTime.UtcNow,
+                    Avatar = getAvatar,
+                    AvatarUrl = getAvatar.AvatarUrl
                 }, registerDto.Password);
 
                 if (!createUser.Succeeded)
@@ -77,7 +84,7 @@ namespace Project_Manager.Service.UserService
             
         }
 
-        public async Task<GetProfileDto> UpdateProfile(UpdateDto updateDto, string userId)
+        public async Task<GetProfileDto> UpdateProfile(UpdateDto? updateDto, Guid? avatar, string userId)
         {
             var getUser = await _userManager.FindByIdAsync(userId);
 
@@ -87,21 +94,35 @@ namespace Project_Manager.Service.UserService
             }
             else
             {
-                if (!string.IsNullOrEmpty(updateDto.FirstName))
+                if (!string.IsNullOrEmpty(updateDto.FirstName) && updateDto.FirstName != "string")
                 {
                     getUser.FirstName = updateDto.FirstName;
                 }
 
-                if (!string.IsNullOrEmpty(updateDto.LastName))
+                if (!string.IsNullOrEmpty(updateDto.LastName) && updateDto.LastName != "string")
                 {
                     getUser.LastName = updateDto.LastName;
                 }
 
-                if (!string.IsNullOrEmpty(updateDto.PhoneNumber))
+                if (!string.IsNullOrEmpty(updateDto.PhoneNumber) && !updateDto.PhoneNumber.Equals("string"))
                 {
+                    if (updateDto.PhoneNumber == null)
+                    {
+                        updateDto.PhoneNumber = getUser.PhoneNumber;
+                    }
                     getUser.PhoneNumber = updateDto.PhoneNumber;
                 }
-                if(updateDto.BirthDate != null)
+               if(avatar != null)
+                {
+                    var getAvatar = await _applicationDbContext.Avatars.FindAsync(avatar);
+
+                    if (getAvatar != null)
+                    {
+                        getUser.Avatar = getAvatar;
+                        getUser.AvatarUrl = getAvatar.AvatarUrl;
+                    }
+                }
+                if (updateDto.BirthDate != null)
                 {
                     var today = DateOnly.FromDateTime(DateTime.Now);
 
@@ -150,7 +171,8 @@ namespace Project_Manager.Service.UserService
                     LastName = getUser.LastName,
                     Birthdate = getUser.Birthdate,
                     Email = getUser.Email,
-                    PhoneNumber = getUser.PhoneNumber
+                    PhoneNumber = getUser.PhoneNumber,
+                    AvatarUrl = getUser.AvatarUrl
                 };*/
             }
         }

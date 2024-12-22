@@ -7,6 +7,7 @@ namespace Project_Manager.Enum
     {
         Task, 
         Bug, 
-        Test
+        Test, Design,
+        Code
     }
 }

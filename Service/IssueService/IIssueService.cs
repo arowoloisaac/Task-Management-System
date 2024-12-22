@@ -9,6 +9,8 @@ namespace Project_Manager.Service.IssueService
         //to be able to filter with task assigned to the actor
         Task<IEnumerable<RetrieveIssue>> GetIssues(IssueType? issueType, Complexity? complexity, Progress? progress , Guid projectId, string mail);
 
+        Task<IEnumerable<RetrieveIssue>> GetIssuesPaginated(IssueType? issueType, Complexity? complexity, Progress? progress, int? page, int itemPerPage, Guid projectId, string mail);
+
         Task<string> CreateIssues(Guid projectId, CreateIssue issueDto, string mail);
 
         Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,

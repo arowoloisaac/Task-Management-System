@@ -81,7 +81,7 @@ namespace Project_Manager.Controllers
         [HttpPut]
         [Route("profile")]
         [Authorize]
-        public async Task<IActionResult> UpdateUserProfile(UpdateDto dto)
+        public async Task<IActionResult> UpdateUserProfile(UpdateDto? dto, Guid? avatar)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace Project_Manager.Controllers
 
                 else
                 {
-                    return Ok(await _userService.UpdateProfile(dto, claimUser.Value));
+                    return Ok(await _userService.UpdateProfile(dto, avatar, claimUser.Value));
                 }
             }
             catch (Exception ex)

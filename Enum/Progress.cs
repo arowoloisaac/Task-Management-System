@@ -5,8 +5,9 @@ namespace Project_Manager.Enum
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Progress
     {
-        GroundLevel,
+        Todo,
         InProcess,
-        Finished, Cancelled
+        Done, 
+        Canceled
     }
 }
