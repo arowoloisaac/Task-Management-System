@@ -45,7 +45,7 @@ namespace Project_Manager.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("avatar/{Id}")]
         public async Task<IActionResult> GetAvatar(Guid Id)
         {
