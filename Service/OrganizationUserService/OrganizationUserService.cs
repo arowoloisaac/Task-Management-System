@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project_Manager.Configuration;
 using Project_Manager.Data;
@@ -23,6 +23,8 @@ namespace Project_Manager.Service.OrganizationUserService
             _userConfig = userConfig;
         }
 
+
+        //function name should be send request to user
         public async Task<string> AddUserToOrganization(Guid organizationId, string inviteeEmail, string adminId)
         {
             try
@@ -103,6 +105,8 @@ namespace Project_Manager.Service.OrganizationUserService
             }
         }
 
+
+        //this service helps retrieve organization user either belongs to or created by them
         public async Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter? filter, string mail)
         {
             var user = await _userConfig.GetUser(mail);
@@ -147,6 +151,40 @@ namespace Project_Manager.Service.OrganizationUserService
             }).ToList();
 
             return mapOrg;
+        }
+
+        public async Task<IEnumerable<OrganizationUserDto>> organizationUsers(Guid organizationId, string userEmail)
+        {
+            //var user = await _context.OrganizationUser.SingleOrDefaultAsync(usr => usr.User.Email == userEmail);
+            var user = await _userConfig.GetUser(userEmail);
+            var userExistInOrg = await _context.OrganizationUser
+                .SingleOrDefaultAsync(usr => usr.User.Email == user.Email && usr.Organization.Id == organizationId);
+
+            if (user == null || userExistInOrg == null)
+            {
+                throw new Exception("User doesn't exist");
+            }
+            else
+            {
+                var usersInOrg = await _context.OrganizationUser
+                    .Include(users => users.User)
+                    .Where(org => org.Organization.Id == organizationId).ToListAsync();
+
+                if (usersInOrg is null)
+                {
+                    return new List<OrganizationUserDto>();
+                }
+
+                var users = usersInOrg.Select(orgUsers => new OrganizationUserDto
+                {
+                    UserId = orgUsers.User.Id,
+                    UserName = orgUsers.User.FirstName + " " + orgUsers.User.LastName,
+                    UserEmail = orgUsers.User.Email!,
+                    UserRole = orgUsers.Role?.Name!,
+                }).ToList();
+
+                return users;
+            }
         }
 
         public async Task<string> RemoveUserFromOrganization(Guid organizationId, string memberMail, string adminId)

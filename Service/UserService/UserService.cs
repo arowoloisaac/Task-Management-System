@@ -146,7 +146,6 @@ namespace Project_Manager.Service.UserService
                     return newProfile;
                 }
 
-                //var newProfile = _mapper.Map<GetProfileDto>(updateUser);
                 throw new Exception("can't");
             }
         }

@@ -146,11 +146,8 @@ namespace Project_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Descriptiom")
                         .IsRequired()
@@ -159,8 +156,8 @@ namespace Project_Manager.Migrations
                     b.Property<Guid?>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -185,9 +182,6 @@ namespace Project_Manager.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -311,6 +305,12 @@ namespace Project_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -318,7 +318,13 @@ namespace Project_Manager.Migrations
                     b.Property<Guid?>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UsersId")
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsersId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -604,9 +610,6 @@ namespace Project_Manager.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("DeletedTime")
                         .HasColumnType("datetime2");
 
@@ -752,7 +755,9 @@ namespace Project_Manager.Migrations
 
                     b.HasOne("Project_Manager.Model.User", "Users")
                         .WithMany("Notes")
-                        .HasForeignKey("UsersId");
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Users");
                 });

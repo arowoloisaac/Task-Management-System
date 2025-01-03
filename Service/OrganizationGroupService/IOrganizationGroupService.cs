@@ -9,11 +9,7 @@ namespace Project_Manager.Service.OrganizationProjectService
          * delete group
          * update group
          * retrieve group
-         * add/remove organization user from group
-         * create project for group
-         * retrieve group users
-         * add/update/remove user group
-         * boolean to check if user is present in the organization***/
+         ***/
 
         Task<string> CreateOrganizationGroup(string groupName, Guid organizationId, string mail);
 

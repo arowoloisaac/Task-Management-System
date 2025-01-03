@@ -22,7 +22,7 @@ namespace Project_Manager.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetProject(Guid id)
+        public async Task<IActionResult> GetOrganization(Guid id)
         {
             try
             {
@@ -43,10 +43,33 @@ namespace Project_Manager.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/users/org={id}")]
+        public async Task<IActionResult> GetOrganizationUsers(Guid id)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                else
+                {
+                    return Ok(await _organizationUser.organizationUsers(id, user.Value));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetOrganization([FromQuery] OrganizationFilter? filter)
+        public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationFilter? filter)
         {
             try
             {
@@ -67,7 +90,7 @@ namespace Project_Manager.Controllers
 
         [HttpPost]
         [Route("{organizationId}/invite={inviteeMail}")]
-        public async Task<IActionResult> AddUserToOrganization(Guid organizationId, string inviteeMail)
+        public async Task<IActionResult> SendInvitationRequests(Guid organizationId, string inviteeMail)
         {
             try
             {

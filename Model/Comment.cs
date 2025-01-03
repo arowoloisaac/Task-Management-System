@@ -1,6 +1,6 @@
 ﻿namespace Project_Manager.Model
 {
-    public class Comment : UserSection
+    public class Comment : DateTimeClass
     {
         public Guid Id { get; set; }
 

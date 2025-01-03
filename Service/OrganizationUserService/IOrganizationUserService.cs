@@ -5,14 +5,16 @@ namespace Project_Manager.Service.UserOrganizationService
 {
     public interface IOrganizationUserService
     {
+        //send request to the specific user by email
         Task<string> AddUserToOrganization(Guid organization, string receiver, string adminId);
 
         Task<string> RemoveUserFromOrganization(Guid organization, string receiver, string adminId);
 
+        //to get a specific organization
         Task<GetOrganizationDto> GetOrganization(Guid organizationId, string mail);
 
         Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter? filter, string userMail);
 
-        //Task<List<OrganizationUser>> organizationUsers(Guid organizationId, string userMail)
+        Task<IEnumerable<OrganizationUserDto>> organizationUsers(Guid organizationId, string userEmsil);
     }
 }

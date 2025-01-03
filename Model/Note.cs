@@ -1,6 +1,6 @@
 ﻿namespace Project_Manager.Model
 {
-    public class Note
+    public class Note : DateTimeClass
     {
         public Guid Id { get; set; }
 
@@ -8,6 +8,11 @@
 
         public Guid? IssueId { get; set; }
 
-        public User? Users { get; set; }
+        public Guid CreatedBy { get; set; }
+
+        public Guid UpdatedBy { get; set; }
+
+
+        public User Users { get; set; }
     }
 }
