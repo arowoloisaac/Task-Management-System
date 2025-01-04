@@ -1,4 +1,5 @@
 ﻿using Project_Manager.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project_Manager.Model
 {
@@ -7,6 +8,9 @@ namespace Project_Manager.Model
         public Guid Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
+
+        [MaxLength(50)]
+        public string Overview { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
 

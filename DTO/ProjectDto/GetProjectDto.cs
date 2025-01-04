@@ -8,6 +8,8 @@ namespace Project_Manager.DTO.ProjectDto
 
         public string Name { get; set; } = string.Empty;
 
+        public string Overview { get; set; } = string.Empty;
+
         public string Description { get; set; } = string.Empty;
 
         public Complexity Complexity { get; set; }

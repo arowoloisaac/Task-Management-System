@@ -14,6 +14,7 @@ namespace Project_Manager.DTO.UserDto
         public DateOnly BirthDate { get; set; }
 
         [Phone]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$")]
         public string PhoneNumber {  get; set; } = string.Empty;
 
         [MinLength(8)]

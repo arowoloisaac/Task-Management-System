@@ -43,28 +43,28 @@ namespace Project_Manager.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("/users/org={id}")]
-        public async Task<IActionResult> GetOrganizationUsers(Guid id)
-        {
-            try
-            {
-                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+        //[HttpGet]
+        //[Route("/users/org={id}")]
+        //public async Task<IActionResult> GetOrganizationUsers(Guid id)
+        //{
+        //    try
+        //    {
+        //        var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
 
-                if (user == null)
-                {
-                    return NotFound("User not found");
-                }
-                else
-                {
-                    return Ok(await _organizationUser.organizationUsers(id, user.Value));
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        if (user == null)
+        //        {
+        //            return NotFound("User not found");
+        //        }
+        //        else
+        //        {
+        //            return Ok(await _organizationUser.organizationUsers(id, user.Value));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
 
         [HttpGet]

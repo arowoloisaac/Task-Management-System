@@ -321,7 +321,7 @@ namespace Project_Manager.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UpdatedBy")
+                    b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UsersId")
@@ -433,6 +433,11 @@ namespace Project_Manager.Migrations
 
                     b.Property<Guid?>("OrganizationId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Overview")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Progress")
                         .HasColumnType("int");

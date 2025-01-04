@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Project_Manager.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/comment")]
     [ApiController]
     public class CommentController : ControllerBase
     {
+        public CommentController()
+        {
+            
+        }
     }
 }
