@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.Model;
@@ -11,6 +12,7 @@ namespace Project_Manager.Controllers
     [Route("api/")]
     [ApiController]
     [EnableCors]
+    [Authorize]
     public class GroupController : ControllerBase
     {
         private readonly IOrganizationGroupService _groupService;

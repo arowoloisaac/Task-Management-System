@@ -159,7 +159,7 @@ namespace Project_Manager.Service.IssueService
 
             var checkProject = await ValidateProject(projectId);
 
-            var getParentIssue = await ValidateIssue(parentIssueId, user.Id);
+            var getParentIssue = await ValidateIssue(parentIssueId, checkProject.Id, user.Id);
 
             var validateIssueName = await _context.Issues
                 .Where(issue => issue.Name == issueDto.Name && issue.Project.Id == projectId).SingleOrDefaultAsync();
@@ -222,13 +222,15 @@ namespace Project_Manager.Service.IssueService
             }
         }
 
-        public async Task<string> DeleteIssues(Guid issueId, bool isDeleteChildren, string mail)
+        public async Task<string> DeleteIssues(Guid issueId,Guid projectId, bool isDeleteChildren, string mail)
         {
             try
             {
                 var user = await _userConfig.GetUser(mail);
 
-                var issue = await ValidateIssue(issueId, user.Id);
+                var checkProject = await ValidateProject(projectId);
+
+                var issue = await ValidateIssue(issueId, checkProject.Id, user.Id);
 
                 var issueChildren = await _context.Issues
                         .Where(filter => filter.ParentIssue.Id == issueId)
@@ -294,11 +296,11 @@ namespace Project_Manager.Service.IssueService
         }
 
         public async Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,
-            Complexity? complexity, uint? EstimatedTimeInMinute, uint timeSpent, int issueLevel, string mail)
+            Complexity? complexity, uint? EstimatedTimeInMinute, uint timeSpent, int issueLevel, Guid projectId,string mail)
         {
             var user = await _userConfig.GetUser(mail);
 
-            await ValidateIssueUpdate(issueId, Name, Description, complexity, EstimatedTimeInMinute, timeSpent, issueLevel, user.Id);
+            await ValidateIssueUpdate(issueId, Name, Description, complexity, EstimatedTimeInMinute, timeSpent, issueLevel,projectId, user.Id);
 
             return "Task successful";
         }
@@ -327,12 +329,38 @@ namespace Project_Manager.Service.IssueService
             }
         }
 
+        public async Task<IEnumerable<RetrieveIssue>> GetSubIssues(Guid parentId, Guid projectId, string userId)
+        {
+            var user = await _userConfig.GetUser(userId);
+
+            var checkProject = await ValidateProject(projectId);
+
+            var getParentIssue = await ParentIssue(parentId, checkProject.Id, user.Id);
+
+            var getSubIssues = await _context.Issues.Where(iss => iss.ParentIssue.Id == getParentIssue.Id).ToListAsync();
+
+            if (getSubIssues.Count < 1)
+            {
+                return new List<RetrieveIssue>();
+            }
+
+            var mappedIssue = getSubIssues.Select(sub => new RetrieveIssue
+            {
+                id = sub.Id,
+                Name= sub.Name,
+                IssueType= sub.IssueType,
+            }).OrderDescending().ToList();
+
+            return mappedIssue;
+        }
 
         private async Task<string> ValidateIssueUpdate(Guid id, string? Name, string? Description,
-            Complexity? complexity, uint? estimatedTimeInMinute, uint timeSpent, int issueLevel, Guid userId)
+            Complexity? complexity, uint? estimatedTimeInMinute, uint timeSpent, int issueLevel, Guid projectId, Guid userId)
         {
-            
-            var getIssue = await ValidateIssue(id, userId);
+
+            var checkProject = await ValidateProject(projectId);
+
+            var getIssue = await ValidateIssue(id, checkProject.Id, userId);
             
             
             if (!string.IsNullOrEmpty(Name))
@@ -350,8 +378,10 @@ namespace Project_Manager.Service.IssueService
                 getIssue.Complexity = complexity.Value;
             }
 
-            uint initializedTime = getIssue.TimeSpent + timeSpent;
+            //uint initializedTime = getIssue.TimeSpent + timeSpent;
+            getIssue.TimeSpent += timeSpent;
 
+            uint initializedTime = getIssue.TimeSpent;
             if (estimatedTimeInMinute.HasValue)
             {
                 getIssue.EstimatedTimeInMinutes = estimatedTimeInMinute.Value;
@@ -459,9 +489,9 @@ namespace Project_Manager.Service.IssueService
             return validateProject;
         }
 
-        private async Task<Issue> ValidateIssue(Guid issueId, Guid userId)
+        private async Task<Issue> ValidateIssue(Guid issueId, Guid projectId,Guid userId)
         {
-            var getIssue = await _context.Issues.Where(search => search.Id == issueId && search.CreatedBy == userId).SingleOrDefaultAsync();
+            var getIssue = await _context.Issues.Where(search => search.Id == issueId && search.CreatedBy == userId && search.Project.Id == projectId).SingleOrDefaultAsync();
 
             if (getIssue == null)
             {
@@ -471,9 +501,9 @@ namespace Project_Manager.Service.IssueService
         }
 
         //to check if the parent issue is the sub issue of itself
-        private async Task<Issue> ParentIssue(Guid issueId, Guid userId)
+        private async Task<Issue> ParentIssue(Guid issueId, Guid projectId, Guid userId)
         {
-            var getIssue = await ValidateIssue(issueId, userId);
+            var getIssue = await ValidateIssue(issueId, projectId, userId);
 
             if (getIssue.ParentIssue == getIssue)
             {

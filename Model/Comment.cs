@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
 
-        public string Descriptiom { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         public required Issue Issue { get; set; }
 

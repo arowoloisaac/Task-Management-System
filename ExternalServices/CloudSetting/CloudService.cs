@@ -5,7 +5,7 @@ using Azure.Core;
 using Microsoft.Extensions.Options;
 using Project_Manager.Configuration;
 
-namespace Project_Manager.Service.Configuration.CloudSetting
+namespace Project_Manager.ExternalServices.CloudSetting
 {
     public class CloudService : ICloudService
     {
@@ -29,7 +29,7 @@ namespace Project_Manager.Service.Configuration.CloudSetting
             var response = await _s3Client.ListObjectsV2Async(objectCloud);
 
             //var respo = await _s3Client.ListObjectsAsync(objectCloud);
-            
+
 
             foreach (var obj in response.S3Objects)
             {

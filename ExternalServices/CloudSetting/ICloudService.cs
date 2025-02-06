@@ -1,4 +1,4 @@
-﻿namespace Project_Manager.Service.Configuration.CloudSetting
+﻿namespace Project_Manager.ExternalServices.CloudSetting
 {
     public interface ICloudService
     {

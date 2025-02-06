@@ -1,11 +1,19 @@
-﻿namespace Project_Manager.Service.CommentService
+﻿using Project_Manager.DTO.CommentDto;
+
+namespace Project_Manager.Service.CommentService
 {
     public interface ICommentService
     {
-        Task CreateComment(string description, Guid issueId, string authorId);
+        Task<string> CreateComment(string description, Guid issueId, string authorId);
 
-        Task UpdateComment(string description, Guid commentId, string authorId);
+        Task<string> UpdateComment(string description, Guid commentId, Guid issueId, string authorId);
 
-        Task DeleteComment(Guid commentId, Guid issueId, string authorId);
+        Task<string> DeleteComment(Guid commentId, Guid issueId, string authorId);
+
+        Task<IEnumerable<RetrieveCommentDto>> GetAllComments(Guid issueId,string authorId);
+
+        Task<RetrieveCommentDto> GetComment(Guid commentId, Guid issueId, string authorId);
+
+
     }
 }

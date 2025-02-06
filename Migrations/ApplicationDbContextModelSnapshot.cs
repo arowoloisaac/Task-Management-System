@@ -149,11 +149,11 @@ namespace Project_Manager.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Descriptiom")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("IssueId")
+                    b.Property<Guid>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedDate")
@@ -702,7 +702,9 @@ namespace Project_Manager.Migrations
                 {
                     b.HasOne("Project_Manager.Model.Issue", "Issue")
                         .WithMany("Comments")
-                        .HasForeignKey("IssueId");
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Project_Manager.Model.User", "User")
                         .WithMany("Comment")

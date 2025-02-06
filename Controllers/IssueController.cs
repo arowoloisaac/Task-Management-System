@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.DTO.IssueDto;
@@ -10,12 +11,14 @@ using System.Security.Claims;
 namespace Project_Manager.Controllers
 {
     [Route("api/")]
-    [ApiController][EnableCors]
+    [ApiController]
+    [EnableCors]
+    [Authorize]
     public class IssueController : ControllerBase
     {
-        private readonly IssueService _issueService;
+        private readonly IIssueService _issueService;
 
-        public IssueController(IssueService issueService)
+        public IssueController(IIssueService issueService)
         {
             _issueService = issueService;
         }
@@ -76,7 +79,7 @@ namespace Project_Manager.Controllers
                 {
                     return NotFound("User not found");
                 }
-                return Ok(await _issueService.DeleteIssues(issueId, isDeleteChildren, user.Value));
+                return Ok(await _issueService.DeleteIssues(issueId,projectId, isDeleteChildren, user.Value));
             }
             catch (Exception ex)
             {
@@ -87,7 +90,7 @@ namespace Project_Manager.Controllers
         //same here
         [HttpPut]
         [Route("{issueId}/update")]
-        public async Task<IActionResult> UpdateIssue(Guid issueId, string? name, string? description, Complexity? complexity, 
+        public async Task<IActionResult> UpdateIssue(Guid issueId,Guid projectId, string? name, string? description, Complexity? complexity, 
             uint? estimatedTimeInMinute, uint timeSpent, int issueLevel)
         {
             try
@@ -97,7 +100,7 @@ namespace Project_Manager.Controllers
                 {
                     return NotFound("User not found");
                 }
-                return Ok(await _issueService.UpdateIssues(issueId, name, description, complexity,estimatedTimeInMinute, timeSpent, issueLevel,user.Value));
+                return Ok(await _issueService.UpdateIssues(issueId, name, description, complexity,estimatedTimeInMinute, timeSpent, issueLevel, projectId,user.Value));
             }
             catch (Exception ex)
             {
@@ -155,6 +158,26 @@ namespace Project_Manager.Controllers
                 return Ok(await _issueService.GetIssue(projectId));
             }
             catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("parentId={parentIssueId}")]
+        public async Task<IActionResult> GetSubIssues(Guid projectId, Guid parentIssueId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                return Ok(await _issueService.GetSubIssues(parentIssueId, projectId, user.Value));
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

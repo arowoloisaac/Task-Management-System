@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Project_Manager.Service.Configuration.CloudSetting;
+using Project_Manager.ExternalServices.CloudSetting;
 
 namespace Project_Manager.Controllers
 {

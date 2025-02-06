@@ -21,7 +21,8 @@ using Project_Manager.Service.OrganizationProjectService;
 using Project_Manager.Service.AvatarService;
 using Amazon.S3;
 using Amazon.Runtime;
-using Project_Manager.Service.Configuration.CloudSetting;
+using Project_Manager.ExternalServices.CloudSetting;
+using Project_Manager.Service.CommentService;
 
 namespace Project_Manager
 {
@@ -112,6 +113,7 @@ namespace Project_Manager
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUserConfig, UserConfig>();
             builder.Services.AddScoped<IIssueService, IssueService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IAvatarService, AvatarService>();

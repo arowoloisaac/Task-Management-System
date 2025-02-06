@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.DTO.ProjectDto;
@@ -13,6 +14,7 @@ namespace Project_Manager.Controllers
     [Route("api/project")]
     [ApiController]
     [EnableCors]
+    [Authorize]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
