@@ -1,6 +1,11 @@
-﻿namespace Project_Manager.Service.NoteService
+﻿
+namespace Project_Manager.Service.NoteService
 {
-    public class NoteService
+    public class NoteService : INoteService
     {
+        public Task CreateNote()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

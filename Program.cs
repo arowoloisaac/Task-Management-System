@@ -19,6 +19,9 @@ using Project_Manager.Service.UserOrganizationService;
 using Project_Manager.Service.OrganizationUserService;
 using Project_Manager.Service.OrganizationProjectService;
 using Project_Manager.Service.AvatarService;
+using Amazon.S3;
+using Amazon.Runtime;
+using Project_Manager.Service.Configuration.CloudSetting;
 
 namespace Project_Manager
 {
@@ -84,15 +87,39 @@ namespace Project_Manager
                 }
             );
 
+            // bind the cloud setting with the json
+            var cloudSection = builder.Configuration.GetSection("AWS");
+            builder.Services.Configure<YandexCloudSetting>(cloudSection);
+
+            // get the binded section here
+            var cloudConfig = cloudSection.Get<YandexCloudSetting>();
+
+            //aws for yandex cloud configuration
+            AmazonS3Config configS3 = new AmazonS3Config
+            {
+                ServiceURL = cloudConfig.ServiceURL,
+                ForcePathStyle = true,
+            };
+
+            // set the credentials
+            var credentials = new BasicAWSCredentials(cloudConfig.AccessKey, cloudConfig.SecretKey);
+            AmazonS3Client s3Client = new AmazonS3Client(credentials, configS3);
+
+            // this is to register the aws using this package "dotnet add package AWSSDK.Extensions.NETCore.Setup"
+            builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+            builder.Services.AddAWSService<IAmazonS3>();
+
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUserConfig, UserConfig>();
-            builder.Services.AddScoped<IssueService, IssueService>();
+            builder.Services.AddScoped<IIssueService, IssueService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IAvatarService, AvatarService>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
             builder.Services.AddScoped<IOrganizationUserService, OrganizationUserService>();
             builder.Services.AddScoped<IOrganizationGroupService, OrganizationGroupService>();
+            builder.Services.AddSingleton(s3Client);
+            builder.Services.AddScoped<ICloudService, CloudService>();
 
 
             builder.Services.AddIdentity<User, Role>(

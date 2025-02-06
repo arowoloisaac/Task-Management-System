@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace Project_Manager.Controllers
 {
-    [Route("api/issue")]
+    [Route("api/")]
     [ApiController][EnableCors]
     public class IssueController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace Project_Manager.Controllers
         }
 
         [HttpPost]
-        [Route("ceate-issue/{projectId}")]
+        [Route("project={projectId}/ceate-issue")]
         public async Task<IActionResult> CreateIssue([Required]Guid projectId, CreateIssue createIssue)
         {
             try
@@ -64,9 +64,10 @@ namespace Project_Manager.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("{issueId}/delete")]
-        public async Task<IActionResult> DeleteIssue(Guid issueId, [Required] bool isDeleteChildren)
+        //add the project id later
+        [HttpDelete] 
+        [Route("project={projectId}/{issueId}/delete")]
+        public async Task<IActionResult> DeleteIssue(Guid issueId, Guid projectId, [Required] bool isDeleteChildren)
         {
             try
             {
@@ -83,6 +84,7 @@ namespace Project_Manager.Controllers
             }
         }
 
+        //same here
         [HttpPut]
         [Route("{issueId}/update")]
         public async Task<IActionResult> UpdateIssue(Guid issueId, string? name, string? description, Complexity? complexity, 
@@ -115,6 +117,25 @@ namespace Project_Manager.Controllers
                     return NotFound("user not found");
                 }
                 return Ok(await _issueService.GetIssues(issueType, complexity, progress, projectId, user.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("projectId={projectId}/issues/page")]
+        public async Task<IActionResult> GetProjectIssuesPaginated(Guid projectId, [FromQuery] IssueType? issueType, [FromQuery] Complexity? complexity, [FromQuery] Progress? progress, int? page, int itemPerPage)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+                if (user == null)
+                {
+                    return NotFound("user not found");
+                }
+                return Ok(await _issueService.GetIssuesPaginated(issueType, complexity, progress, page, itemPerPage,projectId, user.Value));
             }
             catch (Exception ex)
             {

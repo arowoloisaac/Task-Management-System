@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project_Manager.Data;
 using Project_Manager.DTO.IssueDto;
+using Project_Manager.DTO.ProjectDto;
 using Project_Manager.DTO.TaskDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
 using Project_Manager.Service.UserConfiguration;
 using System;
+using System.Diagnostics;
 
 namespace Project_Manager.Service.IssueService
 {
@@ -80,9 +82,74 @@ namespace Project_Manager.Service.IssueService
             }
         }
 
-        public async Task<IEnumerable<RetrieveIssue>> GetIssuesPaginated(IssueType? issueType, Complexity? complexity, Progress? progress, int? page, int itemPerPage, Guid projectId, string mail)
+        public async Task<IssueResponse> GetIssuesPaginated(IssueType? issueType, Complexity? complexity, Progress? progress, int? page, int itemPerPage, Guid projectId, string mail)
         {
-            throw new NotImplementedException();
+            var user = await _userConfig.GetUser(mail);
+            IQueryable<Issue> query = _context.Issues;
+
+            int defaultItemsPerPage = 7;
+
+            var items = itemPerPage == 0 ? defaultItemsPerPage : itemPerPage;
+
+            if (issueType.HasValue)
+            {
+                query = query.Where(filter => filter.IssueType == issueType.Value);
+            }
+            if (complexity.HasValue)
+            {
+                query = query.Where(filter => filter.Complexity == complexity.Value);
+            }
+            if (progress.HasValue)
+            {
+                query = query.Where(filter => filter.Progress == progress.Value);
+            }
+
+            var getIssues = await query.Where(find => find.Project.Id == projectId && find.CreatedBy == user.Id).ToListAsync();
+
+            if (getIssues.Count <= 0)
+            {
+                return new IssueResponse(new List<RetrieveIssue>(), 0, 0, 0, 0, 0, 0);
+            }
+
+            else
+            {
+                int pageResult = items;
+                int currentPage = page.HasValue && page > 0 ? page.Value : 1;
+
+
+
+                int totalItems = await query.CountAsync();
+                int pageCount = (int)Math.Ceiling((double)totalItems / pageResult);
+
+                var issues = await query.Skip((currentPage - 1) * pageResult)
+                                        .Take(pageResult)
+                                        .ToListAsync();
+
+                totalItems = issues.Count;
+
+                if (totalItems < 1)
+                {
+                    throw new Exception("Page doesn't exist");
+                }
+
+                int itemStart = (currentPage - 1) * pageResult + 1; ;
+
+                int itemEnd = Math.Min(currentPage * pageResult, totalItems) + (itemStart - 1);
+
+
+                var retrievedIssues = getIssues.Select(find => new RetrieveIssue
+                {
+                    id = find.Id,
+                    Name = find.Name,
+                    Progress = find.Progress,
+                    Complexity = find.Complexity,
+                    IssueType = find.IssueType,
+                }).ToList();
+
+                //return response;
+                var reponse = new IssueResponse(retrievedIssues, currentPage, totalItems, pageCount, itemStart, itemEnd, getIssues.Count);
+                return reponse;
+            }
         }
 
 
@@ -216,7 +283,13 @@ namespace Project_Manager.Service.IssueService
                 return new List<RetrieveIssue>();
             }
 
-            var response = getAllIssues.Select(find => new RetrieveIssue { id = find.Id }).ToList();
+            var response = getAllIssues.Select(find => new RetrieveIssue { 
+                id = find.Id,
+                Name = find.Name,
+                Progress = find.Progress,
+                Complexity = find.Complexity,
+                IssueType = find.IssueType,
+            }).ToList();
             return response;
         }
 
@@ -241,9 +314,13 @@ namespace Project_Manager.Service.IssueService
 
             else
             {
-                var response = list.Select(isse => new RetrieveIssue
+                var response = list.Select(issue => new RetrieveIssue
                 {
-                    id = isse.Id,
+                    id = issue.Id,
+                    Name = issue.Name,
+                    Progress = issue.Progress,
+                    Complexity = issue.Complexity,
+                    IssueType = issue.IssueType,
                 }).ToList();
 
                 return response;

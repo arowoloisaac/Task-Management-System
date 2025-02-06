@@ -1,6 +1,5 @@
 ﻿using Project_Manager.DTO.ProjectDto;
 using Project_Manager.Enum;
-using Project_Manager.Model;
 
 namespace Project_Manager.Service.ProjectService
 {

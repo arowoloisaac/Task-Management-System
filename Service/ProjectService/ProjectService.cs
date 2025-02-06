@@ -51,7 +51,8 @@ namespace Project_Manager.Service.ProjectService
                         Creator = user,
                         CreatedTime = DateTime.UtcNow,
                         Complexity = dto.Complexity,
-                        Progress = Progress.Todo
+                        Progress = Progress.Todo,
+                        Overview = dto.Overview
                     };
                     _context.Projects.Add(createProject);
 
@@ -62,7 +63,7 @@ namespace Project_Manager.Service.ProjectService
             } 
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while saving the project: " + ex.InnerException?.Message);
+                throw new Exception("An error occurred while saving the project: Server Error or Project Exists" + ex.Message);
             }
             
         }
@@ -220,6 +221,7 @@ namespace Project_Manager.Service.ProjectService
                     Description = project.Description,
                     Progress = project.Progress,
                     Complexity = project.Complexity,
+                    Overview = project.Overview,
                 });
                 var response = new ProjectResponse(mappedProjects.ToList(), currentPage, totalItems, pageCount, itemStart, itemEnd, projectList.Count);
                 return response;

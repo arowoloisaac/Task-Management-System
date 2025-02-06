@@ -1,6 +1,6 @@
-﻿using Project_Manager.DTO.ProjectDto;
+﻿using Project_Manager.Model;
 
-namespace Project_Manager.Model
+namespace Project_Manager.DTO.ProjectDto
 {
     public class ProjectResponse
     {
@@ -8,18 +8,18 @@ namespace Project_Manager.Model
 
         public Pagination Pagination { get; set; }
 
-        public ProjectResponse(List<GetProjectDto> project, int page, int total, int count, int start,int end, int totalItem)
+        public ProjectResponse(List<GetProjectDto> project, int page, int total, int count, int start, int end, int totalItem)
         {
-            this.Projects = project;
+            Projects = project;
 
-            this.Pagination = new Pagination
+            Pagination = new Pagination
             {
                 Count = count,
                 Current = page,
                 Size = total,
                 Start = start,
                 End = end,
-               TotalItems = totalItem
+                TotalItems = totalItem
             };
         }
     }

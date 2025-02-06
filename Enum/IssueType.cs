@@ -7,7 +7,10 @@ namespace Project_Manager.Enum
     {
         Task, 
         Bug, 
-        Test, Design,
-        Code
+        Documentation,
+        Feature, 
+        Improvement,  
+        Incident, 
+        Research
     }
 }

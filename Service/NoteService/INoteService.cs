@@ -2,5 +2,8 @@
 {
     public interface INoteService
     {
+        Task CreateNote();
+
+        //Task DeleteNote();
     }
 }

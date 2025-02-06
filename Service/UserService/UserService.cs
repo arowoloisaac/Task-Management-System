@@ -57,6 +57,7 @@ namespace Project_Manager.Service.UserService
                 var getAvatar = _applicationDbContext.Avatars.FirstOrDefault();
                 var createUser = await _userManager.CreateAsync( new User
                 {
+                    Id = Guid.NewGuid(),
                     Email = registerDto.Email,
                     UserName = registerDto.Email,
                     FirstName = registerDto.FirstName,

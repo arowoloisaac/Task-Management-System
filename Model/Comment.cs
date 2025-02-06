@@ -6,7 +6,7 @@
 
         public string Descriptiom { get; set; } = string.Empty;
 
-        public Issue? Issue { get; set; }
+        public required Issue Issue { get; set; }
 
         public User? User { get; set; }
     }
