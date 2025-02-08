@@ -24,7 +24,7 @@ namespace Project_Manager.Controllers
         }
 
         [HttpPost]
-        [Route("project={projectId}/ceate-issue")]
+        [Route("project={projectId}/create-issue")]
         public async Task<IActionResult> CreateIssue([Required]Guid projectId, CreateIssue createIssue)
         {
             try
@@ -49,7 +49,7 @@ namespace Project_Manager.Controllers
 
 
         [HttpPost]
-        [Route("project={projectId}/{parentIssueId}/create-subIssue")]
+        [Route("project={projectId}/issue={parentIssueId}/create-subIssue")]
         public async Task<IActionResult> CreateSubIssue(Guid projectId ,CreateIssue issueDto, Guid parentIssueId)
         {
             try
@@ -69,7 +69,7 @@ namespace Project_Manager.Controllers
 
         //add the project id later
         [HttpDelete] 
-        [Route("project={projectId}/{issueId}/delete")]
+        [Route("project={projectId}/issue={issueId}/delete")]
         public async Task<IActionResult> DeleteIssue(Guid issueId, Guid projectId, [Required] bool isDeleteChildren)
         {
             try
@@ -89,7 +89,7 @@ namespace Project_Manager.Controllers
 
         //same here
         [HttpPut]
-        [Route("{issueId}/update")]
+        [Route("project={projectId}/issue={issueId}/update")]
         public async Task<IActionResult> UpdateIssue(Guid issueId,Guid projectId, string? name, string? description, Complexity? complexity, 
             uint? estimatedTimeInMinute, uint timeSpent, int issueLevel)
         {
@@ -149,7 +149,7 @@ namespace Project_Manager.Controllers
 
         [HttpGet]
         [Route("yo")]
-        public async Task<IActionResult> GetProjectIssus(Guid projectId)
+        public async Task<IActionResult> GetProjectIssue(Guid projectId)
         {
             try
             {
@@ -158,6 +158,26 @@ namespace Project_Manager.Controllers
                 return Ok(await _issueService.GetIssue(projectId));
             }
             catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("project={projectId}/issue={issueId}")]
+        public async Task<IActionResult> GetIssueById(Guid projectId, Guid issueId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                return Ok(await _issueService.GetIssueById(projectId, issueId, user.Value));
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

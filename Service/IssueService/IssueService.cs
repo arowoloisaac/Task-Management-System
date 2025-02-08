@@ -305,6 +305,22 @@ namespace Project_Manager.Service.IssueService
             return "Task successful";
         }
 
+
+        public async Task<RetrieveIssue> GetIssueById(Guid projectId, Guid issueId, string userId)
+        {
+            var exactIssue = await ValidateIssue(issueId, projectId, Guid.Parse(userId));
+
+            return new RetrieveIssue
+            {
+                id = exactIssue.Id,
+                Name = exactIssue.Name,
+                Complexity = exactIssue.Complexity,
+                IssueType = exactIssue.IssueType,
+                Progress = exactIssue.Progress,
+            };
+        }
+
+
         public async Task<List<RetrieveIssue>> GetIssue(Guid projectId)
         {
             var list = await _context.Issues.Where(issues => issues.Project.Id == projectId).ToListAsync(); 
@@ -331,7 +347,7 @@ namespace Project_Manager.Service.IssueService
 
         public async Task<IEnumerable<RetrieveIssue>> GetSubIssues(Guid parentId, Guid projectId, string userId)
         {
-            var user = await _userConfig.GetUser(userId);
+            var user = await _userConfig.GetUserById(userId);
 
             var checkProject = await ValidateProject(projectId);
 

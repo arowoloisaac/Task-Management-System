@@ -9,7 +9,8 @@
         Testing,       // Creating or running tests
         Documentation, // Writing or updating documentation
         Deployment,    // Releasing changes to production
-        Monitoring
+        Monitoring,
+        Coding
 
 
         /***Task,          // General work item
