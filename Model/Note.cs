@@ -4,9 +4,11 @@
     {
         public Guid Id { get; set; }
 
-        public string Description { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
 
         public Guid? IssueId { get; set; }
+
+        public Guid? ProjectId { get; set; }
 
         public Guid CreatedBy { get; set; }
 

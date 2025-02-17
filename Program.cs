@@ -23,6 +23,7 @@ using Amazon.S3;
 using Amazon.Runtime;
 using Project_Manager.ExternalServices.CloudSetting;
 using Project_Manager.Service.CommentService;
+using Project_Manager.Service.NoteService;
 
 namespace Project_Manager
 {
@@ -117,6 +118,7 @@ namespace Project_Manager
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IAvatarService, AvatarService>();
+            builder.Services.AddScoped<INoteService, NoteService>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
             builder.Services.AddScoped<IOrganizationUserService, OrganizationUserService>();
             builder.Services.AddScoped<IOrganizationGroupService, OrganizationGroupService>();

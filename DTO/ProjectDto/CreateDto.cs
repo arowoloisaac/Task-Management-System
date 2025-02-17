@@ -7,7 +7,7 @@ namespace Project_Manager.DTO.ProjectDto
     {
         public string Name { get; set; } = string.Empty;
 
-        [MaxLength(50)]
+        [MaxLength(300)]
         public string Overview { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;

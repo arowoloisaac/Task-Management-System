@@ -33,7 +33,7 @@ namespace Project_Manager.Controllers
 
                 if (user == null)
                 {
-                    return NotFound("User is not found");
+                    return NotFound("User not found");
                 }
 
                 else

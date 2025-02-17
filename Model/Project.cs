@@ -22,6 +22,8 @@ namespace Project_Manager.Model
 
         public Complexity Complexity { get; set; }
 
+        public ICollection<Note>? Notes { get; set; }
+
         //foreign key for personal projects
         public User? Creator { get; set; }
 

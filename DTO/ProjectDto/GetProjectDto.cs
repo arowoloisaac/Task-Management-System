@@ -16,6 +16,6 @@ namespace Project_Manager.DTO.ProjectDto
 
         public Progress Progress { get; set; }
 
-        //public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

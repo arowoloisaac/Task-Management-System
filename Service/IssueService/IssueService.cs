@@ -305,7 +305,6 @@ namespace Project_Manager.Service.IssueService
             return "Task successful";
         }
 
-
         public async Task<RetrieveIssue> GetIssueById(Guid projectId, Guid issueId, string userId)
         {
             var exactIssue = await ValidateIssue(issueId, projectId, Guid.Parse(userId));
@@ -319,7 +318,6 @@ namespace Project_Manager.Service.IssueService
                 Progress = exactIssue.Progress,
             };
         }
-
 
         public async Task<List<RetrieveIssue>> GetIssue(Guid projectId)
         {

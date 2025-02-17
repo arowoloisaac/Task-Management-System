@@ -305,21 +305,24 @@ namespace Project_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -330,6 +333,8 @@ namespace Project_Manager.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IssueId");
+
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UsersId");
 
@@ -742,7 +747,7 @@ namespace Project_Manager.Migrations
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>
                 {
                     b.HasOne("Project_Manager.Model.Issue", "ParentIssue")
-                        .WithMany()
+                        .WithMany("SubIssues")
                         .HasForeignKey("ParentIssueId");
 
                     b.HasOne("Project_Manager.Model.Project", "Project")
@@ -759,6 +764,10 @@ namespace Project_Manager.Migrations
                     b.HasOne("Project_Manager.Model.Issue", null)
                         .WithMany("Notes")
                         .HasForeignKey("IssueId");
+
+                    b.HasOne("Project_Manager.Model.Project", null)
+                        .WithMany("Notes")
+                        .HasForeignKey("ProjectId");
 
                     b.HasOne("Project_Manager.Model.User", "Users")
                         .WithMany("Notes")
@@ -865,6 +874,8 @@ namespace Project_Manager.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Notes");
+
+                    b.Navigation("SubIssues");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Organization", b =>
@@ -881,6 +892,8 @@ namespace Project_Manager.Migrations
             modelBuilder.Entity("Project_Manager.Model.Project", b =>
                 {
                     b.Navigation("Issues");
+
+                    b.Navigation("Notes");
 
                     b.Navigation("Wiki");
                 });

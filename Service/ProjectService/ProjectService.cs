@@ -115,7 +115,10 @@ namespace Project_Manager.Service.ProjectService
                     Id = project.Id,
                     Name = project.Name,
                     Description = project.Description,
-                    Progress = project.Progress
+                    Progress = project.Progress,
+                    Overview = project.Overview,
+                    DateCreated = project.CreatedTime,
+                    Complexity = project.Complexity,
                 };
             }
         }
@@ -153,7 +156,8 @@ namespace Project_Manager.Service.ProjectService
                     Name = project.Name,
                     Description = project.Description,
                     Progress = project.Progress,
-                    Complexity = project.Complexity
+                    Complexity = project.Complexity,
+                    Overview = project.Overview
                 }).ToList();
 
                 return projects;

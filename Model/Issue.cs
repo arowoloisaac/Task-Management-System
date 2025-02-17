@@ -38,6 +38,8 @@ namespace Project_Manager.Model
 
         public Issue? ParentIssue { get; set; }
 
+        public ICollection<Issue>? SubIssues { get; set; }
+
         //public Guid ProjectId { get; set; }
 
         public Project? Project { get; set; }
