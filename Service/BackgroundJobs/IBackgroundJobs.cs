@@ -2,5 +2,6 @@
 {
     public interface IBackgroundJobs
     {
+        Task<bool> SendEmailReminderAsync();
     }
 }

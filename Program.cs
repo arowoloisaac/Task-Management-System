@@ -24,6 +24,7 @@ using Amazon.Runtime;
 using Project_Manager.ExternalServices.CloudSetting;
 using Project_Manager.Service.CommentService;
 using Project_Manager.Service.NoteService;
+using Project_Manager.ExternalServices.EmailService;
 
 namespace Project_Manager
 {
@@ -124,6 +125,7 @@ namespace Project_Manager
             builder.Services.AddScoped<IOrganizationGroupService, OrganizationGroupService>();
             builder.Services.AddSingleton(s3Client);
             builder.Services.AddScoped<ICloudService, CloudService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
 
             builder.Services.AddIdentity<User, Role>(
