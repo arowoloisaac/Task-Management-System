@@ -61,6 +61,8 @@ namespace Project_Manager.Service.IssueService
                             Progress = Progress.Todo,
                             IssueType = issueDto.IssueType,
                             Project = checkProject,
+                            AssignedUserTo = user.Id,
+                            User = user,
                             
                         });
                         await _context.SaveChangesAsync();
@@ -368,6 +370,30 @@ namespace Project_Manager.Service.IssueService
             return mappedIssue;
         }
 
+
+        public async Task<IEnumerable<DeadlineListDto>> IssueDeadlineList()
+        {
+            DateOnly dateNow = DateOnly.FromDateTime(DateTime.UtcNow);
+            DateOnly threshold = dateNow.AddDays(1);
+
+            var deadlineList = await _context.Issues
+                .Where(iss => iss.EndDate <= threshold && iss.EndDate > dateNow && 
+                (iss.Progress != Progress.Canceled || iss.Progress != Progress.Done) 
+                && iss.Project.OrganizationId == null && iss.User != null)
+                .Include(user => user.User)
+                .ToListAsync();
+            
+            var selectedList = deadlineList.Select(iss => new DeadlineListDto
+            {
+                EndDate = iss.EndDate,
+                Name = iss.Name,
+                User = iss.User.UserName
+            }).ToList();
+
+            return selectedList;
+        }
+
+
         private async Task<string> ValidateIssueUpdate(Guid id, string? Name, string? Description,
             Complexity? complexity, uint? estimatedTimeInMinute, uint timeSpent, int issueLevel, Guid projectId, Guid userId)
         {
@@ -525,5 +551,6 @@ namespace Project_Manager.Service.IssueService
             }
             return getIssue;
         }
+
     }
 }

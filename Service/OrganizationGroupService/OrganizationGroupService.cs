@@ -68,7 +68,7 @@ namespace Project_Manager.Service.OrganizationProjectService
                 var getGroupUser = await _context.GroupUsers
                     .Include(ur => ur.User)
                     .Include(gp => gp.Group)
-                    .Include(ro => ro.RoleId)
+                    .Include(ro => ro.Role)
                     .Where(grp => grp.Group.Id == getGroup.Id).ToListAsync();
 
                 if(getGroupUser == null)

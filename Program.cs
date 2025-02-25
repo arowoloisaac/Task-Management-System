@@ -25,6 +25,8 @@ using Project_Manager.ExternalServices.CloudSetting;
 using Project_Manager.Service.CommentService;
 using Project_Manager.Service.NoteService;
 using Project_Manager.ExternalServices.EmailService;
+using Quartz;
+using Project_Manager.Service.BackgroundJobs;
 
 namespace Project_Manager
 {
@@ -89,6 +91,25 @@ namespace Project_Manager
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
                 }
             );
+
+            builder.Services.AddQuartz( qrt =>
+            {
+                var jobs = new JobKey("SendReminderJob");
+                qrt.AddJob<SendReminderJobs>(opt => opt.WithIdentity(jobs));
+
+                qrt.AddTrigger(opts =>
+                {
+                    opts
+                    .ForJob(jobs)
+                    .WithIdentity("SendReminderJobTrigger")
+                    .WithSimpleSchedule(x => x
+                        .WithInterval(TimeSpan.FromDays(1))
+                        .RepeatForever());
+                });
+            });
+
+            //host the quartz
+            builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
             // bind the cloud setting with the json
             var cloudSection = builder.Configuration.GetSection("AWS");

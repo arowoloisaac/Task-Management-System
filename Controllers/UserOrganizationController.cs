@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.Enum;
+using Project_Manager.Model;
 using Project_Manager.Service.UserOrganizationService;
 using System.Security.Claims;
 
 namespace Project_Manager.Controllers
 {
-    [Route("api/organization")]
+    [Route("api/")]
     [ApiController]
     [EnableCors]
     [Authorize]
@@ -23,7 +24,7 @@ namespace Project_Manager.Controllers
 
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("organization/{id}")]
         public async Task<IActionResult> GetOrganization(Guid id)
         {
             try
@@ -45,32 +46,32 @@ namespace Project_Manager.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("/users/org={id}")]
-        //public async Task<IActionResult> GetOrganizationUsers(Guid id)
-        //{
-        //    try
-        //    {
-        //        var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+        [HttpGet]
+        [Route("organization={id}/users")]
+        public async Task<IActionResult> GetOrganizationUsers(Guid id)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
 
-        //        if (user == null)
-        //        {
-        //            return NotFound("User not found");
-        //        }
-        //        else
-        //        {
-        //            return Ok(await _organizationUser.organizationUsers(id, user.Value));
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                else
+                {
+                    return Ok(await _organizationUser.OrganizationUsers(id, user.Value));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         [HttpGet]
-        [Route("")]
+        [Route("organization")]
         public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationFilter? filter)
         {
             try
@@ -91,8 +92,30 @@ namespace Project_Manager.Controllers
 
 
         [HttpPost]
-        [Route("{organizationId}/invite={inviteeMail}")]
+        [Route("organization/{organizationId}/invite={inviteeMail}")]
         public async Task<IActionResult> SendInvitationRequests(Guid organizationId, string inviteeMail)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("User doesn't exist");
+                }
+
+                return Ok(await _organizationUser.SendOrganizationRequest(organizationId, inviteeMail, user.Value));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpDelete]
+        [Route("organization/{organizationId}/invite={inviteeMail}")]
+        public async Task<IActionResult> RevokeInvitationRequests(Guid organizationId, string inviteeMail)
         {
             try
             {
@@ -103,9 +126,9 @@ namespace Project_Manager.Controllers
                     return NotFound("User doesn't exist");
                 }
 
-                return Ok(await _organizationUser.AddUserToOrganization(organizationId, inviteeMail, user.Value));
+                return Ok(await _organizationUser.RevokeOrganizationRequest(organizationId, inviteeMail, user.Value));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -113,7 +136,7 @@ namespace Project_Manager.Controllers
 
 
         [HttpDelete]
-        [Route("{id}/remove/{memberEmail}")]
+        [Route("organization/{id}/remove/{memberEmail}")]
         public async Task<IActionResult> RemoveUserFromOrganization(Guid id, string memberEmail)
         {
             try
@@ -126,6 +149,70 @@ namespace Project_Manager.Controllers
                 }
 
                 return Ok(await _organizationUser.RemoveUserFromOrganization(id, memberEmail, user.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("notification/request/accept/{organizationId}")]
+        public async Task<IActionResult> AcceptOrganizationRequest(Guid organizationId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if( user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                return Ok(await _organizationUser.AcceptOrganizationRequest(organizationId, user.Value));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpDelete]
+        [Route("notification/request/reject/{organizationId}")]
+        public async Task<IActionResult> RejectOrganizationRequest(Guid organizationId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                return Ok(await _organizationUser.RejectOrganizationRequest(organizationId, user.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("notification/request")]
+        public async Task<IActionResult> GetInvitationList()
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                return Ok(await _organizationUser.InvitationList(user.Value));
             }
             catch (Exception ex)
             {

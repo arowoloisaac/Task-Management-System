@@ -25,5 +25,7 @@ namespace Project_Manager.Service.IssueService
         Task<IEnumerable<RetrieveIssue>> GetSubIssues(Guid parentId, Guid projectId, string userId);
 
         Task<RetrieveIssue> GetIssueById(Guid projectId, Guid issueId, string userId);
+
+        Task<IEnumerable<DeadlineListDto>> IssueDeadlineList();
     }
 }

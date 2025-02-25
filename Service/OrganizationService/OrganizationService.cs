@@ -66,7 +66,7 @@ namespace Project_Manager.Service.OrganizationService
 
                 if(savedOrg == null)
                 {
-                    throw new Exception("Uyou don't have any orgaization here");
+                    throw new Exception("you don't have any orgaization here");
                 }
 
                 var getRole = await _roleManager.FindByNameAsync(role);
@@ -109,10 +109,6 @@ namespace Project_Manager.Service.OrganizationService
             var user = await _userConfig.GetUser(mail);
             var orgAdmin = await _userConfig.ValidateOrganizationUser(mail, organizationId, role);
            
-            /*var validateOrg = await _context.OrganizationUser
-                .Where(org => org.Role.Name == role && org.User.Id == user.Id && org.Organization.Id == organizationId)
-                .FirstOrDefaultAsync();*/
-
             var valToRemoveOrg = await _context.OrganizationUser
                 .Include(org => org.Organization)
                 .Include(org => org.User)

@@ -137,7 +137,7 @@ namespace Project_Manager.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Avatars");
+                    b.ToTable("Avatars", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Comment", b =>
@@ -168,7 +168,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Group", b =>
@@ -204,7 +204,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.GroupUser", b =>
@@ -228,7 +228,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GroupUsers");
+                    b.ToTable("GroupUsers", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>
@@ -290,13 +290,18 @@ namespace Project_Manager.Migrations
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ParentIssueId");
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Issues");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Issues", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Note", b =>
@@ -338,7 +343,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Organization", b =>
@@ -372,7 +377,7 @@ namespace Project_Manager.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organizations");
+                    b.ToTable("Organizations", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.OrganizationUser", b =>
@@ -398,7 +403,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OrganizationUser");
+                    b.ToTable("OrganizationUser", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Project", b =>
@@ -461,7 +466,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Requests", b =>
@@ -486,7 +491,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Requests");
+                    b.ToTable("Requests", (string)null);
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Role", b =>
@@ -649,7 +654,7 @@ namespace Project_Manager.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Wikis");
+                    b.ToTable("Wikis", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -754,9 +759,15 @@ namespace Project_Manager.Migrations
                         .WithMany("Issues")
                         .HasForeignKey("ProjectId");
 
+                    b.HasOne("Project_Manager.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("ParentIssue");
 
                     b.Navigation("Project");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Note", b =>

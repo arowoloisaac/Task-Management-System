@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Project_Manager.Configuration;
 using Project_Manager.Data;
 using Project_Manager.DTO.OrganizationDto;
+using Project_Manager.DTO.RequestDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
 using Project_Manager.Service.UserConfiguration;
 using Project_Manager.Service.UserOrganizationService;
+using System.Data;
 
 namespace Project_Manager.Service.OrganizationUserService
 {
@@ -16,6 +18,7 @@ namespace Project_Manager.Service.OrganizationUserService
         private readonly IUserConfig _userConfig;
 
         public string AdminRole = ApplicationRoleNames.OrganizationAdministrator;
+        public const string MemberRole = ApplicationRoleNames.OrganizationMember;
 
         public OrganizationUserService( ApplicationDbContext context, IUserConfig userConfig)
         {
@@ -23,9 +26,71 @@ namespace Project_Manager.Service.OrganizationUserService
             _userConfig = userConfig;
         }
 
+        public async Task<string> AcceptOrganizationRequest(Guid organizationId, string userEmail)
+        {
+            try
+            {
+                var user = await _userConfig.GetUser(userEmail);
+
+                var retrieveOrg = await _context.Organizations.FindAsync(organizationId);
+
+                if (retrieveOrg == null)
+                {
+                    throw new Exception("Organization does not exist");
+                }
+
+                var retriveRequest = await _context.Requests.Where(req => req.OrganizationId == organizationId && req.UserId == user.Id).FirstOrDefaultAsync();
+
+                if (retriveRequest == null)
+                {
+                    throw new Exception("No such request");
+                }
+                else
+                {
+                    var retrieveRole = await _userConfig.GetRole(MemberRole);
+                    var isInRole = await _userConfig.UserInRole(MemberRole, user);
+                    OrganizationUser requestToModel;
+
+                    if (isInRole == true)
+                    {
+                        requestToModel = new OrganizationUser
+                        {
+                            Id = Guid.NewGuid(),
+                            User = user,
+                            Organization = retrieveOrg,
+                            Role = retrieveRole,
+                        };
+                        await _context.OrganizationUser.AddAsync(requestToModel);
+                    }
+                    else
+                    {
+                        var addToRole = await _userConfig.AddUserToRole(MemberRole, user);
+                        if (addToRole.Succeeded)
+                        {
+                            requestToModel = new OrganizationUser
+                            {
+                                Id = Guid.NewGuid(),
+                                User = user,
+                                Organization = retrieveOrg,
+                                Role = retrieveRole,
+                            };
+                            await _context.OrganizationUser.AddAsync(requestToModel);
+                        }
+
+                    }
+
+                    await _context.SaveChangesAsync();
+                    return " User joined the organization successfully";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         //function name should be send request to user
-        public async Task<string> AddUserToOrganization(Guid organizationId, string inviteeEmail, string adminId)
+        public async Task<string> SendOrganizationRequest(Guid organizationId, string inviteeEmail, string adminId)
         {
             try
             {
@@ -76,6 +141,49 @@ namespace Project_Manager.Service.OrganizationUserService
             }
         }
 
+        public async Task<string> RevokeOrganizationRequest(Guid organizationId, string receiver, string adminId)
+        {
+            try
+            {
+                var adminUser = await _userConfig.ValidateOrganizationUser(adminId, organizationId, AdminRole);
+
+                if (adminUser == null)
+                {
+                    throw new Exception("Unable to validate user");
+                }
+                else
+                {
+                    var retrieveInvitee = await _userConfig.GetUser(receiver);
+
+                    var checkIfOrgExist = await _context.Organizations
+                        .Where( org => org.Id == organizationId)
+                        .SingleOrDefaultAsync();
+
+                    if (checkIfOrgExist == null)
+                    {
+                        throw new Exception("Organition does not exist");
+                    }
+
+                    var sentRequest = await _context.Requests
+                            .SingleOrDefaultAsync(req => req.UserId == retrieveInvitee.Id && req.OrganizationId == organizationId);
+
+                    if (sentRequest == null)
+                    {
+                        throw new Exception("Request does not exist");
+                    }
+
+                    _context.Requests.Remove(sentRequest);
+                    await _context.SaveChangesAsync();
+
+                    return "Removed Successfully";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<GetOrganizationDto> GetOrganization(Guid organizationId, string mail)
         {
             var user = await _userConfig.GetUser(mail);
@@ -104,7 +212,6 @@ namespace Project_Manager.Service.OrganizationUserService
                 return getOrg;
             }
         }
-
 
         //this service helps retrieve organization user either belongs to or created by them
         public async Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter? filter, string mail)
@@ -153,9 +260,8 @@ namespace Project_Manager.Service.OrganizationUserService
             return mapOrg;
         }
 
-        public async Task<IEnumerable<OrganizationUserDto>> organizationUsers(Guid organizationId, string userEmail)
+        public async Task<IEnumerable<OrganizationUserDto>> OrganizationUsers(Guid organizationId, string userEmail)
         {
-            //var user = await _context.OrganizationUser.SingleOrDefaultAsync(usr => usr.User.Email == userEmail);
             var user = await _userConfig.GetUser(userEmail);
             var userExistInOrg = await _context.OrganizationUser
                 .SingleOrDefaultAsync(usr => usr.User.Email == user.Email && usr.Organization.Id == organizationId);
@@ -184,6 +290,42 @@ namespace Project_Manager.Service.OrganizationUserService
                 }).ToList();
 
                 return users;
+            }
+        }
+
+        public async Task<string> RejectOrganizationRequest(Guid organizationId, string userEmail)
+        {
+            try
+            {
+                var user = await _userConfig.GetUser(userEmail);
+
+                var retrieveOrg = await _context.Organizations.FindAsync(organizationId);
+
+                if (retrieveOrg == null)
+                {
+                    throw new Exception("Organization does not exist");
+                }
+
+                var retrieveRole = await _userConfig.GetRole(userEmail);
+
+                var retriveRequest = await _context.Requests
+                    .Where(req => req.OrganizationId == organizationId && req.UserId == user.Id)
+                    .SingleOrDefaultAsync();
+
+                if (retriveRequest == null)
+                {
+                    throw new Exception("No such request");
+                }
+
+                _context.Requests.Remove(retriveRequest);
+
+                await _context.SaveChangesAsync();
+
+                return "Successfully rejected";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -224,5 +366,26 @@ namespace Project_Manager.Service.OrganizationUserService
             }
         }
 
+        public async Task<IEnumerable<InvitationRequestDto>> InvitationList(string mail)
+        {
+            var user = await _userConfig.GetUser(mail);
+
+            var response = await (from req in _context.Requests
+                                  join org in _context.Organizations
+                                  on req.OrganizationId equals org.Id
+                                   where req.UserId == user.Id
+                                  select new InvitationRequestDto
+                                  {
+                                      OrganizationId = req.OrganizationId,
+                                      OrganizationName = org.Name
+                                  }).ToListAsync();
+
+            return response;
+        }
+
+        public Task<IEnumerable<SentRequestDto>> SentRequests(Guid organizationId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -18,6 +18,38 @@ namespace Project_Manager.Service.UserConfiguration
             _context = context;
         }
 
+        public async Task<Role> GetRole(string roleName)
+        {
+            var getRole = await _roleManager.FindByNameAsync(roleName);
+
+            if (getRole == null)
+            {
+                throw new InvalidOperationException("Role not valid");
+            }
+
+            return getRole;
+        }
+
+        public async Task<bool> UserInRole( string roleName, User user)
+        {
+            return await _userManager.IsInRoleAsync(user, roleName);
+        }
+
+
+        public async Task<IdentityResult> AddUserToRole(string roleName, User user)
+        {
+            try
+            {
+                var addToRole = await _userManager.AddToRoleAsync(user, roleName);
+                return addToRole;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Unable to add user to role");
+            }
+        }
+
+
         public async Task<User> GetUser(string mail)
         {
             var user = await _userManager.FindByEmailAsync(mail);
@@ -61,16 +93,16 @@ namespace Project_Manager.Service.UserConfiguration
             }
             else
             {
-                var organizationAdmin = await _context.OrganizationUser
+                var role = await _context.OrganizationUser
                     .Where(u => u.Role == getRole && u.User == user && u.Organization == organization)
                     .SingleOrDefaultAsync();
 
-                if (organizationAdmin == null)
+                if (role == null)
                 {
                     throw new Exception("You don't have the ability to perform this action");
                 }
 
-                return organizationAdmin;
+                return role;
             }
         }
     }

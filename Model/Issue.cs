@@ -32,6 +32,8 @@ namespace Project_Manager.Model
 
         public Guid UpdatedBy { get; set; }
 
+        public User? User { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedTime { get; set; }
