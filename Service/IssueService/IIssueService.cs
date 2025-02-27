@@ -14,7 +14,8 @@ namespace Project_Manager.Service.IssueService
         Task<string> CreateIssues(Guid projectId, CreateIssue issueDto, string mail);
 
         Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,
-            Complexity? complexity, uint? EstimatedTimeInMinute, uint timeSpent, int issueLevel, Guid projectId, string mail);
+            Complexity? complexity, uint? EstimatedTimeInMinute, uint? timeSpent,
+            int? issueLevel, string? comment, string? note, Guid projectId, string mail);
 
         Task<string> DeleteIssues(Guid issueId, Guid projectId, bool isDeleteChildren, string mail);
 

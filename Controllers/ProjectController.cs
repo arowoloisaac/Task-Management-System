@@ -187,5 +187,30 @@ namespace Project_Manager.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut]
+        [Route("edit/{projectId}")]// user parameters instead
+        public async Task<IActionResult> EditProject(Guid projectId, UpdateProjectDto dto)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("user not found");
+                }
+                else
+                {
+                    return Ok(await _projectService.EditProject(projectId, dto, user.Value));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
     }
 }

@@ -22,14 +22,14 @@ namespace Project_Manager.Model
 
         public Complexity Complexity { get; set; }
 
-        public ICollection<Note>? Notes { get; set; }
-
         //foreign key for personal projects
         public User? Creator { get; set; }
 
         public ICollection<Issue>? Issues { get; set; }
 
         public ICollection<Wiki>? Wiki { get; set; }
+
+        public ICollection<IssueAnalyser>? IssueAnalyser { get; set; }
 
         public Group? Group { get; set; }
 

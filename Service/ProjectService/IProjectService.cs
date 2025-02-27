@@ -12,6 +12,8 @@ namespace Project_Manager.Service.ProjectService
 
         Task<string> DeleteProject(Guid projectId, string mail);
 
+        Task<string> EditProject(Guid projectId, UpdateProjectDto dto, string mail);
+
         Task<GetProjectDto> GetProjectById(Guid projectId, string mail);
 
         Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, string mail);

@@ -22,11 +22,10 @@ using Project_Manager.Service.AvatarService;
 using Amazon.S3;
 using Amazon.Runtime;
 using Project_Manager.ExternalServices.CloudSetting;
-using Project_Manager.Service.CommentService;
-using Project_Manager.Service.NoteService;
 using Project_Manager.ExternalServices.EmailService;
 using Quartz;
 using Project_Manager.Service.BackgroundJobs;
+using Project_Manager.Service.IssueAnalyserService;
 
 namespace Project_Manager
 {
@@ -108,6 +107,7 @@ namespace Project_Manager
                 });
             });
 
+           
             //host the quartz
             builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
@@ -136,17 +136,16 @@ namespace Project_Manager
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUserConfig, UserConfig>();
             builder.Services.AddScoped<IIssueService, IssueService>();
-            builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IAvatarService, AvatarService>();
-            builder.Services.AddScoped<INoteService, NoteService>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
             builder.Services.AddScoped<IOrganizationUserService, OrganizationUserService>();
             builder.Services.AddScoped<IOrganizationGroupService, OrganizationGroupService>();
             builder.Services.AddSingleton(s3Client);
             builder.Services.AddScoped<ICloudService, CloudService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IIssueAnalyserService, IssueAnalyserService>();
 
 
             builder.Services.AddIdentity<User, Role>(

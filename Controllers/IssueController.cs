@@ -91,7 +91,7 @@ namespace Project_Manager.Controllers
         [HttpPut]
         [Route("project={projectId}/issue={issueId}/update")]
         public async Task<IActionResult> UpdateIssue(Guid issueId,Guid projectId, string? name, string? description, Complexity? complexity, 
-            uint? estimatedTimeInMinute, uint timeSpent, int issueLevel)
+            uint? estimatedTimeInMinute, uint timeSpent, int issueLevel, string? comment, string? note)
         {
             try
             {
@@ -100,7 +100,8 @@ namespace Project_Manager.Controllers
                 {
                     return NotFound("User not found");
                 }
-                return Ok(await _issueService.UpdateIssues(issueId, name, description, complexity,estimatedTimeInMinute, timeSpent, issueLevel, projectId,user.Value));
+                return Ok(await _issueService.UpdateIssues(issueId, name, description, complexity,estimatedTimeInMinute, 
+                    timeSpent, issueLevel, comment, note, projectId,user.Value));
             }
             catch (Exception ex)
             {

@@ -7,6 +7,7 @@ using Project_Manager.DTO.ProjectDto;
 using Project_Manager.DTO.TaskDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
+using Project_Manager.Service.IssueAnalyserService;
 using Project_Manager.Service.UserConfiguration;
 using System;
 using System.Diagnostics;
@@ -154,7 +155,6 @@ namespace Project_Manager.Service.IssueService
             }
         }
 
-
         public async Task<string> CreateSubIssue(Guid projectId, CreateIssue issueDto, Guid parentIssueId, string mail)
         {
             var user = await _userConfig.GetUser(mail);
@@ -297,12 +297,13 @@ namespace Project_Manager.Service.IssueService
             return response;
         }
 
-        public async Task<string> UpdateIssues(Guid issueId, string? Name, string? Description,
-            Complexity? complexity, uint? EstimatedTimeInMinute, uint timeSpent, int issueLevel, Guid projectId,string mail)
+        public async Task<string> UpdateIssues(Guid issueId, string? name, string? description,
+            Complexity? complexity, uint? estimatedTimeInMinute, uint? timeSpent,
+            int? issueLevel, string? comment, string? note, Guid projectId, string mail)
         {
             var user = await _userConfig.GetUser(mail);
 
-            await ValidateIssueUpdate(issueId, Name, Description, complexity, EstimatedTimeInMinute, timeSpent, issueLevel,projectId, user.Id);
+            await ValidateIssueUpdate(issueId, name, description, complexity, estimatedTimeInMinute, timeSpent, issueLevel, comment, note, projectId, user.Id);
 
             return "Task successful";
         }
@@ -394,14 +395,13 @@ namespace Project_Manager.Service.IssueService
         }
 
 
-        private async Task<string> ValidateIssueUpdate(Guid id, string? Name, string? Description,
-            Complexity? complexity, uint? estimatedTimeInMinute, uint timeSpent, int issueLevel, Guid projectId, Guid userId)
+        private async Task<string> ValidateIssueUpdate(Guid id, string? Name, string? Description, Complexity? complexity, 
+            uint? estimatedTimeInMinute, uint? timeSpent, int? issueLevel, string? comment, string? note, Guid projectId, Guid userId)
         {
 
-            var checkProject = await ValidateProject(projectId);
+            var retrieveProject = await ValidateProject(projectId);
 
-            var getIssue = await ValidateIssue(id, checkProject.Id, userId);
-            
+            var getIssue = await ValidateIssue(id, retrieveProject.Id, userId);
             
             if (!string.IsNullOrEmpty(Name))
             {
@@ -419,8 +419,9 @@ namespace Project_Manager.Service.IssueService
             }
 
             //uint initializedTime = getIssue.TimeSpent + timeSpent;
-            getIssue.TimeSpent += timeSpent;
 
+            getIssue.TimeSpent += timeSpent != null ? (uint)timeSpent : default;
+            
             uint initializedTime = getIssue.TimeSpent;
             if (estimatedTimeInMinute.HasValue)
             {
@@ -436,7 +437,7 @@ namespace Project_Manager.Service.IssueService
 
                     if (issueLevel < 100 && issueLevel > 0 ||  v > 0)
                     {
-                        getIssue.IssueLevel = issueLevel;
+                        getIssue.IssueLevel = issueLevel != null ? (int)issueLevel.Value : default;
                         getIssue.Progress = Progress.InProcess;
                     }
                     else if (issueLevel == 100 || v == estimatedTimeInMinute)
@@ -473,7 +474,7 @@ namespace Project_Manager.Service.IssueService
                     uint v = initializedTime > estimatedTimeInMinute ? throw new Exception("reduce time spent") : getIssue.TimeSpent = initializedTime;
                     if (issueLevel < 100 && issueLevel > 0)
                     {
-                        getIssue.IssueLevel = issueLevel;
+                        getIssue.IssueLevel = issueLevel != null ? (int)issueLevel.Value : default;
                         getIssue.Progress = Progress.InProcess;
                     }
                     else if (issueLevel == 100)
@@ -500,11 +501,29 @@ namespace Project_Manager.Service.IssueService
             }
 
             _context.Issues.Update(getIssue);
+            try
+            {
+                await _context.IssueAnalysers.AddAsync(new IssueAnalyser
+                {
+                    Issue = getIssue,
+                    Project = retrieveProject,
+                    Note = note ?? string.Empty,
+                    Comment = comment ?? string.Empty,
+                    Id = Guid.NewGuid(),
+                    User = userId
 
-            await _context.SaveChangesAsync();
+                });
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            //project=d4697945-fb28-4c6d-82e3-58f2083f34d9/issue=2036f9ed-7e72-4dd5-9942-577991619a9e
+            
+
+            
             return "successful";
-            
-            
         }
 
         private int CheckDate( DateOnly startDate, DateOnly endDate)

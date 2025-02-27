@@ -279,5 +279,53 @@ namespace Project_Manager.Service.ProjectService
                 return "updated";
             }
         }
+
+        public async Task<string> EditProject(Guid projectId, UpdateProjectDto dto, string mail)
+        {
+            var user = await _userConfig.GetUser(mail);
+
+            var findProject = await _context.Projects.FindAsync(projectId);
+
+            if (findProject == null)
+            {
+                throw new Exception("Project doesn't exist");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(dto.Name))
+                {
+                    findProject.Name = dto.Name;
+                }
+
+                if (!string.IsNullOrEmpty(dto.Description))
+                {
+                    findProject.Description = dto.Description;
+                }
+
+                if (dto.Progress.HasValue)
+                {
+                    findProject.Progress = dto.Progress.Value;
+                }
+                if (dto.Complexity.HasValue)
+                {
+                    findProject.Complexity = dto.Complexity.Value;
+                }
+
+                findProject.UpdatedBy = user.Id;
+                findProject.UpdatedTime = DateTime.Now;
+
+                var updateResponse = _context.Projects.Update(findProject);
+
+                if (updateResponse is null)
+                {
+                    throw new InvalidOperationException("invalid");
+                }
+
+                await _context.SaveChangesAsync();
+
+                return "updated";
+            }
+        }
+
     }
 }

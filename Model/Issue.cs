@@ -46,9 +46,7 @@ namespace Project_Manager.Model
 
         public Project? Project { get; set; }
 
-        public ICollection<Comment>? Comments { get; set; }
-
-        public ICollection<Note>? Notes { get; set; }
+        public ICollection<IssueAnalyser>? IssueAnalyser { get; set; }
 
     }
 }

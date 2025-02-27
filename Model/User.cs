@@ -29,10 +29,6 @@ namespace Project_Manager.Model
 
         public ICollection<GroupUser>? GroupUsers { get; set; }
 
-        public ICollection<Comment>? Comment { get; set; }
-
-        public ICollection<Note>? Notes { get; set; }
-
         public ICollection<Requests>? Requests { get; set; }
     }
 }

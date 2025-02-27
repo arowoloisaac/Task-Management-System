@@ -4,12 +4,14 @@ namespace Project_Manager.DTO.ProjectDto
 {
     public class UpdateProjectDto
     {
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; }
 
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } 
+         
+        public string? Overview { get; set; }
 
-        public Complexity Complexity { get; set; }
+        public Complexity? Complexity { get; set; }
 
-        public Progress Progress { get; set; }
+        public Progress? Progress { get; set; }
     }
 }

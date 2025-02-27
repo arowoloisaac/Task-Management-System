@@ -25,15 +25,13 @@ namespace Project_Manager.Data
 
         public DbSet<GroupUser> GroupUsers { get; set; }
 
-        public DbSet<Comment> Comments { get; set; }
-
-        public DbSet<Note> Notes { get; set; }
-
         public DbSet<Issue> Issues { get; set; }
 
         public DbSet<Avatar> Avatars { get; set; }
 
         public DbSet<Requests> Requests { get; set; }
+
+        public DbSet<IssueAnalyser> IssueAnalysers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
