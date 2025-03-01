@@ -31,6 +31,7 @@ namespace Project_Manager.Model
 
         public ICollection<IssueAnalyser>? IssueAnalyser { get; set; }
 
+        //assign to
         public Group? Group { get; set; }
 
         public Guid? OrganizationId { get; set; }

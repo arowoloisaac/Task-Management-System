@@ -4,10 +4,10 @@
     {
         public Guid Id { get; set; }
 
-        public User? User { get; set; }
+        public required User User { get; set; }
 
-        public Group? Group { get; set; }
+        public required Group Group { get; set; }
 
-        public Role? Role { get; set; }
+        public required Role Role { get; set; }
     }
 }

@@ -167,7 +167,7 @@ namespace Project_Manager.Controllers
 
         [HttpPut]
         [Route("update/{projectId}")]// user parameters instead
-        public async Task<IActionResult> UpdateProject(Guid projectId, string? Name, string? Description, Progress? progress, Complexity? complexity)
+        public async Task<IActionResult> UpdateProject(Guid projectId, string? name, string? description, Progress? progress, Complexity? complexity)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace Project_Manager.Controllers
                 }
                 else
                 {
-                    return Ok(await _projectService.UpdateProject(projectId, Name, Description, progress, complexity, user.Value));
+                    return Ok(await _projectService.UpdateProject(projectId, name, description, progress, complexity, user.Value));
                 }
             }
             catch(Exception ex)

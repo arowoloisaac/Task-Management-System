@@ -387,5 +387,10 @@ namespace Project_Manager.Service.OrganizationUserService
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<GetOrganizationDto>> GetPaginatedOrganizations(OrganizationFilter? filter, int? page, int itemPerPage, string userMail)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

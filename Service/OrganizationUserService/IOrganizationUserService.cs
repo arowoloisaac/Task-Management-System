@@ -18,6 +18,8 @@ namespace Project_Manager.Service.UserOrganizationService
 
         Task<IEnumerable<GetOrganizationDto>> GetOrganizations(OrganizationFilter? filter, string userMail);
 
+        Task<IEnumerable<GetOrganizationDto>> GetPaginatedOrganizations(OrganizationFilter? filter, int? page, int itemPerPage, string userMail);
+
         Task<IEnumerable<OrganizationUserDto>> OrganizationUsers(Guid organizationId, string userEmail);
 
         Task<string> AcceptOrganizationRequest(Guid organizationId, string userEmail);

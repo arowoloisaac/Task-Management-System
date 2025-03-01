@@ -26,6 +26,7 @@ using Project_Manager.ExternalServices.EmailService;
 using Quartz;
 using Project_Manager.Service.BackgroundJobs;
 using Project_Manager.Service.IssueAnalyserService;
+using Project_Manager.Service.UserConfiguration.UserRoleConfiguration;
 
 namespace Project_Manager
 {
@@ -139,9 +140,11 @@ namespace Project_Manager
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IAvatarService, AvatarService>();
+            builder.Services.AddScoped<IUserRoleConfiguration, UserRoleConfiguration>();    
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
             builder.Services.AddScoped<IOrganizationUserService, OrganizationUserService>();
             builder.Services.AddScoped<IOrganizationGroupService, OrganizationGroupService>();
+            builder.Services.AddScoped<IOrganizationProjectService, OrganizationProjectService>();
             builder.Services.AddSingleton(s3Client);
             builder.Services.AddScoped<ICloudService, CloudService>();
             builder.Services.AddScoped<IEmailService, EmailService>();

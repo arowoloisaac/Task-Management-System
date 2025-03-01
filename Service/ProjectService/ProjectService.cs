@@ -92,7 +92,7 @@ namespace Project_Manager.Service.ProjectService
 
                 await _context.SaveChangesAsync();
 
-                return "Prject infos removed";
+                return "Project infos removed";
             }
         }
 

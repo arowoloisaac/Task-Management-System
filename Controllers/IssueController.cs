@@ -149,14 +149,19 @@ namespace Project_Manager.Controllers
 
 
         [HttpGet]
-        [Route("yo")]
+        [Route("project={projectId}/default")]
         public async Task<IActionResult> GetProjectIssue(Guid projectId)
         {
             try
             {
                 var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
 
-                return Ok(await _issueService.GetIssue(projectId));
+                if (user == null)
+                {
+                    throw new Exception("User does not exist");
+                }
+
+                return Ok(await _issueService.GetIssue(projectId, user.Value));
             }
             catch (Exception ex) 
             {

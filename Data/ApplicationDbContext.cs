@@ -37,6 +37,11 @@ namespace Project_Manager.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Project>()
+                .HasMany(p => p.Issues)
+                .WithOne(i => i.Project)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

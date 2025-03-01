@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.Service.IssueAnalyserService;
 using System.Security.Claims;
@@ -7,6 +9,8 @@ namespace Project_Manager.Controllers
 {
     [Route("api/")]
     [ApiController]
+    [Authorize]
+    [EnableCors]
     public class TimelineController : ControllerBase
     {
         private readonly IIssueAnalyserService analyser;

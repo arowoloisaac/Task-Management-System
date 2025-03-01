@@ -322,7 +322,7 @@ namespace Project_Manager.Service.IssueService
             };
         }
 
-        public async Task<List<RetrieveIssue>> GetIssue(Guid projectId)
+        public async Task<List<RetrieveIssue>> GetIssue(Guid projectId, string userMail)
         {
             var list = await _context.Issues.Where(issues => issues.Project.Id == projectId).ToListAsync(); 
 
@@ -340,6 +340,8 @@ namespace Project_Manager.Service.IssueService
                     Progress = issue.Progress,
                     Complexity = issue.Complexity,
                     IssueType = issue.IssueType,
+                    EndDate = issue.EndDate,
+                    StartDate = issue.StartDate,
                 }).ToList();
 
                 return response;
@@ -519,7 +521,6 @@ namespace Project_Manager.Service.IssueService
             {
                 throw new Exception(ex.Message);
             }
-            //project=d4697945-fb28-4c6d-82e3-58f2083f34d9/issue=2036f9ed-7e72-4dd5-9942-577991619a9e
             
 
             

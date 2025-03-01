@@ -14,5 +14,9 @@ namespace Project_Manager.DTO.TaskDto
         public IssueType IssueType { get; set; }
 
         public Progress Progress { get; set; }
+
+        public DateOnly StartDate { get; set; }
+
+        public DateOnly EndDate { get; set; }
     }
 }

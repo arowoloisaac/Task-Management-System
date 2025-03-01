@@ -9,5 +9,7 @@ namespace Project_Manager.Service.GroupUserServices
         Task RemoveUserFromGroup(Guid organizationId, Guid groupId, Guid userId);
 
         Task RetrieveGroupUsers(Guid organizationId, Guid groupId);
+        /***
+         * UPDATE ROLE OF USER***/
     }
 }
