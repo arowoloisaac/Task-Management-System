@@ -53,6 +53,7 @@ namespace Project_Manager.Service.OrganizationService
                     Description = dto.Description,
                     CreatedTime = DateTime.UtcNow,
                     CreatedBy = user.Id,
+                    Filter =OrganizationFilter.Owned
                 };
 
                 var response = await _context.Organizations.AddAsync(addOrganization);

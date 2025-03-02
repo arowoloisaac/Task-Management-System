@@ -1,4 +1,6 @@
-﻿namespace Project_Manager.Model
+﻿using Project_Manager.Enum;
+
+namespace Project_Manager.Model
 {
     public class Organization : StatusDateTime 
     {
@@ -9,6 +11,8 @@
         public string Description {get; set;} = string.Empty;
 
         public Guid CreatedBy { get; set; }
+
+        public OrganizationFilter Filter { get; set; }
 
         //public ICollection<User>? Users { get; set; }
 

@@ -5,7 +5,7 @@ namespace Project_Manager.Enum
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum OrganizationFilter
     {
-        Created,
+        Owned,
         Joined
     }
 }

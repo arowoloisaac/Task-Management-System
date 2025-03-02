@@ -21,7 +21,7 @@ namespace Project_Manager.Service.OrganizationProjectService
 
         Task<string> UnassignProjectToGroup(Guid organizationId, Guid groupId, Guid projectId);
 
-        Task<string> UpdateProject(Guid projectId, string? name, string? description, Progress? progress, Complexity? complexity, string mail);
+        Task<string> UpdateProject(Guid projectId, string? name, string? description, Progress? progress, Complexity? complexity, Guid organizationId, string mail);
 
         Task<string> DeleteProject(Guid projectId, Guid organizationId, string userId);
 
@@ -34,6 +34,6 @@ namespace Project_Manager.Service.OrganizationProjectService
 
         Task<IEnumerable<GetProjectDto>> GetGroupProjects(Guid organizationId, Guid groupId, string userId);
 
-        Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, int itemPerPage, Guid organizationId, Guid groupId, string userId);
+        Task<OrganizationProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, int itemPerPage, Guid organizationId, Guid groupId, string userId);
     }
 }

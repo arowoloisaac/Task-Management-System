@@ -335,6 +335,9 @@ namespace Project_Manager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Filter")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -719,7 +722,8 @@ namespace Project_Manager.Migrations
 
                     b.HasOne("Project_Manager.Model.Project", "Project")
                         .WithMany("Issues")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Project_Manager.Model.User", "User")
                         .WithMany()
@@ -795,17 +799,21 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Requests", b =>
                 {
-                    b.HasOne("Project_Manager.Model.Organization", null)
+                    b.HasOne("Project_Manager.Model.Organization", "Organization")
                         .WithMany("Requests")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project_Manager.Model.User", null)
+                    b.HasOne("Project_Manager.Model.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.User", b =>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Project_Manager.Configuration;
 using Project_Manager.Data;
 using Project_Manager.DTO.OrganizationDto;
+using Project_Manager.DTO.ProjectDto;
 using Project_Manager.DTO.RequestDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
@@ -225,7 +226,7 @@ namespace Project_Manager.Service.OrganizationUserService
 
             if (filter.HasValue)
             {
-                if (filter.Value == OrganizationFilter.Created)
+                if (filter.Value == OrganizationFilter.Owned)
                 {
                     query = query.Where(val => val.Organization.CreatedBy == user.Id);
                 }
@@ -254,7 +255,7 @@ namespace Project_Manager.Service.OrganizationUserService
                 Id = check.Organization.Id,
                 Name = check.Organization.Name,
                 Role = check.Role.Name,
-                Creator = creators[check.Organization.CreatedBy].Email == user.Email ? "created by you" : "Joined"
+                Creator = creators[check.Organization.CreatedBy].Email == user.Email ? "owned" : "Joined"
             }).ToList();
 
             return mapOrg;
@@ -383,14 +384,130 @@ namespace Project_Manager.Service.OrganizationUserService
             return response;
         }
 
-        public Task<IEnumerable<SentRequestDto>> SentRequests(Guid organizationId)
+        public async Task<IEnumerable<SentRequestDto>> SentRequests(Guid organizationId)
         {
-            throw new NotImplementedException();
+            var retrieveOrganization = await _context.Organizations.FindAsync(organizationId);
+
+            if (retrieveOrganization == null)
+            {
+                throw new Exception("Organization does not exist");
+            }
+            var retrieveList = await _context.Requests.Where(req => req.OrganizationId == organizationId).ToListAsync();
+
+            if(retrieveList == null)
+            {
+                return Enumerable.Empty<SentRequestDto>();
+            }
+
+            var response = retrieveList.Select(req => new SentRequestDto
+            {
+                Id = req.Id,
+                Email = req.InviteeEmail,
+            }).ToList();
+
+            return response;
         }
 
-        public Task<IEnumerable<GetOrganizationDto>> GetPaginatedOrganizations(OrganizationFilter? filter, int? page, int itemPerPage, string userMail)
+        public async Task<OrganizationResponse> GetPaginatedOrganizations(OrganizationFilter? filter, int? page, int itemPerPage, string userMail)
         {
-            throw new NotImplementedException();
+            var user = await _userConfig.GetUser(userMail);
+
+            int defaultItemsPerPage = 7;
+
+            var items = itemPerPage == 0 ? defaultItemsPerPage : itemPerPage;
+            int currentPage = page.HasValue && page > 0 ? page.Value : 1;
+
+            var query = _context.OrganizationUser
+                .Include(user => user.Role)
+                .Include(user => user.Organization)
+                .Where(org => org.User.Id == user.Id);
+
+            if (filter != null)
+            {
+                query = query.Where(org => org.Organization.Filter == filter);
+            }
+
+            int totalItems = await query.CountAsync();
+
+            if (totalItems == 0)
+            {
+                return new OrganizationResponse(new List<GetOrganizationDto>(), 0, 0, 0, 0, 0, 0);
+            }
+
+            int pageCount = (int)Math.Ceiling((double)totalItems / items);
+            int itemStart = (currentPage - 1) * items + 1;
+            int itemEnd = Math.Min(currentPage * items, totalItems);
+
+            var organizationList = await query
+                .Skip((currentPage - 1) * items)
+                .Take(items)
+                .ToListAsync();
+
+            var creatorIds = organizationList.Select(o => o.Organization.CreatedBy).Distinct().ToList();
+
+            var creators = await _context.Users
+                .Where(u => creatorIds.Contains(u.Id))
+                .ToDictionaryAsync(u => u.Id, u => new { u.Email });
+            var mappedOrganizations = organizationList.Select(org => new GetOrganizationDto
+            {
+                Id = org.Organization.Id,
+                Name = org.Organization.Name,
+                Description = org.Organization.Description,
+                Role = org.Role.Name,
+                Creator = creators[org.Organization.CreatedBy].Email == user.Email ? "owned" : "joined"
+            }).ToList();
+
+            return new OrganizationResponse(mappedOrganizations, currentPage, totalItems, pageCount, itemStart, itemEnd, organizationList.Count);
+            /*var organizationList = await query.ToListAsync();
+
+            if (organizationList.Count == 0)
+            {
+                return new OrganizationResponse(new List<GetOrganizationDto>(), 0, 0, 0, 0, 0, 0);
+            }
+
+            else
+            {
+                int pageResult = items;
+                int currentPage = page.HasValue && page > 0 ? page.Value : 1;
+
+
+
+                int totalItems = await query.CountAsync();
+                int pageCount = (int)Math.Ceiling((double)totalItems / pageResult);
+
+                var organization = await query.Skip((currentPage - 1) * pageResult)
+                                        .Take(pageResult)
+                                        .ToListAsync();
+
+                totalItems = organization.Count;
+
+                if (totalItems < 1)
+                {
+                    throw new Exception("Page doesn't exist");
+                }
+
+                int itemStart = (currentPage - 1) * pageResult + 1; ;
+
+                int itemEnd = Math.Min(currentPage * pageResult, totalItems) + (itemStart - 1);
+
+                var creatorIds = organizationList
+              .Select(o => o.Organization.CreatedBy).Distinct().ToList();
+
+                var creators = await _context.Users
+                    .Where(u => creatorIds.Contains(u.Id))
+                    .ToDictionaryAsync(u => u.Id, u => new { u.Email });
+
+                var mappedProjects = organization.Select(org => new GetOrganizationDto
+                {
+                    Id = org.Organization.Id,
+                    Name = org.Organization.Name,
+                    Description = org.Organization.Description,
+                    Role = org.Role.Name,
+                    Creator = creators[org.Organization.CreatedBy].Email == user.Email ? "owned" : "Joined"
+                });
+                var response = new OrganizationResponse(mappedProjects.ToList(), currentPage, totalItems, pageCount, itemStart, itemEnd, organizationList.Count);
+                return response;
+            }*/
         }
     }
 }

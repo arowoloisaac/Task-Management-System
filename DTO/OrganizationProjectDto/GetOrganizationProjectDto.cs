@@ -14,9 +14,11 @@ namespace Project_Manager.DTO.OrganizationProjectDto
 
         public Complexity Complexity { get; set; }
 
+        public Progress Progress { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         //get to get assigned to the project
-        public string? AssignedTo { get; set; }
+        public string? AssignedTo { get; set; } = string.Empty;
     }
 }

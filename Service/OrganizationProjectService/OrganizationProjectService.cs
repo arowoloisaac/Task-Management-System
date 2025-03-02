@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_Manager.Configuration;
 using Project_Manager.Data;
+using Project_Manager.DTO.OrganizationDto;
 using Project_Manager.DTO.OrganizationProjectDto;
 using Project_Manager.DTO.ProjectDto;
 using Project_Manager.Enum;
 using Project_Manager.Model;
 using Project_Manager.Service.UserConfiguration;
+using Progress = Project_Manager.Enum.Progress;
 
 namespace Project_Manager.Service.OrganizationProjectService
 {
@@ -22,9 +24,26 @@ namespace Project_Manager.Service.OrganizationProjectService
             this.config = config;
         }
 
-        public Task<string> AssignProjectToGroup(Guid organizationId, Guid groupId, Guid projectId, string userId)
+        public async Task<string> AssignProjectToGroup(Guid organizationId, Guid groupId, Guid projectId, string userId)
         {
-            throw new NotImplementedException();
+            var retrieveOrgGroup = await context.Groups.Where(grp => grp.Id == groupId && grp.OrganizationId == organizationId).SingleOrDefaultAsync();
+
+            if (retrieveOrgGroup == null)
+            {
+                throw new Exception("Either Organization or project doesn't exist");
+            }
+
+            var retrieveGrpProject = await context.Projects
+                .Where(prt => prt.Id == projectId && prt.Group != null && prt.OrganizationId == organizationId).SingleOrDefaultAsync();
+
+            if (retrieveGrpProject != null)
+            {
+                return "A group is already assigned to this project";
+            }
+
+            retrieveGrpProject.Group = retrieveOrgGroup;
+            await context.Projects.SingleUpdateAsync(retrieveGrpProject);
+            return " assigned group to project";
         }
 
         public async Task<string> CreateProject(CreateDto dto, Guid organizationId, Guid? groupId, string userId)
@@ -113,12 +132,46 @@ namespace Project_Manager.Service.OrganizationProjectService
             }
         }
 
-        public Task<string> EditProject(Guid projectId, UpdateProjectDto dto, Guid organizationId, string userId)
+        public async Task<string> EditProject(Guid projectId, UpdateProjectDto dto, Guid organizationId, string userId)
         {
-            
-            throw new NotImplementedException();
-        }
+            var user = await config.GetUserById(userId);
+            var org = await retrieveOrgization(organizationId);
 
+            var findProject = await context.Projects.Where(org => org.Id == projectId && org.OrganizationId == organizationId).SingleOrDefaultAsync();
+
+            if (findProject == null)
+            {
+                throw new Exception("Project doesn't exist");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(dto.Name))
+                {
+                    findProject.Name = dto.Name;
+                }
+
+                if (!string.IsNullOrEmpty(dto.Description))
+                {
+                    findProject.Description = dto.Description;
+                }
+
+                if (dto.Progress.HasValue)
+                {
+                    findProject.Progress = dto.Progress.Value;
+                }
+                if (dto.Complexity.HasValue)
+                {
+                    findProject.Complexity = dto.Complexity.Value;
+                }
+
+                findProject.UpdatedBy = user.Id;
+                findProject.UpdatedTime = DateTime.Now;
+
+                await context.Projects.SingleUpdateAsync(findProject);
+
+                return "updated";
+            }
+        }
         //this for the group user
         public async Task<IEnumerable<GetProjectDto>> GetGroupProjects(Guid organizationId, Guid groupId, string userId)
         {
@@ -234,9 +287,57 @@ namespace Project_Manager.Service.OrganizationProjectService
         }
 
         //this is for the members of the organization
-        public async Task<ProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, int itemPerPage, Guid organizationId, Guid groupId, string userId)
+        public async Task<OrganizationProjectResponse> GetProjectPaginated(Progress? progress, Complexity? complexity, int? page, int itemPerPage, Guid organizationId, Guid groupId, string userId)
         {
-            throw new NotImplementedException();
+            var user = await config.GetUserById(userId);
+
+            var retrieveGroup = await retrieveOrgizationGroup(organizationId, groupId);
+
+            int defaultItemsPerPage = 7;
+
+            var items = itemPerPage == 0 ? defaultItemsPerPage : itemPerPage;
+            int currentPage = page.HasValue && page > 0 ? page.Value : 1;
+
+            var query = context.Projects
+                .Include(user => user.Group)
+                .Where(prj => prj.Group == retrieveGroup && prj.OrganizationId == organizationId);
+
+            if (progress != null)
+            {
+                query = query.Where(org => org.Progress == progress);
+            }
+
+            if (complexity != null)
+            {
+                query = query.Where(org => org.Complexity == complexity);
+            }
+            int totalItems = await query.CountAsync();
+
+            if (totalItems == 0)
+            {
+                return new OrganizationProjectResponse(new List<GetOrganizationProjectDto>(), 0, 0, 0, 0, 0, 0);
+            }
+
+            int pageCount = (int)Math.Ceiling((double)totalItems / items);
+            int itemStart = (currentPage - 1) * items + 1;
+            int itemEnd = Math.Min(currentPage * items, totalItems);
+
+            var projectList = await query
+                .Skip((currentPage - 1) * items)
+                .Take(items)
+                .ToListAsync();
+
+            var mappedProject = projectList.Select(project => new GetOrganizationProjectDto
+            {
+                Id = project.Id,
+                Name = project.Name,
+                AssignedTo = project.Group.Name,
+                Overview = project.Overview,
+                Complexity = project.Complexity,
+                Progress = project.Progress,
+            }).ToList();
+
+            return new OrganizationProjectResponse(mappedProject, currentPage, totalItems, pageCount, itemStart, itemEnd, projectList.Count);
         }
 
         //for the admin
@@ -290,11 +391,76 @@ namespace Project_Manager.Service.OrganizationProjectService
         }
 
 
-        public Task<string> UpdateProject(Guid projectId, string? name, string? description, Progress? progress, Complexity? complexity, string userId)
+        public async Task<string> UpdateProject(Guid projectId, string? name, string? description, Progress? progress, Complexity? complexity, Guid organizationId, string userId)
         {
-            throw new NotImplementedException();
+            var user = await config.GetUserById(userId);
+
+            var findProject = await context.Projects.Where(org => org.Id == projectId && org.OrganizationId == organizationId).SingleOrDefaultAsync();
+
+            if (findProject == null)
+            {
+                throw new Exception("Project doesn't exist");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(name))
+                {
+                    findProject.Name = name;
+                }
+
+                if (!string.IsNullOrEmpty(description))
+                {
+                    findProject.Description = description;
+                }
+
+                if (progress.HasValue)
+                {
+                    findProject.Progress = progress.Value;
+                }
+                if (complexity.HasValue)
+                {
+                    findProject.Complexity = complexity.Value;
+                }
+
+                findProject.UpdatedBy = user.Id;
+                findProject.UpdatedTime = DateTime.Now;
+
+                var updateResponse = context.Projects.Update(findProject);
+
+                if (updateResponse is null)
+                {
+                    throw new InvalidOperationException("unable to update changes");
+                }
+
+                await context.SaveChangesAsync();
+
+                return "updated";
+            }
         }
 
+        public async Task<string> UnassignProjectToGroup(Guid organizationId, Guid groupId, Guid projectId)
+        {
+            var retrieveOrgGroup = await context.Groups.Where(grp => grp.Id == groupId && grp.OrganizationId == organizationId).SingleOrDefaultAsync(); 
+
+            if (retrieveOrgGroup == null)
+            {
+                throw new Exception("Either Organization or project doesn't exist");
+            }
+
+            var retrieveGrpProject = await context.Projects
+                .Where(prt => prt.Id == projectId && prt.Group  == retrieveOrgGroup && prt.OrganizationId == organizationId).SingleOrDefaultAsync();
+
+            if (retrieveGrpProject == null)
+            {
+                return "An error here, these group doesn't have the project assigned to them";
+            }
+
+            retrieveGrpProject.Group = null;
+
+             await context.Projects.SingleUpdateAsync(retrieveGrpProject);
+
+            return "Group unassigned to project";
+        }
 
         private async Task<Organization> retrieveOrgization(Guid organizationId)
         {
@@ -332,9 +498,6 @@ namespace Project_Manager.Service.OrganizationProjectService
             return project;
         }
 
-        public Task<string> UnassignProjectToGroup(Guid organizationId, Guid groupId, Guid projectId)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
