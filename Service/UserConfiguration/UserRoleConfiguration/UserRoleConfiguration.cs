@@ -70,5 +70,44 @@ namespace Project_Manager.Service.UserConfiguration.UserRoleConfiguration
 
             return roles;
         }
+
+        public async Task<Role?> GetOrganizationRoleEmail(string userMail, Guid organizationId)
+        {
+            var retrieveOrg = await context.Organizations.FindAsync(organizationId);
+
+            if (retrieveOrg == null)
+            {
+                throw new Exception("organization does not exist");
+            }
+            var role = await context.OrganizationUser
+                         .Include(uor => uor.Role)
+                         .Where(uor => uor.User.Email == userMail && uor.Organization.Id == organizationId)
+                         .Select(uor => uor.Role)
+                         .FirstOrDefaultAsync();
+
+            return role;
+        }
+
+        public async Task<Role?> GetGroupRoleByEmail(string userMail, Guid organizationId, Guid groupId)
+        {
+            var retrieveOrg = await context.Organizations.FindAsync(organizationId);
+
+            if (retrieveOrg == null)
+            {
+                throw new Exception("organization does not exist");
+            }
+
+            var role = await context.GroupUsers
+                         .Include(uor => uor.Role)
+                         .Where(uor => uor.User.Email == userMail && uor.Group.OrganizationId == organizationId && uor.Group.Id == groupId)
+                         .Select(uor => uor.Role)
+                         .FirstOrDefaultAsync();
+
+            if (role == null)
+            {
+                throw new Exception("Role does not exist");
+            }
+            return role;
+        }
     }
 }

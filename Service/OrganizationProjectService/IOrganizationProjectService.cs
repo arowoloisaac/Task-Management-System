@@ -6,15 +6,6 @@ namespace Project_Manager.Service.OrganizationProjectService
 {
     public interface IOrganizationProjectService
     {
-        /***
-         * create organization project
-         * a function to assign a project to a group
-         * a function to unassign a project to a group 
-         * update project
-         * delete project
-         * retrieve projects of the organization(for the administration)
-         * retrieve projects of your group
-         * retrive project by its id***/
         Task<string> CreateProject(CreateDto dto, Guid organizationId, Guid? groupId, string userId);
 
         Task<string> AssignProjectToGroup(Guid organizationId, Guid groupId, Guid projectId, string userId);
@@ -30,7 +21,7 @@ namespace Project_Manager.Service.OrganizationProjectService
         Task<GetOrganizationProjectDto> GetProjectById(Guid projectId, string userId, Guid organizationId, Guid? groupId);
 
         //for the admin page
-        Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, bool isAssigned, Guid organizationId, string userId);
+        Task<IEnumerable<GetOrganizationProjectDto>> GetProjects(Progress? progress, Complexity? complexity, bool isAssigned, Guid organizationId, string userId);
 
         Task<IEnumerable<GetProjectDto>> GetGroupProjects(Guid organizationId, Guid groupId, string userId);
 

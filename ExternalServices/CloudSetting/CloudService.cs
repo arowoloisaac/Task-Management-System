@@ -4,6 +4,9 @@ using Amazon.S3.Model;
 using Azure.Core;
 using Microsoft.Extensions.Options;
 using Project_Manager.Configuration;
+using Project_Manager.Data;
+using Project_Manager.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Project_Manager.ExternalServices.CloudSetting
 {
@@ -11,11 +14,13 @@ namespace Project_Manager.ExternalServices.CloudSetting
     {
         private readonly YandexCloudSetting _setting;
         private readonly IAmazonS3 _s3Client;
+        private readonly ApplicationDbContext _context;
 
-        public CloudService(IOptionsSnapshot<YandexCloudSetting> cloudSetting, IAmazonS3 s3)
+        public CloudService(IOptionsSnapshot<YandexCloudSetting> cloudSetting, IAmazonS3 s3, ApplicationDbContext context)
         {
             _setting = cloudSetting.Value;
             _s3Client = s3;
+            _context = context;
         }
 
         public async Task<List<string>> GetObjects()
@@ -33,10 +38,100 @@ namespace Project_Manager.ExternalServices.CloudSetting
 
             foreach (var obj in response.S3Objects)
             {
-                objectsList.Add(obj.ETag);
+                objectsList.Add(obj.BucketName);
             }
 
             return objectsList;
+        }
+
+        public async Task<string> UploadObject(ObjectUpload model)
+        {
+            using var stream = new MemoryStream();
+            await model.File.CopyToAsync(stream);
+
+            stream.Position = 0;
+
+            var counter = await GetCounter();
+            counter.Value++;
+            _context.Counters.Update(counter);
+            await _context.SaveChangesAsync();
+
+            string prefix = "pic-";
+            var getExtension = Path.GetExtension(model.File.FileName);
+
+
+            string fileName = $"{prefix}{counter.Value}{getExtension}";
+
+            var contentType = GetContentType(fileName);
+
+            
+            var request = new PutObjectRequest
+            {
+                BucketName = _setting.BucketName,
+                Key = fileName,
+                InputStream = stream,
+                ContentType = contentType,
+            };
+
+            try
+            {
+                var response = await _s3Client.PutObjectAsync(request);
+
+                //return response.ToString();
+
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return $"File {model.FileName} uploaded successfully.";
+                }
+                else
+                {
+                    return $"Failed to upload file. Status code: {response.HttpStatusCode}";
+                }
+            } catch (AmazonS3Exception ex)
+            {
+                return $"Error uploading file: {ex.Message}";
+            }
+            catch (Exception ex)
+            {
+                return $"An error occurred: {ex.Message}";
+            }
+        }
+
+        public Task<byte[]> GetObject(string objectName)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        private async Task<Counter> GetCounter()
+        {
+            var retrieveValue = await _context.Counters.FindAsync(1);
+            if (retrieveValue == null)
+            {
+                _context.Counters.Add(new Counter { Value = 1 });
+                await _context.SaveChangesAsync();
+
+            }
+            return retrieveValue;
+        }
+
+        private string GetContentType(string fileName)
+        {
+            var extension = Path.GetExtension(fileName).ToLower();
+            switch (extension)
+            {
+                case ".jpg":
+                case ".jpeg":
+                    return "image/jpeg";
+                case ".png":
+                    return "image/png";
+                case ".gif":
+                    return "image/gif";
+                case ".bmp":
+                    return "image/bmp";
+                default:
+                    return "application/octet-stream"; // Default if unknown
+            }
         }
     }
 }

@@ -7,8 +7,6 @@
         //this wroks with the last update
         public DateTime UpdatedTime { get; set; }
 
-        public DateTime DeletedTime { get; set; }
-
-        public DateTime ArchivedTime { get; set; }
+        public DateTime DateJoined { get; set; }
     }
 }

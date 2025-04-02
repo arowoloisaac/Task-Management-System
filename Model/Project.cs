@@ -34,6 +34,8 @@ namespace Project_Manager.Model
         //assign to
         public Group? Group { get; set; }
 
+        //public Group? Collaborator { get; set; }
+
         public Guid? OrganizationId { get; set; }
     }
 }

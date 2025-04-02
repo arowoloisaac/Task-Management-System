@@ -57,18 +57,16 @@ namespace Project_Manager.Service.OrganizationService
                 };
 
                 var response = await _context.Organizations.AddAsync(addOrganization);
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
 
-                
-
-                var savedOrg = await _context.Organizations
-                    .Where(org => org.Name == organizationName && org.CreatedBy == user.Id)
+                /*var savedOrg = await _context.Organizations
+                    .Where(org => org.Name == addOrganization.Name && org.CreatedBy == user.Id)
                     .SingleOrDefaultAsync();
 
                 if(savedOrg == null)
                 {
                     throw new Exception("you don't have any orgaization here");
-                }
+                }*/
 
                 var getRole = await _roleManager.FindByNameAsync(role);
                 if(getRole != null)
@@ -77,15 +75,16 @@ namespace Project_Manager.Service.OrganizationService
                     if (checkRole == false)
                     {
                         var addToRole = await _userManager.AddToRoleAsync(user, role);
-                        if (addToRole.Succeeded)
+                        if (!addToRole.Succeeded)
                         {
-                            await _context.OrganizationUser.AddAsync(new OrganizationUser
+                            throw new Exception("Unable to add user to role");
+                            /*await _context.OrganizationUser.AddAsync(new OrganizationUser
                             {
                                 Id = Guid.NewGuid(),
                                 Role = getRole,
                                 User = user,
-                                Organization = savedOrg
-                            });
+                                Organization = addOrganization
+                            });*/
                         }
                     }
                     else
@@ -95,13 +94,13 @@ namespace Project_Manager.Service.OrganizationService
                             Id = Guid.NewGuid(),
                             Role = getRole,
                             User= user,
-                            Organization= savedOrg
+                            Organization = addOrganization
                         });
                     }
                 }
                 await _context.SaveChangesAsync();
 
-                return response.ToString();
+                return addOrganization.Id.ToString();
             }
         }
 
@@ -154,9 +153,13 @@ namespace Project_Manager.Service.OrganizationService
             }
             else
             {
-                if (!string.IsNullOrEmpty(dto.Name) && !string.IsNullOrEmpty(dto.Description))
+                if (!string.IsNullOrEmpty(dto.Name))
                 {
                     validateOrg.Name = dto.Name;
+                }
+
+                if (!string.IsNullOrEmpty(dto.Description))
+                {
                     validateOrg.Description = dto.Description;
                 }
 

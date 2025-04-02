@@ -9,8 +9,8 @@ namespace Project_Manager.Configuration
     {
         public AutoMapperConfiguration()
         {
-            CreateMap<User, GetProfileDto>();
-
+            //       source  destination  
+            CreateMap<User,  GetProfileDto>();
         }
     }
 }

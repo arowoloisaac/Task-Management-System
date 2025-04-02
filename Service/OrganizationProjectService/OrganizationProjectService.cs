@@ -341,11 +341,11 @@ namespace Project_Manager.Service.OrganizationProjectService
         }
 
         //for the admin
-        public async Task<IEnumerable<GetProjectDto>> GetProjects(Progress? progress, Complexity? complexity, bool isAssigned, Guid organizationId, string userId) 
+        public async Task<IEnumerable<GetOrganizationProjectDto>> GetProjects(Progress? progress, Complexity? complexity, bool isAssigned, Guid organizationId, string userId) 
         {
             var org = await retrieveOrgization(organizationId);
 
-            IQueryable<Project> query = context.Projects.Where(findProjects => findProjects.OrganizationId == organizationId);
+            IQueryable<Project> query = context.Projects.Include(group => group.Group).Where(findProjects => findProjects.OrganizationId == organizationId);
 
             if (progress.HasValue)
             {
@@ -371,19 +371,20 @@ namespace Project_Manager.Service.OrganizationProjectService
 
             if (projectList.Count == 0)
             {
-                return new List<GetProjectDto>();
+                return new List<GetOrganizationProjectDto>();
             }
 
             else
             {
-                var projects = projectList.Select(project => new GetProjectDto
+                var projects = projectList.Select(project => new GetOrganizationProjectDto
                 {
                     Id = project.Id,
                     Name = project.Name,
                     Description = project.Description,
                     Progress = project.Progress,
                     Complexity = project.Complexity,
-                    Overview = project.Overview
+                    Overview = project.Overview,
+                    AssignedTo = project.Group == null ? null : project.Group.Name
                 }).ToList();
 
                 return projects;

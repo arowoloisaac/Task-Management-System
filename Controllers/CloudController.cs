@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.ExternalServices.CloudSetting;
+using Project_Manager.Model;
 
 namespace Project_Manager.Controllers
 {
@@ -21,6 +22,20 @@ namespace Project_Manager.Controllers
             try
             {
                 var objects = await _s3Service.GetObjects();
+                return Ok(objects);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> AddObject(ObjectUpload model)
+        {
+            try
+            {
+                var objects = await _s3Service.UploadObject(model);
                 return Ok(objects);
             }
             catch (Exception ex)

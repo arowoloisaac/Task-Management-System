@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_Manager.Model;
 using Project_Manager.Service.OrganizationProjectService;
+using Project_Manager.Service.UserConfiguration.UserRoleConfiguration;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
@@ -16,10 +17,12 @@ namespace Project_Manager.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IOrganizationGroupService _groupService;
+        private readonly IUserRoleConfiguration configuration;
 
-        public GroupController(IOrganizationGroupService groupService)
+        public GroupController(IOrganizationGroupService groupService, IUserRoleConfiguration configuration)
         {
             _groupService = groupService;
+            this.configuration = configuration;
         }
 
 

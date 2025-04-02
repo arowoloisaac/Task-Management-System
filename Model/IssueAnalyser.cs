@@ -1,4 +1,6 @@
-﻿namespace Project_Manager.Model
+﻿using Project_Manager.Enum;
+
+namespace Project_Manager.Model
 {
     public class IssueAnalyser : DateTimeClass
     {
@@ -7,6 +9,8 @@
         public string Note { get; set; } = string.Empty;
 
         public string Comment { get; set; } = string.Empty;
+
+        public WorkComponent? WorkComponent { get; set; }
 
         public Issue? Issue { get; set; }
 

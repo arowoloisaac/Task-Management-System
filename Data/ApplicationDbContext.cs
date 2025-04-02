@@ -33,6 +33,10 @@ namespace Project_Manager.Data
 
         public DbSet<IssueAnalyser> IssueAnalysers { get; set; }
 
+        public DbSet<IssueRelation> IssueRelations { get; set; }
+
+        public DbSet<Counter> Counters { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

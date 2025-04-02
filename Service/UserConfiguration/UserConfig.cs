@@ -56,7 +56,7 @@ namespace Project_Manager.Service.UserConfiguration
 
             if (user == null)
             {
-                throw new ArgumentNullException("User is null");
+                throw new UnauthorizedAccessException("User does not exist");
             }
             
             return user;
@@ -68,7 +68,7 @@ namespace Project_Manager.Service.UserConfiguration
 
             if (user == null)
             {
-                throw new ArgumentNullException("User is null");
+                throw new UnauthorizedAccessException("User does not exist");
             }
             return user;
         }

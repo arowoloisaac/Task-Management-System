@@ -20,5 +20,7 @@ namespace Project_Manager.Model
         public ICollection<Project>? Projects { get; set; }
 
         public ICollection<GroupUser>? GroupUsers { get; set; }
+
+        //public ICollection<Project>? ProjectCollaborated {  get; set; }
     }
 }

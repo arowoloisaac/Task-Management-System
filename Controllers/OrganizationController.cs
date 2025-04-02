@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project_Manager.Configuration;
 using Project_Manager.DTO.OrganizationDto;
 using Project_Manager.Enum;
+using Project_Manager.Model;
 using Project_Manager.Service.OrganizationService;
+using Project_Manager.Service.UserConfiguration.UserRoleConfiguration;
 using System.Security.Claims;
 
 namespace Project_Manager.Controllers
@@ -14,22 +17,24 @@ namespace Project_Manager.Controllers
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
+        private readonly IUserRoleConfiguration config;
 
-        public OrganizationController(IOrganizationService organizationService)
+        public OrganizationController(IOrganizationService organizationService, IUserRoleConfiguration configuration)
         {
             _organizationService = organizationService;
+            this.config = configuration;
         }
 
         [HttpPost]
         [Route("create-organization")]
-        public async Task<IActionResult> CreateOrganization([FromQuery] CreateOrganizationDto organizationDto)
+        public async Task<IActionResult> CreateOrganization(CreateOrganizationDto organizationDto)
         {
             try
             {
                 var user = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Email);
                 if (user == null)
                 {
-                    return NotFound();
+                    return NotFound("User not found");
                 }
 
                 return Ok(await _organizationService.CreateOrganization(organizationDto, user.Value));
@@ -54,6 +59,13 @@ namespace Project_Manager.Controllers
                 }
                 else
                 {
+                    var role = await config.GetOrganizationRoleEmail(user.Value, id);
+
+                    if (role == null || role.Name != ApplicationRoleNames.OrganizationAdministrator)
+                    {
+                        return Forbid("Access Denied: You are not an administrator");
+                    }
+
                     return Ok(await _organizationService.DeleteOrganization(id, user.Value));
                 }
             }
@@ -76,6 +88,13 @@ namespace Project_Manager.Controllers
                 }
                 else
                 {
+                    var role = await config.GetOrganizationRoleEmail(user.Value, organizationId);
+
+                    if (role == null || role.Name != ApplicationRoleNames.OrganizationAdministrator)
+                    {
+                        return Forbid("Access Denied: You are not an administrator");
+                    }
+
                     return Ok(await _organizationService.UpdateOrganization(organizationId, user.Value, dto));
                 }
             }

@@ -11,5 +11,9 @@
         public string Creator { get; set; } = string.Empty;
 
         public string Role {  get; set; } = string.Empty;
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateJoined { get; set; }
     }
 }

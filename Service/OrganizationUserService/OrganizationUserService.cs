@@ -78,6 +78,10 @@ namespace Project_Manager.Service.OrganizationUserService
                             await _context.OrganizationUser.AddAsync(requestToModel);
                         }
 
+                        else
+                        {
+                            throw new Exception("Unable to add user to role" + MemberRole);
+                        }
                     }
 
                     await _context.SaveChangesAsync();
@@ -111,7 +115,7 @@ namespace Project_Manager.Service.OrganizationUserService
 
                     if (retrieveInvitee == null || retrieveInvitee.Email is null && checkIfUserOrgExist != null)
                     {
-                        throw new Exception("This user does not exist in our system");
+                        throw new Exception("This user does not exist in our system or you have user in the organization");
                     }
 
                     else
@@ -129,7 +133,9 @@ namespace Project_Manager.Service.OrganizationUserService
                             Id = Guid.NewGuid(),
                             OrganizationId = organizationId,
                             InviteeEmail = retrieveInvitee.Email,
-                            UserId = retrieveInvitee.Id
+                            UserId = retrieveInvitee.Id,
+                            User = retrieveInvitee,
+                            Status = Status.Pending
                         });
                     }
                     await _context.SaveChangesAsync();
@@ -190,8 +196,9 @@ namespace Project_Manager.Service.OrganizationUserService
             var user = await _userConfig.GetUser(mail);
 
             var getSpecificOrganization = await _context.OrganizationUser
-                .Include(user => user.Role)
-                .Include(user => user.Organization)
+                .Include(role => role.Role)
+                .Include(org => org.Organization)
+                .Include(user => user.User)
                 .Where(org => org.Organization.Id == organizationId && org.User == user)
                 .SingleOrDefaultAsync();
 
@@ -207,7 +214,9 @@ namespace Project_Manager.Service.OrganizationUserService
                     Name = getSpecificOrganization.Organization.Name,
                     Creator = getSpecificOrganization.User.UserName,
                     Description = getSpecificOrganization.Organization.Description,
-                    Role = $"Your role - {getSpecificOrganization.Role.Name}"
+                    Role = getSpecificOrganization.Role.Name,
+                    DateCreated = getSpecificOrganization.Organization.CreatedTime,
+                    DateJoined = getSpecificOrganization.Organization.DateJoined
                 };
 
                 return getOrg;
@@ -222,7 +231,8 @@ namespace Project_Manager.Service.OrganizationUserService
             IQueryable<OrganizationUser> query = _context.OrganizationUser
                 .Where(u => u.User.Id == user.Id)
                 .Include(org => org.Organization)
-                .Include(role => role.Role);
+                .Include(role => role.Role)
+                .Include(user => user.User);
 
             if (filter.HasValue)
             {
@@ -254,8 +264,11 @@ namespace Project_Manager.Service.OrganizationUserService
             {
                 Id = check.Organization.Id,
                 Name = check.Organization.Name,
+                Description = check.Organization.Description,
                 Role = check.Role.Name,
-                Creator = creators[check.Organization.CreatedBy].Email == user.Email ? "owned" : "Joined"
+                Creator = creators[check.Organization.CreatedBy].Email == user.Email ? "owned" : "Joined",
+                DateCreated = check.Organization.CreatedTime,
+                DateJoined = check.Organization.DateJoined,
             }).ToList();
 
             return mapOrg;
@@ -274,7 +287,7 @@ namespace Project_Manager.Service.OrganizationUserService
             else
             {
                 var usersInOrg = await _context.OrganizationUser
-                    .Include(users => users.User)
+                    .Include(users => users.User).Include(role => role.Role)
                     .Where(org => org.Organization.Id == organizationId).ToListAsync();
 
                 if (usersInOrg is null)
@@ -392,7 +405,7 @@ namespace Project_Manager.Service.OrganizationUserService
             {
                 throw new Exception("Organization does not exist");
             }
-            var retrieveList = await _context.Requests.Where(req => req.OrganizationId == organizationId).ToListAsync();
+            var retrieveList = await _context.Requests.Include(user => user.User).Where(req => req.OrganizationId == organizationId && req.Status == Status.Pending).ToListAsync();
 
             if(retrieveList == null)
             {
@@ -402,6 +415,7 @@ namespace Project_Manager.Service.OrganizationUserService
             var response = retrieveList.Select(req => new SentRequestDto
             {
                 Id = req.Id,
+                Name = req.User.FirstName,
                 Email = req.InviteeEmail,
             }).ToList();
 
@@ -412,7 +426,7 @@ namespace Project_Manager.Service.OrganizationUserService
         {
             var user = await _userConfig.GetUser(userMail);
 
-            int defaultItemsPerPage = 7;
+            int defaultItemsPerPage = 10;
 
             var items = itemPerPage == 0 ? defaultItemsPerPage : itemPerPage;
             int currentPage = page.HasValue && page > 0 ? page.Value : 1;
@@ -508,6 +522,39 @@ namespace Project_Manager.Service.OrganizationUserService
                 var response = new OrganizationResponse(mappedProjects.ToList(), currentPage, totalItems, pageCount, itemStart, itemEnd, organizationList.Count);
                 return response;
             }*/
+        }
+
+        public async Task<OrganizationUserDto> RetrieveOrganizationUser(Guid organizationId, string userEmail)
+        {
+            var user = await _userConfig.GetUser(userEmail);
+
+            var retrieveOrganization =await _context.Organizations.Where(org => org.Id == organizationId).SingleOrDefaultAsync();
+
+            if (retrieveOrganization == null)
+            {
+                return new OrganizationUserDto();
+            }
+            else
+            {
+                var retrieveOrgUser = await _context.OrganizationUser
+                    .Include(u => u.User).Include(o => o.Organization)
+                    .Where(ou => ou.User == user && ou.Organization == retrieveOrganization)
+                    .SingleOrDefaultAsync();
+
+                if (retrieveOrganization == null)
+                {
+                    throw new Exception("user doesn't exist in this organization");
+                }
+
+                var data = new OrganizationUserDto
+                {
+                    UserEmail = userEmail,
+                    UserId = retrieveOrgUser.User.Id,
+                    UserRole = retrieveOrgUser.Role.Name
+                };
+
+                return data;
+            }
         }
     }
 }

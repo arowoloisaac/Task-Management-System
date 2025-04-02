@@ -22,6 +22,8 @@ namespace Project_Manager.Service.UserOrganizationService
 
         Task<IEnumerable<OrganizationUserDto>> OrganizationUsers(Guid organizationId, string userEmail);
 
+        Task<OrganizationUserDto> RetrieveOrganizationUser(Guid organizationId, string userEmail);
+
         Task<string> AcceptOrganizationRequest(Guid organizationId, string userEmail);
 
         Task<string> RejectOrganizationRequest(Guid organizationId, string userEmail);

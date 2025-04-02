@@ -18,7 +18,6 @@ namespace Project_Manager.DTO.OrganizationProjectDto
 
         public DateTime DateCreated { get; set; }
 
-        //get to get assigned to the project
-        public string? AssignedTo { get; set; } = string.Empty;
+        public string AssignedTo { get; set; } = string.Empty;
     }
 }

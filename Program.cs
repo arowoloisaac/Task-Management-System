@@ -27,6 +27,9 @@ using Quartz;
 using Project_Manager.Service.BackgroundJobs;
 using Project_Manager.Service.IssueAnalyserService;
 using Project_Manager.Service.UserConfiguration.UserRoleConfiguration;
+using Project_Manager.Service.WikiService;
+using Project_Manager.Service.GroupUserServices;
+using Project_Manager.Service.GroupIssueService;
 
 namespace Project_Manager
 {
@@ -149,6 +152,10 @@ namespace Project_Manager
             builder.Services.AddScoped<ICloudService, CloudService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IIssueAnalyserService, IssueAnalyserService>();
+            builder.Services.AddScoped<IWikiService, WikiService>();
+            builder.Services.AddScoped<IGroupUserService, GroupUserService>();
+            /*
+            builder.Services.AddScoped<IGroupIssueService, GroupIssueService>();*/
 
 
             builder.Services.AddIdentity<User, Role>(

@@ -133,15 +133,7 @@ namespace Project_Manager.Controllers
                 {
                     var projects = await _projectService.GetProjectPaginated(progress, complexity, page, itemPerPage, user.Value);
 
-
-
-                    if (projects is not null)
-                    {
-                        return Ok(projects);
-                    }
-
-                    else { return NotFound("Dish not fount"); }
-
+                    return Ok(projects);
                 }
                 
             }

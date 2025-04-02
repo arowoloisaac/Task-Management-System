@@ -2,8 +2,8 @@
 {
     public class UserSection
     {
-        public Guid CreatedBy { get; set; }
+        public User? CreatedBy { get; set; }
 
-        public Guid UpdatedBy { get; set; }
+        public User? UpdatedBy { get; set; }
     }
 }

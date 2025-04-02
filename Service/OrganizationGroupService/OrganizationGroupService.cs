@@ -32,13 +32,12 @@ namespace Project_Manager.Service.OrganizationProjectService
         {
             var organizationAdmin = await _userConfig.ValidateOrganizationUser(mail, organizationId, admin);
 
-            var validateGroup = await _context.Groups
-                .Where(grp => grp.Name !=  groupName && grp.OrganizationId == organizationAdmin.Organization.Id)
-                .SingleOrDefaultAsync();
-        
-            if (validateGroup != null)
+            var groupExists = await _context.Groups
+                .AnyAsync(grp => grp.Name ==  groupName && grp.OrganizationId == organizationAdmin.Organization.Id);
+
+            if (groupExists)
             {
-                throw new Exception("Group already exist");
+                throw new Exception("Group with this name already exists");
             }
 
             var newGroup = new Group
@@ -47,7 +46,7 @@ namespace Project_Manager.Service.OrganizationProjectService
                 Name = groupName,
                 OrganizationId = organizationAdmin.Organization.Id,
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = organizationAdmin.User.Id
+                CreatedBy = organizationAdmin.User
             };
 
             await _context.Groups.AddAsync(newGroup);
@@ -112,7 +111,7 @@ namespace Project_Manager.Service.OrganizationProjectService
         {
             var organizationAdmin = await _userConfig.ValidateOrganizationUser(adminMail, organizationId, admin);
 
-            var validateGroup = await _context.Groups.Where(grp => grp.Id == organizationId).ToListAsync();
+            var validateGroup = await _context.Groups.Where(grp => grp.OrganizationId == organizationId).ToListAsync();
 
             if (validateGroup == null)
                 return new List<RetrieveGroupDto>();
@@ -150,7 +149,7 @@ namespace Project_Manager.Service.OrganizationProjectService
                     validateGroup.Name = groupName;
                 }
                 validateGroup.UpdatedDate = DateTime.UtcNow;
-                validateGroup.UpdatedBy = organizationAdmin.User.Id;
+                validateGroup.UpdatedBy = organizationAdmin.User;
 
                 _context.Groups.Update(validateGroup);
                 await _context.SaveChangesAsync();

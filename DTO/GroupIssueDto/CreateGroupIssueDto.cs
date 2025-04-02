@@ -1,30 +1,26 @@
 ﻿using Project_Manager.Enum;
 using System.ComponentModel.DataAnnotations;
 
-namespace Project_Manager.DTO.TaskDto
+namespace Project_Manager.DTO.GroupIssueDto
 {
-    public class RetrieveIssue
+    public class CreateGroupIssueDto
     {
-        public Guid id { get; set; }
-
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
 
+        public uint EstimatedTimeInMinutes { get; set; }
+
+        [Required(ErrorMessage = "Complexity required")]
         public Complexity Complexity { get; set; }
 
         public IssueType IssueType { get; set; }
 
-        public Progress Progress { get; set; }
+        public Guid? AssignedTo { get; set; }
 
         public DateOnly StartDate { get; set; }
 
         public DateOnly EndDate { get; set; }
-
-        public uint EstimatedTimeInMinute { get; set; }
-
-        public uint TimeSpent { get; set; }
-
-        public int IssueLevel { get; set; }
     }
 }

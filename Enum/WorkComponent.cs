@@ -1,5 +1,8 @@
-﻿namespace Project_Manager.Enum
+﻿using System.Text.Json.Serialization;
+
+namespace Project_Manager.Enum
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum WorkComponent
     {
         Planning,      // Initial stage for outlining and preparing work
@@ -11,14 +14,5 @@
         Deployment,    // Releasing changes to production
         Monitoring,
         Coding
-
-
-        /***Task,          // General work item
-Bug,           // Defect or error
-Feature,       // New functionality
-Improvement,   // Enhancements to existing features
-Documentation, // Related to project documentation
-Incident,      // Unexpected behavior or failures
-Research  ***/
     }
 }

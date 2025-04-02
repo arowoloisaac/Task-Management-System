@@ -140,13 +140,29 @@ namespace Project_Manager.Migrations
                     b.ToTable("Avatars");
                 });
 
+            modelBuilder.Entity("Project_Manager.Model.Counter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Counters");
+                });
+
             modelBuilder.Entity("Project_Manager.Model.Group", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -163,7 +179,7 @@ namespace Project_Manager.Migrations
                     b.Property<Guid>("OrganizationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UpdatedBy")
+                    b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -171,7 +187,11 @@ namespace Project_Manager.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedById");
+
                     b.HasIndex("OrganizationId");
+
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Groups");
                 });
@@ -208,13 +228,13 @@ namespace Project_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AssignedUserTo")
+                    b.Property<Guid?>("AssignedToId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Complexity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -246,7 +266,7 @@ namespace Project_Manager.Migrations
                     b.Property<int>("Progress")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ProjectId")
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("StartDate")
@@ -255,7 +275,7 @@ namespace Project_Manager.Migrations
                     b.Property<long>("TimeSpent")
                         .HasColumnType("bigint");
 
-                    b.Property<Guid>("UpdatedBy")
+                    b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedTime")
@@ -264,11 +284,20 @@ namespace Project_Manager.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("WorkComponent")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedToId");
+
+                    b.HasIndex("CreatedById");
 
                     b.HasIndex("ParentIssueId");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("UpdatedById");
 
                     b.HasIndex("UserId");
 
@@ -304,6 +333,9 @@ namespace Project_Manager.Migrations
                     b.Property<Guid?>("User")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("WorkComponent")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IssueId");
@@ -313,14 +345,30 @@ namespace Project_Manager.Migrations
                     b.ToTable("IssueAnalysers");
                 });
 
-            modelBuilder.Entity("Project_Manager.Model.Organization", b =>
+            modelBuilder.Entity("Project_Manager.Model.IssueRelation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ArchivedTime")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid>("IssueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RelatedIssueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("IssueRelations");
+                });
+
+            modelBuilder.Entity("Project_Manager.Model.Organization", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -328,7 +376,7 @@ namespace Project_Manager.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeletedTime")
+                    b.Property<DateTime>("DateJoined")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -382,9 +430,6 @@ namespace Project_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ArchivedTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Complexity")
                         .HasColumnType("int");
 
@@ -397,7 +442,7 @@ namespace Project_Manager.Migrations
                     b.Property<Guid?>("CreatorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DeletedTime")
+                    b.Property<DateTime>("DateJoined")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -451,6 +496,9 @@ namespace Project_Manager.Migrations
 
                     b.Property<Guid>("OrganizationId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -589,8 +637,9 @@ namespace Project_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
@@ -598,9 +647,11 @@ namespace Project_Manager.Migrations
                     b.Property<DateTime>("DeletedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("LastUpdateBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ParentWikiId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("uniqueidentifier");
@@ -609,16 +660,15 @@ namespace Project_Manager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentWikiId");
 
                     b.HasIndex("ProjectId");
 
@@ -680,11 +730,23 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Group", b =>
                 {
+                    b.HasOne("Project_Manager.Model.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
                     b.HasOne("Project_Manager.Model.Organization", null)
                         .WithMany("Groups")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Project_Manager.Model.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.GroupUser", b =>
@@ -696,7 +758,7 @@ namespace Project_Manager.Migrations
                         .IsRequired();
 
                     b.HasOne("Project_Manager.Model.Role", "Role")
-                        .WithMany()
+                        .WithMany("GroupUser")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -716,6 +778,14 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>
                 {
+                    b.HasOne("Project_Manager.Model.User", "AssignedTo")
+                        .WithMany()
+                        .HasForeignKey("AssignedToId");
+
+                    b.HasOne("Project_Manager.Model.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
                     b.HasOne("Project_Manager.Model.Issue", "ParentIssue")
                         .WithMany("SubIssues")
                         .HasForeignKey("ParentIssueId");
@@ -723,15 +793,26 @@ namespace Project_Manager.Migrations
                     b.HasOne("Project_Manager.Model.Project", "Project")
                         .WithMany("Issues")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_Manager.Model.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
 
                     b.HasOne("Project_Manager.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
+                    b.Navigation("AssignedTo");
+
+                    b.Navigation("CreatedBy");
+
                     b.Navigation("ParentIssue");
 
                     b.Navigation("Project");
+
+                    b.Navigation("UpdatedBy");
 
                     b.Navigation("User");
                 });
@@ -749,6 +830,15 @@ namespace Project_Manager.Migrations
                     b.Navigation("Issue");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Project_Manager.Model.IssueRelation", b =>
+                {
+                    b.HasOne("Project_Manager.Model.Issue", null)
+                        .WithMany("IssueRelations")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Project_Manager.Model.OrganizationUser", b =>
@@ -827,13 +917,21 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Wiki", b =>
                 {
+                    b.HasOne("Project_Manager.Model.Wiki", "ParentWiki")
+                        .WithMany("WikiChildren")
+                        .HasForeignKey("ParentWikiId");
+
                     b.HasOne("Project_Manager.Model.Project", "Project")
                         .WithMany("Wiki")
                         .HasForeignKey("ProjectId");
 
                     b.HasOne("Project_Manager.Model.User", "User")
                         .WithMany("Wiki")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentWiki");
 
                     b.Navigation("Project");
 
@@ -855,6 +953,8 @@ namespace Project_Manager.Migrations
             modelBuilder.Entity("Project_Manager.Model.Issue", b =>
                 {
                     b.Navigation("IssueAnalyser");
+
+                    b.Navigation("IssueRelations");
 
                     b.Navigation("SubIssues");
                 });
@@ -881,6 +981,8 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Role", b =>
                 {
+                    b.Navigation("GroupUser");
+
                     b.Navigation("OrganizationUser");
                 });
 
@@ -895,6 +997,11 @@ namespace Project_Manager.Migrations
                     b.Navigation("Requests");
 
                     b.Navigation("Wiki");
+                });
+
+            modelBuilder.Entity("Project_Manager.Model.Wiki", b =>
+                {
+                    b.Navigation("WikiChildren");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,9 +2,13 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project_Manager.Configuration;
 using Project_Manager.Enum;
 using Project_Manager.Model;
+using Project_Manager.Service.UserConfiguration.UserRoleConfiguration;
 using Project_Manager.Service.UserOrganizationService;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Configuration;
 using System.Security.Claims;
 
 namespace Project_Manager.Controllers
@@ -13,13 +17,15 @@ namespace Project_Manager.Controllers
     [ApiController]
     [EnableCors]
     [Authorize]
-    public class UserOrganizationController : ControllerBase
+    public class OrganizationUserController : ControllerBase
     {
         private readonly IOrganizationUserService _organizationUser;
+        private readonly IUserRoleConfiguration config;
 
-        public UserOrganizationController(IOrganizationUserService organizationUserService)
+        public OrganizationUserController(IOrganizationUserService organizationUserService, IUserRoleConfiguration configuration)
         {
             _organizationUser = organizationUserService;
+            this.config = configuration;
         }
 
 
@@ -39,6 +45,35 @@ namespace Project_Manager.Controllers
                 {
                     return Ok(await _organizationUser.GetOrganization(id, user.Value));
                 }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("organization/{organizationId}/user")]
+        public async Task<IActionResult> RetrieveUser(Guid organizationId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return Unauthorized("User not found");
+                }
+
+
+                var role = await config.GetOrganizationRoleEmail(user.Value, organizationId);
+
+                if (role == null || role.Name != ApplicationRoleNames.OrganizationAdministrator )
+                {
+                    return Forbid("Access Denied: You do not belong to the organization");
+                }
+
+                return Ok(await _organizationUser.RetrieveOrganizationUser(organizationId, user.Value));
             }
             catch (Exception ex)
             {
@@ -218,6 +253,68 @@ namespace Project_Manager.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("organization/{id}/request")]
+        public async Task<IActionResult> GetOrganizationRequests(Guid id)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                else
+                {
+                    return Ok(await _organizationUser.SentRequests(id));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("organization/get")]
+        [SwaggerOperation(Summary = "Get the list of organizations")]
+        public async Task<IActionResult> GetPaginatedOrganization([FromQuery] OrganizationFilter? filter, [FromQuery] int? page, [FromQuery] int itemPerPage)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                else
+                {
+                    return Ok(await _organizationUser.GetPaginatedOrganizations(filter, page, itemPerPage, user.Value));
+                }
+            }
+
+            catch (BadHttpRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                var response = new ResponseBody
+                {
+                    Status = "Error" + ex.Source,
+                    Message = ex.Message,
+                };
+
+                return StatusCode(500, response);
+            }
+
         }
     }
 }

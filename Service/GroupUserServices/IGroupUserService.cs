@@ -1,15 +1,18 @@
-﻿using Project_Manager.Model;
+﻿using Project_Manager.DTO.OrganizationDto;
+using Project_Manager.Model;
 
 namespace Project_Manager.Service.GroupUserServices
 {
     public interface IGroupUserService
     {
-        Task AddUserToGroup(Guid organizationId, Guid groupId, Guid userId, Guid roleId);
+        Task<string> AddUserToGroup(Guid organizationId, Guid groupId, string userEmail, string roleName);
 
-        Task RemoveUserFromGroup(Guid organizationId, Guid groupId, Guid userId);
+        Task<string> RemoveUserFromGroup(Guid organizationId, Guid groupId, string userEmail);
 
-        Task RetrieveGroupUsers(Guid organizationId, Guid groupId);
-        /***
-         * UPDATE ROLE OF USER***/
+        Task<IEnumerable<GroupUserDto>> RetrieveGroupUsers(Guid organizationId, Guid groupId);
+
+        Task<string> UpdateUserRole(Guid organizationId, Guid groupId, string roleName, string userToUpdate);
+
+        Task<GroupUserDto> RetrieveUser(Guid organizationId, Guid groupId, string userId);
     }
 }

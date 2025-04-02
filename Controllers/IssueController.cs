@@ -90,8 +90,7 @@ namespace Project_Manager.Controllers
         //same here
         [HttpPut]
         [Route("project={projectId}/issue={issueId}/update")]
-        public async Task<IActionResult> UpdateIssue(Guid issueId,Guid projectId, string? name, string? description, Complexity? complexity, 
-            uint? estimatedTimeInMinute, uint timeSpent, int issueLevel, string? comment, string? note)
+        public async Task<IActionResult> UpdateIssue(UpdateIssueDto dto, Guid projectId, Guid issueId)
         {
             try
             {
@@ -100,8 +99,7 @@ namespace Project_Manager.Controllers
                 {
                     return NotFound("User not found");
                 }
-                return Ok(await _issueService.UpdateIssues(issueId, name, description, complexity,estimatedTimeInMinute, 
-                    timeSpent, issueLevel, comment, note, projectId,user.Value));
+                return Ok(await _issueService.UpdateIssues(issueId, dto, projectId,user.Value));
             }
             catch (Exception ex)
             {
@@ -204,6 +202,26 @@ namespace Project_Manager.Controllers
                 return Ok(await _issueService.GetSubIssues(parentIssueId, projectId, user.Value));
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("project={projectId}/issues")]
+        public async Task<IActionResult> GetIssueAndChild(Guid projectId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                return Ok(await _issueService.GetIssueAndChild( projectId, user.Value));
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

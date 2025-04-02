@@ -14,6 +14,7 @@ namespace Project_Manager.Model
 
         public IssueType IssueType { get; set; }
 
+        [Range(0, 100)]
         public int IssueLevel { get; set; } = 0;
 
         public uint TimeSpent { get; set; } = 0;
@@ -24,13 +25,16 @@ namespace Project_Manager.Model
         public Complexity Complexity { get; set; }
 
         public Progress Progress { get; set; }
+
+        //this specifies the exact work done at the moment 
+        public WorkComponent WorkComponent { get; set; }
         
         //user assigned for the task might be null or the user itself since it's a standalone project
-        public Guid? AssignedUserTo { get; set; }
+        public User? AssignedTo { get; set; }
 
-        public Guid CreatedBy { get; set; }
+        public User? CreatedBy { get; set; }
 
-        public Guid UpdatedBy { get; set; }
+        public User? UpdatedBy { get; set; }
 
         public User? User { get; set; }
 
@@ -44,9 +48,11 @@ namespace Project_Manager.Model
 
         //public Guid ProjectId { get; set; }
 
-        public Project? Project { get; set; }
+        public required Project Project { get; set; }
 
         public ICollection<IssueAnalyser>? IssueAnalyser { get; set; }
+
+        public ICollection<IssueRelation>? IssueRelations {  get; set; }
 
     }
 }
