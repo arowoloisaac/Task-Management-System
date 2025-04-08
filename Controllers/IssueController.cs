@@ -226,5 +226,68 @@ namespace Project_Manager.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("project={projectId}/origin={originId}/related={stateId}")]
+        public async Task<IActionResult> AddRelatedIssue(Guid originId, Guid stateId, Guid projectId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                await _issueService.AddRelatedIssue(originId, stateId, projectId, user.Value);
+
+                return Ok("Successful");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("project={projectId}/origin={originId}/related")]
+        public async Task<IActionResult> GetRelatedIssues(Guid originId, Guid projectId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                return Ok(await _issueService.GetRelatedIssues(originId, projectId, user.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("project={projectId}/origin={originId}/remove")]
+        public async Task<IActionResult> RemoveRelatedIssue(Guid originId, Guid stateId, Guid projectId)
+        {
+            try
+            {
+                var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                await _issueService.RemoveRelatedIssue(originId, stateId, projectId, user.Value);
+                return Ok("successfully removed");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

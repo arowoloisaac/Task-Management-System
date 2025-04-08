@@ -25,9 +25,6 @@ namespace Project_Manager.Model
         public Complexity Complexity { get; set; }
 
         public Progress Progress { get; set; }
-
-        //this specifies the exact work done at the moment 
-        public WorkComponent WorkComponent { get; set; }
         
         //user assigned for the task might be null or the user itself since it's a standalone project
         public User? AssignedTo { get; set; }

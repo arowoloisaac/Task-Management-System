@@ -33,17 +33,19 @@ namespace Project_Manager.Service.OrganizationProjectService
                 throw new Exception("Either Organization or project doesn't exist");
             }
 
-            var retrieveGrpProject = await context.Projects
-                .Where(prt => prt.Id == projectId && prt.Group != null && prt.OrganizationId == organizationId).SingleOrDefaultAsync();
+            var retrieveGrpProject = await context.Projects.Include(grp => grp.Group)
+                .Where(prt => prt.Id == projectId && prt.OrganizationId == organizationId && prt.Group == null).SingleOrDefaultAsync();
 
-            if (retrieveGrpProject != null)
+            if (retrieveGrpProject.Group != null)
             {
                 return "A group is already assigned to this project";
             }
 
             retrieveGrpProject.Group = retrieveOrgGroup;
             await context.Projects.SingleUpdateAsync(retrieveGrpProject);
-            return " assigned group to project";
+
+            await context.SaveChangesAsync();
+            return "Assigned group to project";
         }
 
         public async Task<string> CreateProject(CreateDto dto, Guid organizationId, Guid? groupId, string userId)
@@ -224,66 +226,13 @@ namespace Project_Manager.Service.OrganizationProjectService
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
-                AssignedTo = project.Group?.Name ?? null,
+                AssignedTo = project.Group?.Name,
                 Overview = project.Overview,
                 DateCreated = project.CreatedTime,
                 Complexity = project.Complexity,
+                AssignedGroupId = project.Group.Id
             };
-            /*if (!groupId.HasValue)
-            {
-                var org = await retrieveOrgization(organizationId);
-
-                var getPt = await retrieveProject(projectId);
-
-                var project = await context.Projects
-                    .Include(grp => grp.Group)
-                    .Where(pjt => pjt.OrganizationId == organizationId && pjt.Id == projectId).SingleOrDefaultAsync();
-
-                if (project == null)
-                {
-                    return new GetOrganizationProjectDto();
-                }
-                else
-                {
-                    return new GetOrganizationProjectDto
-                    {
-                        Id = project.Id,
-                        Name = project.Name,
-                        Description = project.Description,
-                        AssignedTo = project.Group.Name ?? null,
-                        Overview = project.Overview,
-                        DateCreated = project.CreatedTime,
-                        Complexity = project.Complexity,
-                    };
-                }
-            }
-            else
-            {
-                var orgGrp = await retrieveOrgizationGroup(organizationId, groupId.Value);
-
-                var getPt = await retrieveProject(projectId);
-
-                var project = await context.Projects
-                    .Include(grp => grp.Group)
-                    .Where(pjt => pjt.OrganizationId == organizationId && pjt.Id == projectId && pjt.Group.Id == groupId).SingleOrDefaultAsync();
-
-                if (project == null)
-                {
-                    return new GetOrganizationProjectDto();
-                }
-                else
-                {
-                    return new GetOrganizationProjectDto
-                    {
-                        Id = project.Id,
-                        Name = project.Name,
-                        Description = project.Description,
-                        Overview = project.Overview,
-                        DateCreated = project.CreatedTime,
-                        Complexity = project.Complexity,
-                    };
-                }
-            }*/
+            
         }
 
         //this is for the members of the organization
@@ -341,7 +290,8 @@ namespace Project_Manager.Service.OrganizationProjectService
         }
 
         //for the admin
-        public async Task<IEnumerable<GetOrganizationProjectDto>> GetProjects(Progress? progress, Complexity? complexity, bool isAssigned, Guid organizationId, string userId) 
+        public async Task<IEnumerable<GetOrganizationProjectDto>> GetProjects(Progress? progress, Complexity? complexity, 
+            bool? isAssigned, Guid organizationId, string userId) 
         {
             var org = await retrieveOrgization(organizationId);
 
@@ -356,16 +306,20 @@ namespace Project_Manager.Service.OrganizationProjectService
             {
                 query = query.Where(project => project.Complexity == complexity); 
             }
-            
-            if (isAssigned == true)
+
+            if (isAssigned.HasValue)
             {
-                query = query.Where(project => project.Group != null);
+                if (isAssigned == true)
+                {
+                    query = query.Where(project => project.Group != null);
+                }
+
+                else
+                {
+                    query = query.Where(project => project.Group == null);
+                }
             }
 
-            if (isAssigned != true)
-            {
-                query = query.Where(project => project.Group == null);
-            }
 
             var projectList = await query.ToListAsync();
 
@@ -384,7 +338,8 @@ namespace Project_Manager.Service.OrganizationProjectService
                     Progress = project.Progress,
                     Complexity = project.Complexity,
                     Overview = project.Overview,
-                    AssignedTo = project.Group == null ? null : project.Group.Name
+                    AssignedTo = project.Group == null ? null : project.Group.Name,
+                    AssignedGroupId = project.Group == null ? null : project.Group.Id
                 }).ToList();
 
                 return projects;

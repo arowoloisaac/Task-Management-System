@@ -19,5 +19,7 @@ namespace Project_Manager.DTO.OrganizationProjectDto
         public DateTime DateCreated { get; set; }
 
         public string AssignedTo { get; set; } = string.Empty;
+
+        public Guid? AssignedGroupId { get; set; }
     }
 }

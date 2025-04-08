@@ -207,7 +207,6 @@ namespace Project_Manager.Service.WikiService
                 {
                     retrieveWikiOwner.Content = wikiDto.Content;
                 }
-                //retrieveWikiOwner.UpdatedBy = user;
                 retrieveWikiOwner.UpdatedTime = DateTime.Now;
                 retrieveWikiOwner.LastUpdateBy = user.Id;
 

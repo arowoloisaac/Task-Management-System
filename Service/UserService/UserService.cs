@@ -184,14 +184,14 @@ namespace Project_Manager.Service.UserService
 
             if (user == null)
             {
-                throw new Exception($"User cannot be found {loginDto.Email}");
+                throw new Exception($"Email is either wrong or not registered");
             }
 
             else
             {
                 var validatePassword = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 
-                return validatePassword == PasswordVerificationResult.Success ? user: null;
+                return validatePassword == PasswordVerificationResult.Success ? user: throw new Exception("Password incorrect");
             }
         }
     }

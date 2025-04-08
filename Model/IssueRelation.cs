@@ -6,10 +6,8 @@
 
         public Guid IssueId { get; set; }
 
-        //public Issue? Issue { get; set; }
+        public Guid RelatedIssueId { get; set; }
 
-        public Guid? RelatedIssueId  { get; set; }
-
-        //public Issue? RelatedIssue { get; set; }
+        public Issue? RelatedIssue { get; set; }
     }
 }

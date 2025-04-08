@@ -25,7 +25,9 @@ namespace Project_Manager.Model
 
         public ICollection<Project>? Projects { get; set; }
 
-        public ICollection<Wiki>? Wiki { get; set; }
+        public ICollection<Wiki>? CreatedByWiki { get; set; }
+
+        public ICollection<Wiki>? UpdatedByWiki { get; set; }
 
         public ICollection<GroupUser>? GroupUsers { get; set; }
 

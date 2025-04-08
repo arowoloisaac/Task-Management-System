@@ -46,6 +46,16 @@ namespace Project_Manager.Data
                 .WithOne(i => i.Project)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Wiki>()
+                .HasOne(cr => cr.User)
+                .WithMany()
+                .HasForeignKey(p => p.CreatedById)
+                .OnDelete(DeleteBehavior.NoAction); ;
+
+            builder.Entity<Wiki>()
+                .HasOne(w => w.UpdatedBy)
+                .WithMany()
+                .HasForeignKey(w => w.LastUpdateBy).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

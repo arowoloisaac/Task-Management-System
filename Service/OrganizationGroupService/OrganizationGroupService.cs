@@ -111,7 +111,9 @@ namespace Project_Manager.Service.OrganizationProjectService
         {
             var organizationAdmin = await _userConfig.ValidateOrganizationUser(adminMail, organizationId, admin);
 
-            var validateGroup = await _context.Groups.Where(grp => grp.OrganizationId == organizationId).ToListAsync();
+            var validateGroup = await _context.Groups
+                .Include(grpProject => grpProject.Projects)
+                .Where(grp => grp.OrganizationId == organizationId).ToListAsync();
 
             if (validateGroup == null)
                 return new List<RetrieveGroupDto>();
@@ -123,6 +125,7 @@ namespace Project_Manager.Service.OrganizationProjectService
                     Id=grp.Id,
                     Name=grp.Name,
                     Description=grp.Description,
+                    ProjectCount = grp.Projects.Count()
                 }).ToList();
 
                 return response;

@@ -25,11 +25,11 @@ namespace Project_Manager.Service.IssueService
 
         Task<RetrieveIssue> GetIssueById(Guid projectId, Guid issueId, string userId);
 
-        //Task AddRelatedIssue(Guid originId, Guid stateId, string userId);
+        Task AddRelatedIssue(Guid originId, Guid stateId, Guid projectId, string userId);
 
-        //Task RemoveRelatedIssue(Guid issueId, string userId);
+        Task RemoveRelatedIssue(Guid originId, Guid issueId, Guid projectId, string userId);
 
-        //Task GetRelatedIssues(Guid issueId, string userId);
+        Task<IEnumerable<IssueRelationDto>> GetRelatedIssues(Guid issueId, Guid projectId, string userId);
 
         Task<IEnumerable<IssueAndChild>> GetIssueAndChild(Guid projectId, string userMail);
 

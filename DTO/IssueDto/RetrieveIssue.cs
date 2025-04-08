@@ -26,5 +26,7 @@ namespace Project_Manager.DTO.TaskDto
         public uint TimeSpent { get; set; }
 
         public int IssueLevel { get; set; }
+
+        public string AssignedTo { get; set; } = string.Empty;
     }
 }

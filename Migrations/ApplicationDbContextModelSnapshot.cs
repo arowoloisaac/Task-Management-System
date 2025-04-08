@@ -284,9 +284,6 @@ namespace Project_Manager.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("WorkComponent")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AssignedToId");
@@ -354,12 +351,12 @@ namespace Project_Manager.Migrations
                     b.Property<Guid>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RelatedIssueId")
+                    b.Property<Guid>("RelatedIssueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IssueId");
+                    b.HasIndex("RelatedIssueId");
 
                     b.ToTable("IssueRelations");
                 });
@@ -641,6 +638,9 @@ namespace Project_Manager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
@@ -663,16 +663,25 @@ namespace Project_Manager.Migrations
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("LastUpdateBy");
 
                     b.HasIndex("ParentWikiId");
 
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Wikis");
                 });
@@ -834,11 +843,13 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.IssueRelation", b =>
                 {
-                    b.HasOne("Project_Manager.Model.Issue", null)
+                    b.HasOne("Project_Manager.Model.Issue", "RelatedIssue")
                         .WithMany("IssueRelations")
-                        .HasForeignKey("IssueId")
+                        .HasForeignKey("RelatedIssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("RelatedIssue");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.OrganizationUser", b =>
@@ -917,6 +928,17 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.Wiki", b =>
                 {
+                    b.HasOne("Project_Manager.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Project_Manager.Model.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdateBy")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Project_Manager.Model.Wiki", "ParentWiki")
                         .WithMany("WikiChildren")
                         .HasForeignKey("ParentWikiId");
@@ -925,15 +947,19 @@ namespace Project_Manager.Migrations
                         .WithMany("Wiki")
                         .HasForeignKey("ProjectId");
 
-                    b.HasOne("Project_Manager.Model.User", "User")
-                        .WithMany("Wiki")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Project_Manager.Model.User", null)
+                        .WithMany("CreatedByWiki")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("Project_Manager.Model.User", null)
+                        .WithMany("UpdatedByWiki")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("ParentWiki");
 
                     b.Navigation("Project");
+
+                    b.Navigation("UpdatedBy");
 
                     b.Navigation("User");
                 });
@@ -988,6 +1014,8 @@ namespace Project_Manager.Migrations
 
             modelBuilder.Entity("Project_Manager.Model.User", b =>
                 {
+                    b.Navigation("CreatedByWiki");
+
                     b.Navigation("GroupUsers");
 
                     b.Navigation("Organization");
@@ -996,7 +1024,7 @@ namespace Project_Manager.Migrations
 
                     b.Navigation("Requests");
 
-                    b.Navigation("Wiki");
+                    b.Navigation("UpdatedByWiki");
                 });
 
             modelBuilder.Entity("Project_Manager.Model.Wiki", b =>

@@ -146,7 +146,6 @@ namespace Project_Manager.Service.IssueService
                     IssueType = find.IssueType,
                 }).ToList();
 
-                //return response;
                 var reponse = new IssueResponse(retrievedIssues, currentPage, totalItems, pageCount, itemStart, itemEnd, getIssues.Count);
                 return reponse;
             }
@@ -318,6 +317,8 @@ namespace Project_Manager.Service.IssueService
                 IssueLevel = exactIssue.IssueLevel,
                 EstimatedTimeInMinute = exactIssue.EstimatedTimeInMinutes,
                 TimeSpent = exactIssue.TimeSpent,
+                StartDate = exactIssue.StartDate,
+                EndDate = exactIssue.EndDate,
             };
         }
 
@@ -428,6 +429,69 @@ namespace Project_Manager.Service.IssueService
             }).ToList();
 
             return selectedList;
+        }
+
+
+        public async Task AddRelatedIssue(Guid originId, Guid stateId, Guid projectId, string userId)
+        {
+            var user = await _userConfig.GetUserById(userId);
+            var checkProject = await ValidateProject(projectId);
+
+            var getOriginIssue = await ValidateIssue(originId, projectId, user.Id);
+            var getStateId = await ValidateIssue(stateId, projectId, user.Id);
+
+            var addToDb = _context.IssueRelations.Add(new IssueRelation
+            {
+                Id = Guid.NewGuid(),
+                IssueId = getOriginIssue.Id,
+                RelatedIssueId = getStateId.Id,
+            });
+
+            await  _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveRelatedIssue(Guid originId, Guid stateId, Guid projectId, string userId)
+        {
+            var user = await _userConfig.GetUserById(userId);
+            var checkProject = await ValidateProject(projectId);
+
+            var getOriginIssue = await ValidateIssue(originId, projectId, user.Id);
+            var getStateId = await ValidateIssue(stateId, projectId, user.Id);
+
+            var relationToRemove = await _context.IssueRelations.FirstOrDefaultAsync(ir =>
+            ir.IssueId == getOriginIssue.Id && ir.RelatedIssueId == getStateId.Id);
+
+            if (relationToRemove != null)
+            {
+                _context.IssueRelations.Remove(relationToRemove);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException($"No relation found between tasks");
+            }
+        }
+
+        public async Task<IEnumerable<IssueRelationDto>> GetRelatedIssues(Guid originId, Guid projectId, string userId)
+        {
+            var user = await _userConfig.GetUserById(userId);
+            var checkProject = await ValidateProject(projectId);
+
+            var getOriginIssue = await ValidateIssue(originId, projectId, user.Id);
+
+            var retrieveRelated = await _context.IssueRelations.Where(issue => issue.IssueId == getOriginIssue.Id).ToListAsync();
+
+            var response = retrieveRelated.Select( iss => new IssueRelationDto
+            {
+                Id = originId,
+                Relations = _context.IssueRelations.Include(related => related.RelatedIssue).Where(org => org.IssueId == originId).Select(rel =>  new RelatedDto
+                {
+                    Id = rel.RelatedIssueId,
+                    Name = rel.RelatedIssue.Name
+                }).ToList(),
+            }).ToList();
+
+            return response;
         }
 
 
@@ -545,6 +609,7 @@ namespace Project_Manager.Service.IssueService
                     Comment = dto.Comment ?? string.Empty,
                     WorkComponent =  dto.Workdone.HasValue ? dto.Workdone.Value : (WorkComponent?)null,
                     Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
                     User = userId
                 });
                 await _context.SaveChangesAsync();
@@ -553,6 +618,7 @@ namespace Project_Manager.Service.IssueService
             {
                 throw new Exception(ex.Message);
             }
+            await _context.SaveChangesAsync();
             return "successful";
         }
 
@@ -564,7 +630,6 @@ namespace Project_Manager.Service.IssueService
 
             return daysDifference;
         }
-
 
         private async Task<Project> ValidateProject(Guid projectId)
         {

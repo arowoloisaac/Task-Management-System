@@ -241,7 +241,7 @@ namespace Project_Manager.Controllers
         //for the admin page
         [HttpGet]
         [Route("organization={organizationId}/get/projects")]
-        public async Task<IActionResult> GetProjects([FromQuery] Progress? progress, Complexity? complexity, bool isAssigned, Guid organizationId)
+        public async Task<IActionResult> GetProjects([FromQuery] Progress? progress, Complexity? complexity, bool? isAssigned, Guid organizationId)
         {
             try
             {

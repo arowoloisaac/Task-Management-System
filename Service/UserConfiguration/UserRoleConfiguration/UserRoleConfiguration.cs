@@ -45,10 +45,6 @@ namespace Project_Manager.Service.UserConfiguration.UserRoleConfiguration
                          .Select(uor => uor.Role)
                          .FirstOrDefaultAsync();
 
-            if (role == null)
-            {
-                throw new Exception("Role does not exist");
-            }
             return role;
         }
 
@@ -62,11 +58,8 @@ namespace Project_Manager.Service.UserConfiguration.UserRoleConfiguration
                 var groupRole = await GetGroupRole(userId, organizationId, groupId.Value);
                 if (groupRole != null) roles.Add(groupRole);
             }
-            else
-            {
-                var orgRole = await GetOrganizationRole(userId, organizationId);
-                if (orgRole != null) roles.Add(orgRole);
-            }
+            var orgRole = await GetOrganizationRole(userId, organizationId);
+            if (orgRole != null) roles.Add(orgRole);
 
             return roles;
         }
@@ -103,10 +96,6 @@ namespace Project_Manager.Service.UserConfiguration.UserRoleConfiguration
                          .Select(uor => uor.Role)
                          .FirstOrDefaultAsync();
 
-            if (role == null)
-            {
-                throw new Exception("Role does not exist");
-            }
             return role;
         }
     }

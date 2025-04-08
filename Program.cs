@@ -154,8 +154,7 @@ namespace Project_Manager
             builder.Services.AddScoped<IIssueAnalyserService, IssueAnalyserService>();
             builder.Services.AddScoped<IWikiService, WikiService>();
             builder.Services.AddScoped<IGroupUserService, GroupUserService>();
-            /*
-            builder.Services.AddScoped<IGroupIssueService, GroupIssueService>();*/
+            builder.Services.AddScoped<IGroupIssueService, GroupIssueService>();
 
 
             builder.Services.AddIdentity<User, Role>(

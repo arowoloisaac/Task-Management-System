@@ -23,6 +23,8 @@ namespace Project_Manager.DTO.IssueDto
         //this works for the minute
         //public uint EstimatedTimeInMinutes { get; set; }
 
+        public string AssignedTo { get; set; } = string.Empty;
+
         public DateOnly EndDate { get; set; }
 
         public List<IssueAndChild> SubIssue { get; set; } = new List<IssueAndChild >();

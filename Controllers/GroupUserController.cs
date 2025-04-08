@@ -70,7 +70,7 @@ namespace Project_Manager.Controllers
                 {
                     var role = await configuration.GetUserRoles(Guid.Parse(user.Value), organizationId, groupId);
 
-                    if (role == null ||!role.Any(r => r.Name == ApplicationRoleNames.OrganizationAdministrator || r.Name == ApplicationRoleNames.GroupUser))
+                    if (role == null ||!role.Any(r => r.Name == ApplicationRoleNames.OrganizationAdministrator || r.Name == ApplicationRoleNames.GroupAdministrator))
                     {
                         return Forbid("Access Denied: You are not an administrator");
                     }
@@ -160,7 +160,8 @@ namespace Project_Manager.Controllers
 
                 var role = await configuration.GetUserRoles(Guid.Parse(user.Value), organizationId, groupId);
 
-                if (role == null || !role.Any())
+                if (role == null || !role.Any(ro => ro.Name == ApplicationRoleNames.OrganizationAdministrator ||
+                        ro.Name == ApplicationRoleNames.GroupAdministrator || ro.Name == ApplicationRoleNames.GroupUser))
                 {
                     return Forbid("Access Denied: You do not belong to the group");
                 }

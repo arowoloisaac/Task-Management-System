@@ -1,4 +1,6 @@
-﻿namespace Project_Manager.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Project_Manager.Model
 {
     public class Wiki 
     {
@@ -10,7 +12,7 @@
 
         public DateTime CreatedTime { get; set; }
 
-        //this wroks with the last update
+        //this works with the last update
         public DateTime UpdatedTime { get; set; }
 
         public DateTime DeletedTime { get; set; }
@@ -24,6 +26,12 @@
 
         public Project? Project { get; set; }
 
-        public required User User { get; set; }
+        [ForeignKey("LastUpdateBy")]
+        public virtual User UpdatedBy { get; set; }
+
+        public Guid CreatedById { get; set; }
+
+        [ForeignKey("CreatedById")]
+        public virtual User User { get; set; }
     }
 }

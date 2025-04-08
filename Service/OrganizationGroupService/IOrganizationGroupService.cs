@@ -4,13 +4,6 @@ namespace Project_Manager.Service.OrganizationProjectService
 {
     public interface IOrganizationGroupService
     {
-        /***
-         * create group
-         * delete group
-         * update group
-         * retrieve group
-         ***/
-
         Task<string> CreateOrganizationGroup(string groupName, Guid organizationId, string mail);
 
         Task<string> UpdateOrganizationGroup(Guid groupId,string? groupName, Guid organizationId, string adminEmail);
