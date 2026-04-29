@@ -12,12 +12,17 @@ using Microsoft.IdentityModel.Tokens;
 using Project_Manager.Service.Configuration.TokenGenerator;
 using Project_Manager.Model;
 using Project_Manager.Service.ProjectService;
+using Project_Manager.Service.IssueService;
+using Project_Manager.Service.OrganizationService;
+using Project_Manager.Service.UserConfiguration;
+using Project_Manager.Service.UserOrganizationService;
+using Project_Manager.Service.OrganizationUserService;
 
 namespace Project_Manager
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -78,8 +83,12 @@ namespace Project_Manager
             );
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserConfig, UserConfig>();
+            builder.Services.AddScoped<IssueService, IssueService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<IOrganizationService, OrganizationService>();
+            builder.Services.AddScoped<IOrganizationUserService, OrganizationUserService>();
 
 
             builder.Services.AddIdentity<User, Role>(
@@ -94,7 +103,6 @@ namespace Project_Manager
                     options.Password.RequiredLength = 8;
                 }
             ).AddEntityFrameworkStores<ApplicationDbContext>(); 
-
 
 
             var jwtSection = builder.Configuration.GetSection("JwtBearerToken");
@@ -135,8 +143,9 @@ namespace Project_Manager
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            await app.ConfigureIdentityAsync();
 
             app.MapControllers();
 

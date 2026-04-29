@@ -1,6 +1,6 @@
 ﻿namespace Project_Manager.DTO.OrganizationDto
 {
-    public class CreateDto
+    public class CreateOrganizationDto
     {
         public string Name { get; set; } = string.Empty;
 

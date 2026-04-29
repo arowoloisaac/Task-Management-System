@@ -26,5 +26,7 @@ namespace Project_Manager.Model
         public ICollection<Wiki>? Wiki { get; set; }
 
         public Group? Group { get; set; }
+
+        public Guid OrganizationId { get; set; }
     }
 }

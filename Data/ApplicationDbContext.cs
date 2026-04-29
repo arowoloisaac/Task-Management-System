@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project_Manager.Model;
+using System.Reflection.Emit;
 
 namespace Project_Manager.Data
 {
@@ -20,14 +21,22 @@ namespace Project_Manager.Data
 
         public DbSet<Project> Projects { get; set; }
 
-        public DbSet<OrganizationRole> OrganizationsRoles { get; set; }
+        public DbSet<OrganizationUser> OrganizationUser { get; set; }
 
-        public DbSet<ProjectRole> ProjectRoles { get; set; }
+        public DbSet<GroupUser> GroupUsers { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<Note> Notes { get; set; }
 
         public DbSet<Issue> Issues { get; set; }
+
+        public DbSet<Requests> Requests { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+        }
     }
 }
